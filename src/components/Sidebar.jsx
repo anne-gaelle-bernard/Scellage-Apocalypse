@@ -55,6 +55,13 @@ export default function Sidebar() {
         </div>
 
         <div
+          className={`nav-item ${isActive('flashcard') ? 'active' : ''}`}
+          onClick={() => navigate('flashcard')}
+        >
+          <span className="nav-icon">🃏</span> Cartes mémoire
+        </div>
+
+        <div
           className={`nav-item ${isActive('lacunes') ? 'active' : ''}`}
           onClick={() => navigate('lacunes')}
         >

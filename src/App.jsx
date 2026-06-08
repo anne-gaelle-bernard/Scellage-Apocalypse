@@ -4,11 +4,13 @@ import { useAudio } from './hooks/useAudio';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import PlayerBar from './components/PlayerBar';
+import BottomNav from './components/BottomNav';
 import HomePage from './pages/HomePage';
 import LecturePage from './pages/LecturePage';
 import SelectionPage from './pages/SelectionPage';
 import LacunesPage from './pages/LacunesPage';
 import RecitationPage from './pages/RecitationPage';
+import FlashcardPage from './pages/FlashcardPage';
 
 export const AppContext = createContext(null);
 export const useApp = () => useContext(AppContext);
@@ -53,24 +55,28 @@ export default function App() {
       <div id="main">
         <Topbar />
 
-        <div className={`page ${currentPage === 'home' ? 'active' : ''}`} id="page-home">
+        <div className={`page ${currentPage === 'home'      ? 'active' : ''}`} id="page-home">
           <HomePage />
         </div>
-        <div className={`page ${currentPage === 'lecture' ? 'active' : ''}`} id="page-lecture">
+        <div className={`page ${currentPage === 'lecture'   ? 'active' : ''}`} id="page-lecture">
           <LecturePage />
         </div>
         <div className={`page ${currentPage === 'selection' ? 'active' : ''}`} id="page-selection">
           <SelectionPage />
         </div>
-        <div className={`page ${currentPage === 'lacunes' ? 'active' : ''}`} id="page-lacunes">
+        <div className={`page ${currentPage === 'flashcard' ? 'active' : ''}`} id="page-flashcard">
+          <FlashcardPage />
+        </div>
+        <div className={`page ${currentPage === 'lacunes'   ? 'active' : ''}`} id="page-lacunes">
           <LacunesPage />
         </div>
-        <div className={`page ${currentPage === 'recitation' ? 'active' : ''}`} id="page-recitation">
+        <div className={`page ${currentPage === 'recitation'? 'active' : ''}`} id="page-recitation">
           <RecitationPage />
         </div>
       </div>
 
       <PlayerBar />
+      <BottomNav />
     </AppContext.Provider>
   );
 }
