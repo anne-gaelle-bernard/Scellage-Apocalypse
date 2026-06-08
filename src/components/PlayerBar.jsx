@@ -89,6 +89,8 @@ export default function PlayerBar() {
           {current.index + 1}<span>/{current.total}</span>
         </div>
       )}
+
+      <button className="player-close" onClick={stop} title="Fermer">✕</button>
     </div>
   );
 }
