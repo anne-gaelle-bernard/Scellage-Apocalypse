@@ -3,25 +3,14 @@ import { useApp } from '../App';
 import VoiceSelector from './VoiceSelector';
 import InstallPrompt from './InstallPrompt';
 
-const PAGE_TITLES = {
-  home: 'Apocalypse — LSG 1910',
-  selection: 'Mes versets — LSG',
-  lacunes: 'Texte à trou — LSG',
-  recitation: 'Récitation — LSG',
-};
-
 export default function Topbar() {
-  const { currentPage, currentChapter, navigate, toggleSidebar, selectedVerses } = useApp();
+  const { navigate, toggleSidebar, selectedVerses } = useApp();
   const selCount = Object.keys(selectedVerses).length;
-
-  const title = currentPage === 'lecture'
-    ? `Chapitre ${currentChapter} — LSG`
-    : PAGE_TITLES[currentPage] || 'Apocalypse — LSG';
 
   return (
     <div id="topbar">
       <button id="menu-toggle" onClick={toggleSidebar}>&#9776;</button>
-      <div id="topbar-title">{title}</div>
+      <div id="topbar-title">L'Apocalypse — LSG 1910</div>
       <VoiceSelector />
       <InstallPrompt />
       <div id="topbar-badge-wrap">
