@@ -1326,6 +1326,64 @@ body.player-open .page { padding-bottom: 140px; }
 }
 
 /* ════════════════════════════════════════════════════
+   FLASHCARD FULLSCREEN (mobile only, during session)
+════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  body.fc-playing #page-flashcard {
+    position: fixed;
+    left: 0; right: 0;
+    top: var(--topbar);
+    bottom: calc(var(--bottomnav) + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    z-index: 50;
+  }
+  body.player-open.fc-playing #page-flashcard {
+    bottom: calc(72px + var(--bottomnav) + env(safe-area-inset-bottom, 0px));
+  }
+
+  body.fc-playing .fc-header {
+    flex-shrink: 0;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  body.fc-playing .fc-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px 16px;
+    gap: 12px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* Card stretches to fill remaining space */
+  body.fc-playing .fc-card-wrapper {
+    flex: 1;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+  body.fc-playing .fc-card-inner {
+    height: 100%;
+  }
+
+  /* Actions and hint pinned at bottom */
+  body.fc-playing .fc-actions {
+    flex-shrink: 0;
+  }
+  body.fc-playing .fc-hint-text {
+    flex-shrink: 0;
+    margin: 0;
+    padding-bottom: 4px;
+  }
+}
+
+/* ════════════════════════════════════════════════════
    RESPONSIVE — SMALL PHONE (≤ 390px)
 ════════════════════════════════════════════════════ */
 @media (max-width: 390px) {
