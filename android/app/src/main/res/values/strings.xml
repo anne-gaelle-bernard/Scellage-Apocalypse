@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Apocalypse</string>
+    <string name="title_activity_main">Apocalypse</string>
+    <string name="package_name">com.apocalypse.lsg</string>
+    <string name="custom_url_scheme">com.apocalypse.lsg</string>
+</resources>
