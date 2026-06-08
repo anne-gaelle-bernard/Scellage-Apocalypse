@@ -903,6 +903,53 @@ body {
 .reveal-btn:hover { border-color: var(--k-400); color: var(--k-500); background: var(--k-50); }
 
 /* ════════════════════════════════════════════════════
+   INSTALL BUTTON + iOS MODAL
+════════════════════════════════════════════════════ */
+.install-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: linear-gradient(135deg, var(--p-500), var(--k-400));
+  color: #fff; border: none; border-radius: 20px;
+  padding: 6px 13px; font-size: 12px; font-weight: 700;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  flex-shrink: 0; white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(124,58,237,.30);
+  transition: opacity .15s, transform .15s;
+}
+.install-btn:hover { opacity: .88; transform: translateY(-1px); }
+.install-btn-icon { font-size: 13px; }
+
+.install-ios-overlay {
+  position: fixed; inset: 0; background: rgba(30,10,60,.45);
+  backdrop-filter: blur(4px); z-index: 9000;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.install-ios-modal {
+  position: relative; background: var(--surface);
+  border-radius: 24px 24px 0 0; width: 100%; max-width: 480px;
+  padding: 32px 28px 40px; box-shadow: var(--e3);
+}
+.install-ios-close {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--base); border: none; width: 30px; height: 30px;
+  border-radius: 50%; cursor: pointer; font-size: 13px; color: var(--ink-2);
+}
+.install-ios-icon { font-size: 40px; margin-bottom: 8px; }
+.install-ios-modal h3 {
+  font-family: 'Cormorant Garamond', serif; font-size: 22px;
+  color: var(--ink-1); margin: 0 0 16px;
+}
+.install-ios-steps {
+  padding-left: 20px; margin: 0 0 14px; display: flex; flex-direction: column; gap: 10px;
+}
+.install-ios-steps li { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+.install-ios-share {
+  display: inline-block; background: var(--p-100); color: var(--action);
+  border-radius: 4px; padding: 1px 5px; font-size: 13px; font-weight: 700;
+}
+.install-ios-note { font-size: 12px; color: var(--ink-3); margin: 0; font-style: italic; }
+
+/* ════════════════════════════════════════════════════
    VOICE SELECTOR
 ════════════════════════════════════════════════════ */
 .voice-selector { position: relative; flex-shrink: 0; }

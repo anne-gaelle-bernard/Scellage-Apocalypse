@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../App';
 import VoiceSelector from './VoiceSelector';
+import InstallPrompt from './InstallPrompt';
 
 const PAGE_TITLES = {
   home: 'Apocalypse — LSG 1910',
@@ -22,6 +23,7 @@ export default function Topbar() {
       <button id="menu-toggle" onClick={toggleSidebar}>&#9776;</button>
       <div id="topbar-title">{title}</div>
       <VoiceSelector />
+      <InstallPrompt />
       <div id="topbar-badge-wrap">
         {selCount > 0 && (
           <span
