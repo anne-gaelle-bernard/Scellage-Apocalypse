@@ -57,7 +57,7 @@ export default function SelectionPage() {
         const ch = APOCALYPSE_LSG.chapitres[chNum - 1];
         return (
           <div key={chNum}>
-            <div className="sel-group-title">Chapitre {chNum} — {ch ? ch.titre : ''}</div>
+            <div className="sel-group-title">Ap {chNum}</div>
             {byChap[chNum].sort((a, b) => a.verse - b.verse).map(item => {
               const hlColor = highlightColors[item.key] || null;
               return (

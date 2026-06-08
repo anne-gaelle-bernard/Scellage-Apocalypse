@@ -1264,18 +1264,32 @@ body.player-open .page { padding-bottom: 140px; }
   .legend-swipe { display: none; }
   .verse-legend { font-size: 10px; gap: 8px; padding: 6px 10px; }
 
-  /* Verse rows — bigger tap targets, always-visible audio btn */
+  /* Verse rows */
   .verse-row {
-    grid-template-columns: 30px 28px 24px 1fr;
+    grid-template-columns: 28px 26px 22px 1fr;
     padding: 10px 8px 10px 4px;
     gap: 0 5px;
   }
   .verse-audio-btn { opacity: .55; }
-  .verse-colors { display: none; }
-  .verse-text { font-size: 16px; line-height: 1.9; }
+  .verse-text { font-size: 16px; line-height: 1.85; }
   .vc-box { width: 22px; height: 22px; border-radius: 7px; }
   .verse-check:has(.vc-input:checked) .vc-box::after { font-size: 12px; }
   .chapter-nav { margin-top: 32px; padding-top: 16px; }
+
+  /* Color dots: always visible, second row below verse text */
+  .verse-colors {
+    display: flex;
+    grid-column: 2 / -1;
+    grid-row: 2;
+    opacity: 1;
+    gap: 8px;
+    padding: 8px 0 4px;
+    align-items: center;
+  }
+  .color-dot { width: 26px; height: 26px; border-width: 2px; }
+  .color-dot.erase { width: 26px; height: 26px; font-size: 9px; }
+  /* Hover not needed on mobile — show active state clearly */
+  .color-dot.active { transform: scale(1.25); box-shadow: 0 0 0 3px currentColor; }
 
   /* Selection */
   .sel-verse-row { padding: 12px 12px; gap: 10px; }
@@ -1326,10 +1340,11 @@ body.player-open .page { padding-bottom: 140px; }
 }
 
 /* ════════════════════════════════════════════════════
-   FLASHCARD FULLSCREEN (mobile only, during session)
+   FLASHCARD — PLEIN ÉCRAN MOBILE (toutes les vues)
 ════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  body.fc-playing #page-flashcard {
+  /* Toujours fixer la page flashcard entre topbar et bottom nav */
+  #page-flashcard.active {
     position: fixed;
     left: 0; right: 0;
     top: var(--topbar);
@@ -1337,18 +1352,29 @@ body.player-open .page { padding-bottom: 140px; }
     display: flex;
     flex-direction: column;
     padding: 0;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     z-index: 50;
+    background: var(--bg);
   }
-  body.player-open.fc-playing #page-flashcard {
+  body.player-open #page-flashcard.active {
     bottom: calc(72px + var(--bottomnav) + env(safe-area-inset-bottom, 0px));
   }
+
+  /* Setup + résultats : padding interne */
+  #page-flashcard .page-title { padding: 24px 20px 0; }
+  #page-flashcard .page-intro { padding: 4px 20px 0; }
+  #page-flashcard .empty-msg  { padding: 20px; }
+  #page-flashcard .fc-setup   { padding: 16px 20px 40px; }
+  #page-flashcard .fc-result  { margin: 20px; }
+
+  /* ── SESSION ACTIVE : card plein écran ── */
+  body.fc-playing #page-flashcard.active { overflow: hidden; }
 
   body.fc-playing .fc-header {
     flex-shrink: 0;
     padding: 14px 16px 10px;
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
+    border-bottom: 1.5px solid var(--line);
   }
 
   body.fc-playing .fc-stage {
@@ -1356,31 +1382,23 @@ body.player-open .page { padding-bottom: 140px; }
     display: flex;
     flex-direction: column;
     padding: 12px 16px 16px;
-    gap: 12px;
+    gap: 14px;
     overflow: hidden;
     min-height: 0;
   }
 
-  /* Card stretches to fill remaining space */
+  /* Carte = tout l'espace libre */
   body.fc-playing .fc-card-wrapper {
     flex: 1;
     max-width: 100%;
     height: auto;
     min-height: 0;
   }
-  body.fc-playing .fc-card-inner {
-    height: 100%;
-  }
+  body.fc-playing .fc-card-inner { height: 100%; }
 
-  /* Actions and hint pinned at bottom */
-  body.fc-playing .fc-actions {
-    flex-shrink: 0;
-  }
-  body.fc-playing .fc-hint-text {
-    flex-shrink: 0;
-    margin: 0;
-    padding-bottom: 4px;
-  }
+  /* Boutons et indice ancrés en bas */
+  body.fc-playing .fc-actions   { flex-shrink: 0; }
+  body.fc-playing .fc-hint-text { flex-shrink: 0; margin: 0; padding-bottom: 4px; }
 }
 
 /* ════════════════════════════════════════════════════
