@@ -1090,6 +1090,14 @@ body {
   flex-shrink: 0; line-height: 1;
 }
 .player-counter span { font-size: 15px; color: var(--n-400); -webkit-text-fill-color: var(--n-400); }
+.player-close {
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,.55); font-size: 16px; line-height: 1;
+  padding: 4px 6px; border-radius: 50%;
+  transition: color .15s, background .15s;
+}
+.player-close:hover { color: #fff; background: rgba(255,255,255,.12); }
 
 body.player-open .page { padding-bottom: 140px; }
 
