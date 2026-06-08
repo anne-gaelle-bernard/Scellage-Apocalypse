@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useApp } from '../App';
 
 function shuffle(arr) {
@@ -20,6 +20,13 @@ export default function FlashcardPage() {
   const [flipped, setFlipped] = useState(false);
   const [scores, setScores] = useState({}); // key → 'good' | 'again'
   const [done, setDone] = useState(false);
+
+  // Fullscreen mode on mobile when a session is active
+  useEffect(() => {
+    const playing = deck !== null && !done;
+    document.body.classList.toggle('fc-playing', playing);
+    return () => document.body.classList.remove('fc-playing');
+  }, [deck, done]);
 
   const allCards = useMemo(() => (
     Object.values(selectedVerses)
