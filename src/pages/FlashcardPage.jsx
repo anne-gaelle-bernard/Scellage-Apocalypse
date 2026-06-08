@@ -181,19 +181,18 @@ export default function FlashcardPage() {
       </div>
 
       <div className="fc-stage">
-        <div
-          className={`fc-card ${flipped ? 'flipped' : ''}`}
-          onClick={() => setFlipped(f => !f)}
-        >
-          <div className="fc-face fc-front">
-            <span className="fc-face-label">{front.top}</span>
-            <div className="fc-face-main">{front.main}</div>
-            <span className="fc-tap-hint">Appuyer pour révéler ↓</span>
-          </div>
-          <div className="fc-face fc-back">
-            <span className="fc-face-label">{back.top}</span>
-            <div className="fc-face-main">{back.main}</div>
-            {back.sub && <div className="fc-face-sub">{back.sub}</div>}
+        <div className="fc-card-wrapper" onClick={() => setFlipped(f => !f)}>
+          <div className={`fc-card-inner ${flipped ? 'flipped' : ''}`}>
+            <div className="fc-face fc-front">
+              <span className="fc-face-label">{front.top}</span>
+              <div className="fc-face-main">{front.main}</div>
+              <span className="fc-tap-hint">Appuyer pour révéler ↓</span>
+            </div>
+            <div className="fc-face fc-back">
+              <span className="fc-face-label">{back.top}</span>
+              <div className="fc-face-main">{back.main}</div>
+              {back.sub && <div className="fc-face-sub">{back.sub}</div>}
+            </div>
           </div>
         </div>
 
