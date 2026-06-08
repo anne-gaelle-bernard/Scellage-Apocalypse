@@ -931,7 +931,7 @@ body {
 }
 .install-ios-close {
   position: absolute; top: 16px; right: 16px;
-  background: var(--base); border: none; width: 30px; height: 30px;
+  background: var(--n-100); border: none; width: 30px; height: 30px;
   border-radius: 50%; cursor: pointer; font-size: 13px; color: var(--ink-2);
 }
 .install-ios-icon { font-size: 40px; margin-bottom: 8px; }
@@ -1093,11 +1093,11 @@ body {
 .player-close {
   position: absolute; top: 10px; right: 12px;
   background: none; border: none; cursor: pointer;
-  color: rgba(255,255,255,.55); font-size: 16px; line-height: 1;
+  color: var(--ink-3); font-size: 16px; line-height: 1;
   padding: 4px 6px; border-radius: 50%;
   transition: color .15s, background .15s;
 }
-.player-close:hover { color: #fff; background: rgba(255,255,255,.12); }
+.player-close:hover { color: var(--red); background: var(--red-bg); }
 
 body.player-open .page { padding-bottom: 140px; }
 
@@ -1184,116 +1184,174 @@ body.player-open .page { padding-bottom: 140px; }
 @media (max-width: 768px) {
   :root { --sidebar: 260px; }
 
-  /* Sidebar slides off-screen; bottom nav takes over */
+  /* Sidebar: slides off-screen; bottom nav takes over */
   #sidebar { transform: translateX(-100%); box-shadow: none; }
   #sidebar.open { transform: translateX(0); box-shadow: var(--e5); }
-  #main { margin-left: 0; }
+  #main { margin-left: 0; width: 100%; }
   #menu-toggle { display: flex; }
   #bottom-nav { display: flex; }
 
-  /* Topbar simplified */
-  #topbar { padding: 0 14px; gap: 8px; }
-  #topbar-title { font-size: 15px; }
+  /* Bottom nav: iOS safe-area padding for home indicator */
+  #bottom-nav {
+    height: calc(var(--bottomnav) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Topbar */
+  #topbar { padding: 0 12px; gap: 6px; }
+  #topbar-title { font-size: 14px; }
   #topbar-badge-wrap { display: none; }
 
-  /* Pages: account for bottom nav (64px) + topbar */
-  .page { padding: 20px 16px 96px; max-width: 100%; }
-  body.player-open .page { padding-bottom: 160px; }
+  /* Install button: icon-only (like voice btn) */
+  .install-btn { padding: 6px 10px; }
+  .install-btn-label { display: none; }
 
-  /* Player bar sits above bottom nav */
-  #player-bar { left: 0; bottom: var(--bottomnav); padding: 0 14px; gap: 10px; height: 68px; }
-
-  /* Voice selector compact */
+  /* Voice selector: icon-only */
   .voice-btn-label { display: none; }
   .voice-btn { padding: 6px 9px; }
   .voice-dropdown { right: 0; }
 
+  /* Pages: account for bottom nav + safe area */
+  .page {
+    padding: 20px 16px;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    max-width: 100%;
+  }
+
+  /* Player bar: above bottom nav + safe area */
+  #player-bar {
+    left: 0;
+    bottom: calc(var(--bottomnav) + env(safe-area-inset-bottom, 0px));
+    padding: 0 12px;
+    gap: 8px;
+    height: 72px;
+  }
+  /* Hide ✕ close on mobile — stop button (■) already closes the bar */
+  .player-close { display: none; }
+
+  /* Page bottom padding when player is open */
+  body.player-open .page {
+    padding-bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+  }
+
   /* Page titles */
-  .page-title { font-size: 32px; }
-  .page-intro { font-size: 14px; margin-bottom: 24px; }
+  .page-title { font-size: 30px; margin-bottom: 8px; }
+  .page-intro { font-size: 14px; margin-bottom: 20px; }
 
   /* Hero */
   .hero { padding: 60px 20px 52px; min-height: auto; }
-  .hero h1 { font-size: clamp(42px, 13vw, 68px); }
-  .hero-verse { font-size: 14px; }
-  .hero-actions { gap: 10px; }
+  .hero h1 { font-size: clamp(40px, 12vw, 68px); }
+  .hero-verse { font-size: 14px; line-height: 1.85; }
+  .hero-actions { gap: 10px; flex-direction: column; align-items: center; }
+  .hero-actions .btn-gold,
+  .hero-actions .btn-outline { width: 100%; max-width: 260px; justify-content: center; }
   .hero-stats { flex-wrap: wrap; width: 100%; border-radius: var(--r4); }
-  .stat { flex: 1; min-width: 80px; padding: 14px 16px; }
-  .stat-n { font-size: 34px; }
+  .stat { flex: 1; min-width: 80px; padding: 14px 12px; }
+  .stat-n { font-size: 32px; }
   .hero-eyebrow { font-size: 8px; }
 
   /* How-to */
-  .how-to { padding: 36px 16px 52px; }
-  .how-to-header h2 { font-size: 28px; }
+  .how-to { padding: 32px 16px 48px; }
+  .how-to-header h2 { font-size: 26px; }
   .steps { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .step { padding: 18px 14px; border-radius: var(--r4); }
+  .step { padding: 16px 12px; border-radius: var(--r4); }
 
-  /* Chapter */
-  .chapter-header { padding: 22px 20px; border-radius: var(--r4); }
-  .chapter-title { font-size: 38px; }
+  /* Chapter header */
+  .chapter-header { padding: 20px 18px; border-radius: var(--r4); margin-bottom: 16px; }
+  .chapter-title { font-size: 36px; }
+  .chapter-eyebrow { font-size: 8px; }
+  .btn-listen-chapter { font-size: 10px; padding: 8px 14px; margin-top: 12px; }
   .legend-swipe { display: none; }
+  .verse-legend { font-size: 10px; gap: 8px; padding: 6px 10px; }
 
-  /* Verse rows — bigger tap targets */
+  /* Verse rows — bigger tap targets, always-visible audio btn */
   .verse-row {
-    grid-template-columns: 32px 24px 26px 1fr;
-    padding: 11px 8px 11px 6px; gap: 0 6px;
+    grid-template-columns: 30px 28px 24px 1fr;
+    padding: 10px 8px 10px 4px;
+    gap: 0 5px;
   }
+  .verse-audio-btn { opacity: .55; }
   .verse-colors { display: none; }
-  .verse-text { font-size: 16px; }
-  .verse-audio-btn { opacity: .45; }
+  .verse-text { font-size: 16px; line-height: 1.9; }
   .vc-box { width: 22px; height: 22px; border-radius: 7px; }
   .verse-check:has(.vc-input:checked) .vc-box::after { font-size: 12px; }
+  .chapter-nav { margin-top: 32px; padding-top: 16px; }
 
   /* Selection */
-  .sel-verse-row { padding: 12px 14px; }
-  .sel-text { font-size: 14.5px; }
+  .sel-verse-row { padding: 12px 12px; gap: 10px; }
+  .sel-text { font-size: 14px; }
+  .sel-ref { min-width: 52px; font-size: 10px; }
 
   /* Flashcard */
   .fc-card-wrapper { max-width: 100%; height: 260px; }
-  .fc-face { padding: 24px 20px; }
-  .fc-face-main { font-size: clamp(16px, 4.5vw, 22px); }
+  .fc-face { padding: 20px 16px; }
+  .fc-face-main { font-size: clamp(15px, 4.5vw, 22px); }
   .fc-back .fc-face-main { font-size: clamp(13px, 3.5vw, 16px); }
-  .fc-actions { gap: 12px; }
-  .fc-btn-again, .fc-btn-good { padding: 14px 14px; font-size: 13px; min-height: 56px; }
-  .fc-result { padding: 36px 24px; }
-  .fc-result-score { font-size: 64px; }
+  .fc-actions { gap: 10px; }
+  .fc-btn-again, .fc-btn-good { padding: 13px 10px; font-size: 13px; min-height: 54px; }
+  .fc-result { padding: 32px 20px; }
+  .fc-result-score { font-size: 60px; }
+  .fc-mode-btn { padding: 14px 16px; }
+  .fc-start-row { flex-direction: column; }
+  .fc-start-row .btn-primary,
+  .fc-start-row .btn-ghost { width: 100%; justify-content: center; }
 
-  /* Exercise */
-  .verse-exercise { padding: 22px 18px; font-size: 16.5px; border-radius: var(--r4); }
-  .blank-input { font-size: 16px; min-height: 36px; }
-  .exercise-actions { gap: 8px; }
+  /* Texte à trou */
+  .verse-exercise { padding: 20px 16px; font-size: 16px; border-radius: var(--r4); line-height: 2.1; }
+  .blank-input { font-size: 16px; min-height: 34px; min-width: 64px; }
+  .exercise-actions { gap: 8px; flex-wrap: wrap; }
+  .exercise-actions .btn-primary,
+  .exercise-actions .btn-ghost { flex: 1; min-width: 120px; justify-content: center; }
+  .diff-selector { gap: 8px; }
 
   /* Recitation */
-  .recitation-card { padding: 28px 22px; border-radius: var(--r4); }
-  .recitation-text { font-size: 17px; }
-  .level-btns { gap: 7px; }
-  .level-btn { min-width: 64px; padding: 11px 10px; min-height: 60px; }
+  .recitation-card { padding: 24px 18px; border-radius: var(--r4); }
+  .recitation-text { font-size: 17px; line-height: 1.95; }
+  .recap-intro { font-size: 14px; }
+  .level-btns { gap: 5px; flex-wrap: nowrap; }
+  .level-btn { flex: 1; min-width: 0; padding: 10px 4px; min-height: 58px; font-size: 8.5px; }
+  .level-icon { font-size: 16px; }
 
   /* Chapter nav */
-  .ch-nav-btn { padding: 11px 18px; font-size: 13px; }
+  .ch-nav-btn { padding: 11px 16px; font-size: 13px; }
 
-  /* Player controls bigger on mobile */
-  .player-ctrl { width: 38px; height: 38px; font-size: 12px; }
-  .player-ctrl-main { width: 48px !important; height: 48px !important; font-size: 15px !important; }
+  /* Player bar controls */
+  .player-ctrl { width: 36px; height: 36px; font-size: 11px; }
+  .player-ctrl-main { width: 46px !important; height: 46px !important; font-size: 14px !important; }
   .player-preview { display: none; }
   .player-counter { display: none; }
   .player-speed { display: none; }
-  .player-ref { font-size: 16px; }
+  .player-ref { font-size: 15px; }
+  .player-now-playing { margin-bottom: 0; }
 }
 
 /* ════════════════════════════════════════════════════
-   RESPONSIVE — SMALL PHONE
+   RESPONSIVE — SMALL PHONE (≤ 390px)
 ════════════════════════════════════════════════════ */
-@media (max-width: 420px) {
-  .hero h1 { font-size: 38px; }
+@media (max-width: 390px) {
+  #topbar { padding: 0 10px; gap: 4px; }
+  #topbar-title { font-size: 13px; }
+
+  .hero h1 { font-size: 36px; }
+  .hero-stats .stat { padding: 12px 8px; }
+  .stat-n { font-size: 28px; }
   .steps { grid-template-columns: 1fr; }
+
   .diff-selector { flex-direction: column; align-items: flex-start; }
-  .level-btns { gap: 6px; }
-  .level-btn { min-width: 58px; padding: 10px 8px; }
-  .verse-exercise { padding: 18px 14px; font-size: 15.5px; }
-  .recitation-card { padding: 20px 16px; }
-  .fc-card-wrapper { height: 240px; }
-  .fc-actions { flex-direction: column; }
-  .fc-btn-again, .fc-btn-good { min-height: 52px; }
+  .diff-btn { min-height: 48px; padding: 8px 12px; }
+
+  .level-btn { font-size: 7.5px; padding: 9px 2px; }
+  .level-icon { font-size: 14px; }
+
+  .verse-exercise { padding: 16px 12px; font-size: 15px; }
+  .recitation-card { padding: 18px 14px; }
+  .recitation-text { font-size: 16px; }
+
+  .fc-card-wrapper { height: 230px; }
+  .fc-face { padding: 16px 14px; }
+  .fc-actions { gap: 8px; flex-direction: column; }
+  .fc-btn-again, .fc-btn-good { min-height: 50px; }
+
   .btn-gold, .btn-outline, .btn-primary, .btn-light { width: 100%; justify-content: center; }
+  .page-title { font-size: 26px; }
 }
