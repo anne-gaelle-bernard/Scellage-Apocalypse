@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'],
       manifest: {
-        name: "L'Apocalypse — Louis Segond 1910",
-        short_name: 'Apocalypse',
-        description: 'Lisez, mémorisez et révisez le livre de l\'Apocalypse en LSG 1910.',
+        name: 'Scellage en cours',
+        short_name: 'Scellage',
+        description: 'Mémorisez l\'Apocalypse de Jean — Louis Segond 1910. Flashcards, récitation, texte à trou.',
         theme_color: '#7c3aed',
         background_color: '#f0ebff',
         display: 'standalone',

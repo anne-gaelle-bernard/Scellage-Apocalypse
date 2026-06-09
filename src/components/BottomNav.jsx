@@ -2,11 +2,11 @@ import React from 'react';
 import { useApp } from '../App';
 
 const TABS = [
-  { id: 'home',       icon: '⌂',  label: 'Accueil'   },
-  { id: 'lecture',    icon: '📖', label: 'Lire'       },
-  { id: 'selection',  icon: '⭐', label: 'Versets'    },
-  { id: 'flashcard',  icon: '🃏', label: 'Cartes'     },
-  { id: 'lacunes',    icon: '✏️', label: 'Exercices'  },
+  { id: 'home',       icon: '⌂',  label: 'Accueil'  },
+  { id: 'lecture',    icon: '📖', label: 'Lire'      },
+  { id: 'selection',  icon: '⭐', label: 'Versets'   },
+  { id: 'flashcard',  icon: '🃏', label: 'Cartes'    },
+  { id: 'notes',      icon: '📝', label: 'Notes'     },
 ];
 
 export default function BottomNav() {

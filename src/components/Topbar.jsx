@@ -10,7 +10,7 @@ export default function Topbar() {
   return (
     <div id="topbar">
       <button id="menu-toggle" onClick={toggleSidebar}>&#9776;</button>
-      <div id="topbar-title">L'Apocalypse — LSG 1910</div>
+      <div id="topbar-title">Scellage en cours</div>
       <VoiceSelector />
       <InstallPrompt />
       <div id="topbar-badge-wrap">
