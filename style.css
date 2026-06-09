@@ -903,6 +903,149 @@ body {
 .reveal-btn:hover { border-color: var(--k-400); color: var(--k-500); background: var(--k-50); }
 
 /* ════════════════════════════════════════════════════
+   NOTES & PLAN PAGE
+════════════════════════════════════════════════════ */
+.notes-card {
+  background: var(--surface); border: 1.5px solid var(--line);
+  border-radius: var(--r5); padding: 24px 28px;
+  margin-bottom: 20px; box-shadow: var(--e2);
+  position: relative; overflow: hidden;
+}
+.notes-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--p-400), var(--k-400), var(--g-400));
+}
+
+.notes-card-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.notes-card-icon { font-size: 20px; line-height: 1; }
+.notes-card-header h3 {
+  font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700;
+  color: var(--ink); flex: 1; margin: 0;
+}
+.notes-saved {
+  font-size: 11px; font-weight: 700; color: var(--green);
+  background: var(--green-bg); padding: 3px 10px; border-radius: var(--rpill);
+  animation: fadeUp .2s ease;
+}
+
+/* Goal row */
+.notes-goal-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: 14px; color: var(--ink-2); font-weight: 500;
+}
+.notes-goal-input {
+  width: 72px; padding: 7px 10px; border: 1.5px solid var(--line-dk);
+  border-radius: var(--r2); font-family: 'Inter', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--action);
+  background: var(--tint); text-align: center; outline: none;
+  transition: border-color var(--t-base);
+}
+.notes-goal-input:focus { border-color: var(--p-400); box-shadow: 0 0 0 3px var(--p-100); }
+.notes-date-input {
+  padding: 7px 10px; border: 1.5px solid var(--line-dk);
+  border-radius: var(--r2); font-family: 'Inter', sans-serif;
+  font-size: 13px; color: var(--ink-2); background: var(--surface);
+  outline: none; transition: border-color var(--t-base); cursor: pointer;
+}
+.notes-date-input:focus { border-color: var(--p-400); }
+.notes-days-badge {
+  font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: var(--rpill);
+  background: var(--p-100); color: var(--p-700);
+}
+.notes-days-badge.urgent  { background: var(--g-100); color: var(--g-600); }
+.notes-days-badge.overdue { background: var(--red-bg); color: var(--red); }
+
+/* Progress */
+.notes-progress-wrap { margin-top: 20px; }
+.notes-progress-bar {
+  height: 10px; background: var(--n-150); border-radius: var(--rpill); overflow: hidden;
+}
+.notes-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--p-500), var(--k-400), var(--g-400));
+  border-radius: var(--rpill);
+  transition: width .6s var(--t-slow);
+  box-shadow: 0 0 8px rgba(139,92,246,.3);
+}
+.notes-progress-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 6px; font-size: 12px; color: var(--ink-3); font-weight: 600;
+}
+.notes-pct {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700;
+  background: linear-gradient(135deg, var(--p-600), var(--k-500));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* Stats grid */
+.notes-stats-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px;
+}
+.notes-stat {
+  background: linear-gradient(135deg, var(--p-50), var(--k-50));
+  border: 1.5px solid var(--p-100); border-radius: var(--r4);
+  padding: 16px 14px; text-align: center;
+}
+.notes-stat-n {
+  display: block; font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 700; line-height: 1;
+  background: linear-gradient(135deg, var(--p-600), var(--k-500));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 4px;
+}
+.notes-stat-l { font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--ink-3); }
+
+/* Chapter tracking dots */
+.notes-chap-track {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px;
+}
+.notes-chap-pip {
+  width: 32px; height: 32px; border-radius: var(--r2);
+  background: var(--n-150); border: 1.5px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--t-bounce);
+}
+.notes-chap-pip.done {
+  background: linear-gradient(135deg, var(--p-500), var(--k-400));
+  border-color: transparent; box-shadow: 0 2px 8px rgba(109,40,217,.25);
+}
+.notes-chap-num { font-size: 9px; font-weight: 700; color: var(--ink-3); }
+.notes-chap-pip.done .notes-chap-num { color: rgba(255,255,255,.9); }
+.notes-chap-legend {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--ink-3); margin: 0;
+}
+.notes-pip-dot {
+  width: 12px; height: 12px; border-radius: var(--r1); flex-shrink: 0;
+  background: var(--n-150); border: 1px solid var(--line);
+}
+.notes-pip-dot.done {
+  background: linear-gradient(135deg, var(--p-500), var(--k-400)); border-color: transparent;
+}
+
+/* Textarea */
+.notes-textarea {
+  width: 100%; padding: 14px 16px; resize: vertical; min-height: 180px;
+  border: 1.5px solid var(--line-dk); border-radius: var(--r4);
+  font-family: 'Lora', serif; font-size: 15px; line-height: 1.85; color: var(--ink);
+  background: var(--n-50); outline: none;
+  transition: border-color var(--t-base), box-shadow var(--t-base);
+}
+.notes-textarea:focus { border-color: var(--p-300); box-shadow: 0 0 0 3px var(--p-100); background: #fff; }
+.notes-textarea::placeholder { color: var(--n-400); font-style: italic; }
+
+@media (max-width: 768px) {
+  .notes-card { padding: 20px 18px; }
+  .notes-stats-grid { gap: 8px; }
+  .notes-stat { padding: 14px 10px; }
+  .notes-stat-n { font-size: 30px; }
+  .notes-chap-pip { width: 28px; height: 28px; }
+  .notes-chap-num { font-size: 8px; }
+}
+
+/* ════════════════════════════════════════════════════
    INSTALL BUTTON + iOS MODAL
 ════════════════════════════════════════════════════ */
 .install-btn {

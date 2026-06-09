@@ -12,9 +12,9 @@ export default function Sidebar() {
   return (
     <nav id="sidebar" className={sidebarOpen ? 'open' : ''}>
       <div id="sidebar-header">
-        <div id="sidebar-logo">Louis Segond 1910</div>
+        <div id="sidebar-logo">L'Apocalypse · LSG 1910</div>
         <div id="sidebar-title">
-          L'Apocalypse<br /><span>de Jean</span>
+          Scellage<br /><span>en cours</span>
         </div>
       </div>
 
@@ -73,6 +73,16 @@ export default function Sidebar() {
           onClick={() => navigate('recitation')}
         >
           <span className="nav-icon">&#9651;</span> Récitation
+        </div>
+
+        <div className="nav-divider" />
+        <div className="nav-section-label">Suivi</div>
+
+        <div
+          className={`nav-item ${isActive('notes') ? 'active' : ''}`}
+          onClick={() => navigate('notes')}
+        >
+          <span className="nav-icon">📝</span> Notes &amp; Plan
         </div>
       </div>
     </nav>
