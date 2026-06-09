@@ -50,94 +50,98 @@ export default function NotesPage() {
     <>
       <div className="page-title">Notes &amp; Plan</div>
 
-      {/* Objectif */}
-      <div className="notes-card">
-        <div className="notes-card-header">
-          <span className="notes-card-icon"><Target size={16} strokeWidth={2} /></span>
-          <h3>Mon objectif</h3>
-        </div>
+      {/* Top two cards side-by-side on desktop */}
+      <div className="notes-grid">
 
-        <div className="notes-goal-row">
-          <span>Mémoriser</span>
-          <input
-            type="number" className="notes-goal-input"
-            value={goal} min="1" max="405"
-            onChange={e => handleGoal(e.target.value)}
-          />
-          <span>versets</span>
-        </div>
+        {/* Objectif */}
+        <div className="notes-card">
+          <div className="notes-card-header">
+            <span className="notes-card-icon"><Target size={16} strokeWidth={2} /></span>
+            <h3>Mon objectif</h3>
+          </div>
 
-        <div className="notes-goal-row" style={{ marginTop: '10px' }}>
-          <span>Avant le</span>
-          <input
-            type="date" className="notes-date-input"
-            value={deadline}
-            onChange={e => handleDeadline(e.target.value)}
-          />
-          {daysLeft !== null && (
-            <span className={`notes-days-badge ${daysLeft < 0 ? 'overdue' : daysLeft <= 7 ? 'urgent' : ''}`}>
-              {daysLeft < 0
-                ? `${Math.abs(daysLeft)}j dépassé`
-                : daysLeft === 0 ? "aujourd'hui !"
-                : `${daysLeft}j restants`}
-            </span>
-          )}
-        </div>
+          <div className="notes-goal-row">
+            <span>Mémoriser</span>
+            <input
+              type="number" className="notes-goal-input"
+              value={goal} min="1" max="405"
+              onChange={e => handleGoal(e.target.value)}
+            />
+            <span>versets</span>
+          </div>
 
-        <div className="notes-progress-wrap">
-          <div className="notes-progress-bar">
-            <div className="notes-progress-fill" style={{ width: `${progress}%` }} />
+          <div className="notes-goal-row" style={{ marginTop: '10px' }}>
+            <span>Avant le</span>
+            <input
+              type="date" className="notes-date-input"
+              value={deadline}
+              onChange={e => handleDeadline(e.target.value)}
+            />
+            {daysLeft !== null && (
+              <span className={`notes-days-badge ${daysLeft < 0 ? 'overdue' : daysLeft <= 7 ? 'urgent' : ''}`}>
+                {daysLeft < 0
+                  ? `${Math.abs(daysLeft)}j dépassé`
+                  : daysLeft === 0 ? "aujourd'hui !"
+                  : `${daysLeft}j restants`}
+              </span>
+            )}
           </div>
-          <div className="notes-progress-meta">
-            <span>{selCount} / {goal} versets</span>
-            <span className="notes-pct">{progress}%</span>
-          </div>
-        </div>
-      </div>
 
-      {/* Statistiques */}
-      <div className="notes-card">
-        <div className="notes-card-header">
-          <span className="notes-card-icon"><BarChart2 size={16} strokeWidth={2} /></span>
-          <h3>Progression</h3>
-        </div>
-
-        <div className="notes-stats-grid">
-          <div className="notes-stat">
-            <span className="notes-stat-n">{selCount}</span>
-            <span className="notes-stat-l">Versets mémorisés</span>
-          </div>
-          <div className="notes-stat">
-            <span className="notes-stat-n">{hlCount}</span>
-            <span className="notes-stat-l">Versets surlignés</span>
-          </div>
-          <div className="notes-stat">
-            <span className="notes-stat-n">{chapsDone.size}</span>
-            <span className="notes-stat-l">Chapitres travaillés</span>
-          </div>
-          <div className="notes-stat">
-            <span className="notes-stat-n">{22 - chapsDone.size}</span>
-            <span className="notes-stat-l">Chapitres restants</span>
-          </div>
-        </div>
-
-        <div className="notes-chap-track">
-          {Array.from({ length: 22 }, (_, i) => i + 1).map(n => (
-            <div
-              key={n}
-              className={`notes-chap-pip ${chapsDone.has(n) ? 'done' : ''}`}
-              title={`Ap ${n}`}
-            >
-              <span className="notes-chap-num">{n}</span>
+          <div className="notes-progress-wrap">
+            <div className="notes-progress-bar">
+              <div className="notes-progress-fill" style={{ width: `${progress}%` }} />
             </div>
-          ))}
+            <div className="notes-progress-meta">
+              <span>{selCount} / {goal} versets</span>
+              <span className="notes-pct">{progress}%</span>
+            </div>
+          </div>
         </div>
-        <p className="notes-chap-legend">
-          <span className="notes-pip-dot done" /> Chapitres avec versets sélectionnés
-        </p>
+
+        {/* Statistiques */}
+        <div className="notes-card">
+          <div className="notes-card-header">
+            <span className="notes-card-icon"><BarChart2 size={16} strokeWidth={2} /></span>
+            <h3>Progression</h3>
+          </div>
+
+          <div className="notes-stats-grid">
+            <div className="notes-stat">
+              <span className="notes-stat-n">{selCount}</span>
+              <span className="notes-stat-l">Versets mémorisés</span>
+            </div>
+            <div className="notes-stat">
+              <span className="notes-stat-n">{hlCount}</span>
+              <span className="notes-stat-l">Versets surlignés</span>
+            </div>
+            <div className="notes-stat">
+              <span className="notes-stat-n">{chapsDone.size}</span>
+              <span className="notes-stat-l">Chapitres travaillés</span>
+            </div>
+            <div className="notes-stat">
+              <span className="notes-stat-n">{22 - chapsDone.size}</span>
+              <span className="notes-stat-l">Chapitres restants</span>
+            </div>
+          </div>
+
+          <div className="notes-chap-track">
+            {Array.from({ length: 22 }, (_, i) => i + 1).map(n => (
+              <div
+                key={n}
+                className={`notes-chap-pip ${chapsDone.has(n) ? 'done' : ''}`}
+                title={`Ap ${n}`}
+              >
+                <span className="notes-chap-num">{n}</span>
+              </div>
+            ))}
+          </div>
+          <p className="notes-chap-legend">
+            <span className="notes-pip-dot done" /> Chapitres avec versets sélectionnés
+          </p>
+        </div>
       </div>
 
-      {/* Notes libres */}
+      {/* Notes libres — full width */}
       <div className="notes-card">
         <div className="notes-card-header">
           <span className="notes-card-icon"><PenLine size={16} strokeWidth={2} /></span>
