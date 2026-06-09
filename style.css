@@ -213,7 +213,7 @@ body {
 /* ════════════════════════════════════════════════════
    PAGE CONTAINER
 ════════════════════════════════════════════════════ */
-.page { display: none; padding: 44px 52px 100px; max-width: 860px; }
+.page { display: none; padding: 44px 52px 100px; max-width: 860px; width: 100%; margin-left: auto; margin-right: auto; }
 .page.active { display: block; animation: fadeUp .28s cubic-bezier(.16,1,.3,1); }
 
 @keyframes fadeUp {
@@ -1310,8 +1310,8 @@ body.player-open .page { padding-bottom: 140px; }
    RESPONSIVE — DESKTOP WIDE
 ════════════════════════════════════════════════════ */
 @media (min-width: 1400px) {
-  .page { max-width: 920px; padding: 48px 64px 100px; }
-  #page-lecture { max-width: 860px; }
+  .page { max-width: 960px; padding: 48px 64px 100px; }
+  #page-lecture { max-width: 900px; }
   .verse-text { font-size: 18px; }
   .recitation-text { font-size: 22px; }
 }
