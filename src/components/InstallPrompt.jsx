@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Download, Smartphone } from 'lucide-react';
 
-// Detects iOS Safari (no beforeinstallprompt support)
 function isIOS() {
   return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
 }
-// Already installed as standalone
 function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches
       || window.navigator.standalone === true;
@@ -41,7 +40,7 @@ export default function InstallPrompt() {
   return (
     <>
       <button className="install-btn" onClick={handleInstall} title="Installer l'application">
-        <span className="install-btn-icon">⬇</span>
+        <span className="install-btn-icon"><Download size={13} strokeWidth={2.5} /></span>
         <span className="install-btn-label">Installer</span>
       </button>
 
@@ -49,7 +48,7 @@ export default function InstallPrompt() {
         <div className="install-ios-overlay" onClick={() => setShowIOS(false)}>
           <div className="install-ios-modal" onClick={e => e.stopPropagation()}>
             <button className="install-ios-close" onClick={() => setShowIOS(false)}>✕</button>
-            <div className="install-ios-icon">📱</div>
+            <div className="install-ios-icon"><Smartphone size={40} strokeWidth={1.5} /></div>
             <h3>Installer sur iPhone / iPad</h3>
             <ol className="install-ios-steps">
               <li>Appuyez sur <strong>Partager</strong> <span className="install-ios-share">⎋</span> en bas de Safari</li>

@@ -158,7 +158,10 @@ body {
   border-radius: 0 3px 3px 0;
 }
 
-.nav-icon { width: 18px; flex-shrink: 0; text-align: center; font-size: 12px; }
+.nav-icon {
+  width: 18px; height: 18px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
 .nav-divider { height: 1px; background: var(--line); margin: 6px 16px; }
 
 .badge {
@@ -191,10 +194,10 @@ body {
 #topbar-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px; font-weight: 700;
-  background: linear-gradient(135deg, var(--p-600), var(--k-500));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; flex: 1; min-width: 0;
+  color: var(--p-700);
+  flex: 1; min-width: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: -.01em;
 }
 
 #menu-toggle {
@@ -229,21 +232,16 @@ body {
   align-items: center; justify-content: center;
   text-align: center; padding: 88px 40px 72px;
   position: relative; overflow: hidden;
-  background: linear-gradient(160deg, #f0ebff 0%, #fce7f3 35%, #fff8ec 65%, #fef3c7 100%);
+  background: var(--n-50);
 }
 .hero::before {
   content: ''; position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 55% 55% at 10% 15%, rgba(167,139,250,.22) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 45% at 90% 80%, rgba(249,168,212,.20)  0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 55% 50%, rgba(251,191,36,.08)   0%, transparent 55%);
+    radial-gradient(ellipse 70% 50% at 50% 0%, var(--p-100) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 90% 90%, var(--k-100) 0%, transparent 60%);
   pointer-events: none;
 }
-.hero::after {
-  content: ''; position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(109,40,217,.04) 1px, transparent 1px);
-  background-size: 28px 28px; pointer-events: none;
-}
+.hero::after { display: none; }
 .hero > * { position: relative; z-index: 1; }
 
 .hero-eyebrow {
@@ -270,14 +268,11 @@ body {
 }
 
 .hero-ornament {
-  display: flex; align-items: center; gap: 12px;
-  margin: 28px auto; color: var(--p-300); font-size: 12px;
+  width: 48px; height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--p-300), transparent);
+  margin: 28px auto;
 }
-.hero-ornament::before, .hero-ornament::after {
-  content: ''; flex: 1; max-width: 70px; height: 1.5px;
-  background: linear-gradient(90deg, transparent, var(--p-200));
-}
-.hero-ornament::after { transform: scaleX(-1); }
+.hero-ornament::before, .hero-ornament::after { display: none; }
 
 .hero-verse {
   font-family: 'Lora', serif; font-size: 15px; font-style: italic;
@@ -352,8 +347,8 @@ body {
   box-shadow: 0 4px 18px rgba(109,40,217,.25);
   transition: all var(--t-bounce); min-height: 44px;
 }
-.btn-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 28px rgba(109,40,217,.35); }
-.btn-gold:active { transform: scale(.97); }
+.btn-gold:hover { filter: brightness(1.07); box-shadow: 0 6px 20px rgba(109,40,217,.28); }
+.btn-gold:active { transform: scale(.98); }
 
 .btn-outline {
   display: inline-flex; align-items: center; gap: 8px;
@@ -375,8 +370,8 @@ body {
   box-shadow: 0 3px 12px rgba(109,40,217,.22);
   transition: all var(--t-bounce); min-height: 44px;
 }
-.btn-primary:hover, .btn-light:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(109,40,217,.32); filter: brightness(1.06); }
-.btn-primary:active, .btn-light:active { transform: scale(.97); }
+.btn-primary:hover, .btn-light:hover { filter: brightness(1.07); box-shadow: 0 4px 14px rgba(109,40,217,.28); }
+.btn-primary:active, .btn-light:active { transform: scale(.98); }
 
 .btn-ghost {
   display: inline-flex; align-items: center; gap: 7px;
@@ -859,8 +854,11 @@ body {
   cursor: pointer; border-radius: var(--r4);
   transition: all var(--t-bounce); min-width: 76px; box-shadow: var(--e2); min-height: 64px;
 }
-.level-icon { font-size: 18px; margin-bottom: 2px; }
-.level-btn:hover { border-color: var(--p-300); color: var(--action); transform: translateY(-3px); box-shadow: var(--e3); }
+.level-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; margin-bottom: 2px;
+}
+.level-btn:hover { border-color: var(--p-300); color: var(--action); box-shadow: var(--e2); }
 .level-btn.active {
   border-color: transparent;
   background: linear-gradient(135deg, var(--p-500), var(--k-400));
@@ -919,7 +917,12 @@ body {
 .notes-card-header {
   display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
 }
-.notes-card-icon { font-size: 20px; line-height: 1; }
+.notes-card-icon {
+  width: 30px; height: 30px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--tint); border-radius: var(--r1);
+  color: var(--action);
+}
 .notes-card-header h3 {
   font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700;
   color: var(--ink); flex: 1; margin: 0;
@@ -1059,7 +1062,7 @@ body {
   transition: opacity .15s, transform .15s;
 }
 .install-btn:hover { opacity: .88; transform: translateY(-1px); }
-.install-btn-icon { font-size: 13px; }
+.install-btn-icon { display: flex; align-items: center; justify-content: center; }
 
 .install-ios-overlay {
   position: fixed; inset: 0; background: rgba(30,10,60,.45);
@@ -1077,7 +1080,10 @@ body {
   background: var(--n-100); border: none; width: 30px; height: 30px;
   border-radius: 50%; cursor: pointer; font-size: 13px; color: var(--ink-2);
 }
-.install-ios-icon { font-size: 40px; margin-bottom: 8px; }
+.install-ios-icon {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--action); margin: 0 auto 12px;
+}
 .install-ios-modal h3 {
   font-family: 'Cormorant Garamond', serif; font-size: 22px;
   color: var(--ink-1); margin: 0 0 16px;
@@ -1107,9 +1113,9 @@ body {
   min-height: 36px;
 }
 .voice-btn:hover, .voice-btn.open { border-color: var(--p-300); color: var(--action); background: var(--tint); box-shadow: var(--e2); }
-.voice-btn-icon { font-size: 13px; line-height: 1; }
+.voice-btn-icon { display: flex; align-items: center; justify-content: center; }
 .voice-btn-label { max-width: 88px; overflow: hidden; text-overflow: ellipsis; }
-.voice-btn-arrow { font-size: 7px; opacity: .5; }
+.voice-btn-arrow { display: flex; align-items: center; justify-content: center; opacity: .55; }
 
 .voice-dropdown {
   position: absolute; top: calc(100% + 8px); right: 0;
@@ -1267,7 +1273,11 @@ body.player-open .page { padding-bottom: 140px; }
   padding: 4px 2px; transition: color var(--t-base); position: relative;
   -webkit-tap-highlight-color: transparent;
 }
-.bottom-tab-icon { font-size: 20px; line-height: 1; transition: transform var(--t-bounce); }
+.bottom-tab-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  transition: transform var(--t-bounce);
+}
 .bottom-tab-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; }
 .bottom-tab.active { color: var(--action); }
 .bottom-tab.active .bottom-tab-icon { transform: scale(1.15) translateY(-1px); }
@@ -1467,7 +1477,6 @@ body.player-open .page { padding-bottom: 140px; }
   .recap-intro { font-size: 14px; }
   .level-btns { gap: 5px; flex-wrap: nowrap; }
   .level-btn { flex: 1; min-width: 0; padding: 10px 4px; min-height: 58px; font-size: 8.5px; }
-  .level-icon { font-size: 16px; }
 
   /* Chapter nav */
   .ch-nav-btn { padding: 11px 16px; font-size: 13px; }
@@ -1560,7 +1569,6 @@ body.player-open .page { padding-bottom: 140px; }
   .diff-btn { min-height: 48px; padding: 8px 12px; }
 
   .level-btn { font-size: 7.5px; padding: 9px 2px; }
-  .level-icon { font-size: 14px; }
 
   .verse-exercise { padding: 16px 12px; font-size: 15px; }
   .recitation-card { padding: 18px 14px; }

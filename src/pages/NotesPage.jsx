@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../App';
+import { Target, BarChart2, PenLine } from 'lucide-react';
 
 function daysUntil(dateStr) {
   if (!dateStr) return null;
@@ -15,7 +16,6 @@ export default function NotesPage() {
   const [deadline, setDeadline] = useState(() => localStorage.getItem('apoc_deadline') || '');
   const [saved,    setSaved]    = useState(false);
 
-  // Debounced auto-save for notes
   useEffect(() => {
     const t = setTimeout(() => {
       localStorage.setItem('apoc_notes', notes);
@@ -50,10 +50,10 @@ export default function NotesPage() {
     <>
       <div className="page-title">Notes &amp; Plan</div>
 
-      {/* ── Objectif ── */}
+      {/* Objectif */}
       <div className="notes-card">
         <div className="notes-card-header">
-          <span className="notes-card-icon">🎯</span>
+          <span className="notes-card-icon"><Target size={16} strokeWidth={2} /></span>
           <h3>Mon objectif</h3>
         </div>
 
@@ -86,10 +86,7 @@ export default function NotesPage() {
 
         <div className="notes-progress-wrap">
           <div className="notes-progress-bar">
-            <div
-              className="notes-progress-fill"
-              style={{ width: `${progress}%` }}
-            />
+            <div className="notes-progress-fill" style={{ width: `${progress}%` }} />
           </div>
           <div className="notes-progress-meta">
             <span>{selCount} / {goal} versets</span>
@@ -98,10 +95,10 @@ export default function NotesPage() {
         </div>
       </div>
 
-      {/* ── Statistiques ── */}
+      {/* Statistiques */}
       <div className="notes-card">
         <div className="notes-card-header">
-          <span className="notes-card-icon">📊</span>
+          <span className="notes-card-icon"><BarChart2 size={16} strokeWidth={2} /></span>
           <h3>Progression</h3>
         </div>
 
@@ -124,7 +121,6 @@ export default function NotesPage() {
           </div>
         </div>
 
-        {/* Chapter progress dots */}
         <div className="notes-chap-track">
           {Array.from({ length: 22 }, (_, i) => i + 1).map(n => (
             <div
@@ -141,12 +137,12 @@ export default function NotesPage() {
         </p>
       </div>
 
-      {/* ── Notes libres ── */}
+      {/* Notes libres */}
       <div className="notes-card">
         <div className="notes-card-header">
-          <span className="notes-card-icon">📝</span>
+          <span className="notes-card-icon"><PenLine size={16} strokeWidth={2} /></span>
           <h3>Notes personnelles</h3>
-          {saved && <span className="notes-saved">✓ Sauvegardé</span>}
+          {saved && <span className="notes-saved">Sauvegardé</span>}
         </div>
         <textarea
           className="notes-textarea"

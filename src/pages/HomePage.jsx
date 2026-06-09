@@ -21,7 +21,7 @@ export default function HomePage() {
           L'Apocalypse
           <span>de Jean</span>
         </h1>
-        <div className="hero-ornament">✦</div>
+        <div className="hero-ornament" />
         <p className="hero-verse">
           « Heureux celui qui lit et ceux qui entendent les paroles de la prophétie,
           et qui gardent les choses qui y sont écrites ! Car le temps est proche. »

@@ -1,19 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../App';
 import { maskText, firstLettersText } from '../utils/textUtils';
+import { Eye, Lightbulb, Contrast, EyeOff, Type } from 'lucide-react';
 
 const LEVELS = [
-  { n: 0, icon: '👁',  label: 'Lire',       desc: 'Texte complet' },
-  { n: 1, icon: '💡',  label: 'Indices',     desc: 'Premières lettres + tirets' },
-  { n: 2, icon: '◑',   label: 'Mi-masqué',   desc: 'La moitié des mots cachés' },
-  { n: 3, icon: '🙈',  label: 'Maîtrise',    desc: 'Tous les mots cachés' },
-  { n: 4, icon: '🔤',  label: 'Initiales',   desc: 'Seulement la première lettre' },
+  { n: 0, Icon: Eye,       label: 'Lire',       desc: 'Texte complet' },
+  { n: 1, Icon: Lightbulb, label: 'Indices',     desc: 'Premières lettres + tirets' },
+  { n: 2, Icon: Contrast,  label: 'Mi-masqué',   desc: 'La moitié des mots cachés' },
+  { n: 3, Icon: EyeOff,    label: 'Maîtrise',    desc: 'Tous les mots cachés' },
+  { n: 4, Icon: Type,      label: 'Initiales',   desc: 'Seulement la première lettre' },
 ];
 
 export default function RecitationPage() {
   const { selectedVerses, navigate } = useApp();
-  const [level, setLevel]     = useState(0);
-  const [index, setIndex]     = useState(0);
+  const [level, setLevel]       = useState(0);
+  const [index, setIndex]       = useState(0);
   const [revealed, setRevealed] = useState(false);
 
   const cards = useMemo(() => (
@@ -69,7 +70,7 @@ export default function RecitationPage() {
             onClick={() => handleSetLevel(lv.n)}
             title={lv.desc}
           >
-            <span className="level-icon">{lv.icon}</span>
+            <span className="level-icon"><lv.Icon size={16} strokeWidth={1.75} /></span>
             {lv.label}
           </button>
         ))}
@@ -87,7 +88,10 @@ export default function RecitationPage() {
 
         {level > 0 && (
           <button className="reveal-btn" onClick={() => setRevealed(r => !r)}>
-            {revealed ? '🙈 Masquer à nouveau' : '👁 Révéler le texte'}
+            {revealed
+              ? <><EyeOff size={14} strokeWidth={2} /> Masquer à nouveau</>
+              : <><Eye size={14} strokeWidth={2} /> Révéler le texte</>
+            }
           </button>
         )}
       </div>
