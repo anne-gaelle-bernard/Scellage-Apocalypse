@@ -58,6 +58,7 @@ export default function SelectionPage() {
         return (
           <div key={chNum}>
             <div className="sel-group-title">Ap {chNum}</div>
+            <div className="sel-verse-grid">
             {byChap[chNum].sort((a, b) => a.verse - b.verse).map(item => {
               const hlColor = highlightColors[item.key] || null;
               return (
@@ -79,6 +80,7 @@ export default function SelectionPage() {
                 </div>
               );
             })}
+            </div>
           </div>
         );
       })}
