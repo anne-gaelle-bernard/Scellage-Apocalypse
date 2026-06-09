@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, selectedVerses } = useApp();
@@ -25,7 +26,8 @@ export default function Sidebar() {
           className={`nav-item ${isActive('home') ? 'active' : ''}`}
           onClick={() => navigate('home')}
         >
-          <span className="nav-icon">&#9632;</span> Accueil
+          <span className="nav-icon"><Home size={14} strokeWidth={2} /></span>
+          Accueil
         </div>
 
         <div className="nav-divider" />
@@ -49,7 +51,7 @@ export default function Sidebar() {
           className={`nav-item ${isActive('selection') ? 'active' : ''}`}
           onClick={() => navigate('selection')}
         >
-          <span className="nav-icon">&#9670;</span>
+          <span className="nav-icon"><BookMarked size={14} strokeWidth={2} /></span>
           <span style={{ flex: 1 }}>Mes versets</span>
           <span className="badge">{selCount}</span>
         </div>
@@ -58,21 +60,24 @@ export default function Sidebar() {
           className={`nav-item ${isActive('flashcard') ? 'active' : ''}`}
           onClick={() => navigate('flashcard')}
         >
-          <span className="nav-icon">🃏</span> Cartes mémoire
+          <span className="nav-icon"><Layers size={14} strokeWidth={2} /></span>
+          Cartes mémoire
         </div>
 
         <div
           className={`nav-item ${isActive('lacunes') ? 'active' : ''}`}
           onClick={() => navigate('lacunes')}
         >
-          <span className="nav-icon">&#9671;</span> Texte à trou
+          <span className="nav-icon"><PenLine size={14} strokeWidth={2} /></span>
+          Texte à trou
         </div>
 
         <div
           className={`nav-item ${isActive('recitation') ? 'active' : ''}`}
           onClick={() => navigate('recitation')}
         >
-          <span className="nav-icon">&#9651;</span> Récitation
+          <span className="nav-icon"><Mic size={14} strokeWidth={2} /></span>
+          Récitation
         </div>
 
         <div className="nav-divider" />
@@ -82,7 +87,8 @@ export default function Sidebar() {
           className={`nav-item ${isActive('notes') ? 'active' : ''}`}
           onClick={() => navigate('notes')}
         >
-          <span className="nav-icon">📝</span> Notes &amp; Plan
+          <span className="nav-icon"><NotebookPen size={14} strokeWidth={2} /></span>
+          Notes &amp; Plan
         </div>
       </div>
     </nav>

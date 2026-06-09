@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useApp } from '../App';
+import { Shuffle } from 'lucide-react';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -116,7 +117,7 @@ export default function FlashcardPage() {
               Commencer dans l'ordre
             </button>
             <button className="btn-ghost" onClick={() => startDeck(true)}>
-              🔀 Mélanger
+              <Shuffle size={15} strokeWidth={2} /> Mélanger
             </button>
           </div>
         </div>

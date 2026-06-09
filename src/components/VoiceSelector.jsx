@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../App';
+import { Mic, ChevronUp, ChevronDown, Check } from 'lucide-react';
 
 export default function VoiceSelector() {
   const { voices, selectedVoiceURI, setVoice, cleanVoiceName } = useApp();
@@ -26,9 +27,11 @@ export default function VoiceSelector() {
         onClick={() => setOpen(o => !o)}
         title="Choisir une voix"
       >
-        <span className="voice-btn-icon">🎙</span>
+        <span className="voice-btn-icon"><Mic size={14} strokeWidth={2} /></span>
         <span className="voice-btn-label">{current ? cleanVoiceName(current) : 'Voix'}</span>
-        <span className="voice-btn-arrow">{open ? '▲' : '▼'}</span>
+        <span className="voice-btn-arrow">
+          {open ? <ChevronUp size={12} strokeWidth={2.5} /> : <ChevronDown size={12} strokeWidth={2.5} />}
+        </span>
       </button>
 
       {open && (
@@ -47,7 +50,7 @@ export default function VoiceSelector() {
                   {v.lang}
                   {v.localService && <span className="voice-local-badge">local</span>}
                 </span>
-                {isSelected && <span className="voice-check-icon">✓</span>}
+                {isSelected && <span className="voice-check-icon"><Check size={12} strokeWidth={2.5} /></span>}
               </button>
             );
           })}
