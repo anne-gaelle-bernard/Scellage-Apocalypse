@@ -1131,7 +1131,17 @@ body {
 .notes-textarea:focus { border-color: var(--p-300); box-shadow: 0 0 0 3px var(--p-100); background: #fff; }
 .notes-textarea::placeholder { color: var(--n-400); font-style: italic; }
 
-/* Notes personnelles card fills remaining height on desktop */
+/* Notes page: all cards grow to fill viewport height */
+#page-notes .notes-grid {
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: 1fr;
+  align-items: stretch;
+}
+#page-notes .notes-grid .notes-card {
+  display: flex;
+  flex-direction: column;
+}
 #page-notes .notes-card:last-child {
   flex: 1;
   display: flex;
@@ -1165,6 +1175,8 @@ body {
   .notes-grid { grid-template-columns: 1fr; gap: 0; margin-bottom: 0; }
   .notes-grid .notes-card { margin-bottom: 20px; }
   .notes-card { padding: 20px 18px; }
+  #page-notes .notes-grid { flex: none; grid-template-rows: auto; }
+  #page-notes .notes-grid .notes-card { display: block; }
   #page-notes .notes-card:last-child { flex: none; }
   #page-notes .notes-card:last-child .notes-textarea { flex: none; resize: vertical; min-height: 180px; }
   .notes-stats-grid { gap: 8px; }
