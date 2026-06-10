@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useApp } from '../App';
-import { Shuffle } from 'lucide-react';
+import { Shuffle, BookMarked, BookOpen } from 'lucide-react';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -99,15 +99,21 @@ export default function FlashcardPage() {
                 className={`fc-mode-btn ${mode === 'ref→text' ? 'active' : ''}`}
                 onClick={() => setMode('ref→text')}
               >
-                <span>Référence → Texte</span>
-                <small>Voir « Ap 3:20 », réciter le verset</small>
+                <div className="fc-mode-icon"><BookMarked size={36} strokeWidth={1.5} /></div>
+                <div className="fc-mode-text">
+                  <span>Référence → Texte</span>
+                  <small>On vous donne la référence (ex. Ap 3:20), vous récitez le verset de mémoire.</small>
+                </div>
               </button>
               <button
                 className={`fc-mode-btn ${mode === 'text→ref' ? 'active' : ''}`}
                 onClick={() => setMode('text→ref')}
               >
-                <span>Texte → Référence</span>
-                <small>Voir le début du verset, trouver la référence</small>
+                <div className="fc-mode-icon"><BookOpen size={36} strokeWidth={1.5} /></div>
+                <div className="fc-mode-text">
+                  <span>Texte → Référence</span>
+                  <small>On vous montre le début du verset, vous retrouvez la référence du passage.</small>
+                </div>
               </button>
             </div>
           </div>
