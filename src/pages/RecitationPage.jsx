@@ -25,7 +25,10 @@ export default function RecitationPage() {
   if (!cards.length) {
     return (
       <>
-        <div className="page-title">Récitation</div>
+        <div className="training-header">
+          <span className="training-header-eyebrow">Entraînement</span>
+          <div className="training-header-title">Récitation</div>
+        </div>
         <div className="empty-msg">
           Aucun verset sélectionné.{' '}
           <span style={{ color: 'var(--action)', cursor: 'pointer', textDecoration: 'underline' }}
@@ -57,10 +60,13 @@ export default function RecitationPage() {
 
   return (
     <>
-      <div className="page-title">Récitation</div>
-      <p className="recap-intro">
-        Masquez progressivement le texte pour tourner le verset en bouche et renforcer votre mémorisation.
-      </p>
+      <div className="training-header">
+        <span className="training-header-eyebrow">Entraînement</span>
+        <div className="training-header-title">Récitation</div>
+        <p className="training-header-sub">
+          Masquez progressivement le texte pour tourner le verset en bouche et renforcer votre mémorisation.
+        </p>
+      </div>
 
       <div className="level-btns">
         {LEVELS.map(lv => (

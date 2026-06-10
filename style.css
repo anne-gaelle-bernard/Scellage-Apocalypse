@@ -213,7 +213,7 @@ body {
 /* ════════════════════════════════════════════════════
    PAGE CONTAINER
 ════════════════════════════════════════════════════ */
-.page { display: none; padding: 44px 52px 80px; width: 100%; }
+.page { --page-pt: 44px; --page-px: 52px; display: none; padding: var(--page-pt) var(--page-px) 80px; width: 100%; }
 .page.active {
   display: flex; flex-direction: column;
   height: calc(100vh - var(--topbar));
@@ -424,6 +424,40 @@ body {
 .page-intro {
   font-family: 'Lora', serif; font-size: 15px; font-style: italic;
   color: var(--ink-2); margin-bottom: 32px; max-width: 480px; line-height: 1.85;
+}
+
+/* ════════════════════════════════════════════════════
+   TRAINING PAGE HEADER (flashcard / lacunes / recitation)
+════════════════════════════════════════════════════ */
+.training-header {
+  flex-shrink: 0;
+  margin: calc(-1 * var(--page-pt)) calc(-1 * var(--page-px)) 36px;
+  padding: var(--page-pt) var(--page-px) 32px;
+  background: linear-gradient(145deg, #4c1d95 0%, #7c3aed 55%, #db2777 100%);
+  position: relative; overflow: hidden;
+}
+.training-header::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 100% 100%, rgba(249,168,212,.25) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 40% at 5% 10%, rgba(255,255,255,.10) 0%, transparent 50%);
+  pointer-events: none;
+}
+.training-header > * { position: relative; }
+.training-header-eyebrow {
+  display: block;
+  font-size: 9px; font-weight: 800; letter-spacing: .28em; text-transform: uppercase;
+  color: rgba(255,255,255,.55); margin-bottom: 8px;
+}
+.training-header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px; font-weight: 700; letter-spacing: -.025em;
+  color: white; line-height: 1.1;
+}
+.training-header-sub {
+  margin-top: 10px;
+  font-family: 'Lora', serif; font-size: 14px; font-style: italic;
+  color: rgba(255,255,255,.65); line-height: 1.75; max-width: 520px;
 }
 
 /* ════════════════════════════════════════════════════
@@ -1480,7 +1514,7 @@ body.player-open .page { padding-bottom: 140px; }
    RESPONSIVE — DESKTOP WIDE
 ════════════════════════════════════════════════════ */
 @media (min-width: 1400px) {
-  .page { padding: 52px 72px 100px; }
+  .page { --page-pt: 52px; --page-px: 72px; padding: var(--page-pt) var(--page-px) 100px; }
   .verse-text { font-size: 18px; }
   .recitation-text { font-size: 22px; }
   .how-to { padding: 72px 72px 80px; }
@@ -1500,7 +1534,7 @@ body.player-open .page { padding-bottom: 140px; }
 ════════════════════════════════════════════════════ */
 @media (max-width: 1023px) {
   :root { --sidebar: 220px; }
-  .page { padding: 36px 36px 100px; }
+  .page { --page-pt: 36px; --page-px: 36px; padding: var(--page-pt) var(--page-px) 100px; }
   .how-to { padding: 52px 36px 64px; }
   .chapter-header { padding: 28px 30px; }
 }
@@ -1540,7 +1574,8 @@ body.player-open .page { padding-bottom: 140px; }
 
   /* Pages: account for bottom nav + safe area */
   .page {
-    padding: 20px 16px;
+    --page-pt: 20px; --page-px: 16px;
+    padding: var(--page-pt) var(--page-px);
     padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
     max-width: 100%;
   }

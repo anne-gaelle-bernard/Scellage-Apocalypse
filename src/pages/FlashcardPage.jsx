@@ -72,7 +72,10 @@ export default function FlashcardPage() {
   if (keys.length === 0) {
     return (
       <>
-        <div className="page-title">Cartes mémoire</div>
+        <div className="training-header">
+          <span className="training-header-eyebrow">Entraînement</span>
+          <div className="training-header-title">Cartes mémoire</div>
+        </div>
         <div className="empty-msg">
           Aucun verset sélectionné.{' '}
           <span style={{ color: 'var(--action)', cursor: 'pointer', textDecoration: 'underline' }}
@@ -88,8 +91,11 @@ export default function FlashcardPage() {
     const goodCount = Object.values(scores).filter(s => s === 'good').length;
     return (
       <>
-        <div className="page-title">Cartes mémoire</div>
-        <p className="page-intro">{allCards.length} versets disponibles. Choisissez votre mode.</p>
+        <div className="training-header">
+          <span className="training-header-eyebrow">Entraînement</span>
+          <div className="training-header-title">Cartes mémoire</div>
+          <p className="training-header-sub">{allCards.length} versets disponibles. Choisissez votre mode.</p>
+        </div>
 
         <div className="fc-setup">
           <div className="fc-mode-row">
@@ -138,7 +144,10 @@ export default function FlashcardPage() {
 
     return (
       <>
-        <div className="page-title">Résultats</div>
+        <div className="training-header">
+          <span className="training-header-eyebrow">Terminé</span>
+          <div className="training-header-title">Résultats</div>
+        </div>
         <div className="fc-result">
           <div className="fc-result-score">{pct}%</div>
           <div className="fc-result-label">de réussite</div>

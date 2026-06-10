@@ -3,14 +3,24 @@ import { useApp } from '../App';
 import VoiceSelector from './VoiceSelector';
 import InstallPrompt from './InstallPrompt';
 
+const PAGE_TITLES = {
+  home:       'Scellage en cours',
+  lecture:    'Lecture',
+  selection:  'Mes versets',
+  flashcard:  'Cartes mémoire',
+  lacunes:    'Texte à trou',
+  recitation: 'Récitation',
+  notes:      'Notes & Plan',
+};
+
 export default function Topbar() {
-  const { navigate, toggleSidebar, selectedVerses } = useApp();
+  const { navigate, toggleSidebar, selectedVerses, currentPage } = useApp();
   const selCount = Object.keys(selectedVerses).length;
 
   return (
     <div id="topbar">
       <button id="menu-toggle" onClick={toggleSidebar}>&#9776;</button>
-      <div id="topbar-title">Scellage en cours</div>
+      <div id="topbar-title">{PAGE_TITLES[currentPage] ?? 'Scellage en cours'}</div>
       <VoiceSelector />
       <InstallPrompt />
       <div id="topbar-badge-wrap">
