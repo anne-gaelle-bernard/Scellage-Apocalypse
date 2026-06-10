@@ -213,8 +213,13 @@ body {
 /* ════════════════════════════════════════════════════
    PAGE CONTAINER
 ════════════════════════════════════════════════════ */
-.page { display: none; padding: 44px 52px 80px; width: 100%; min-height: calc(100vh - var(--topbar)); }
-.page.active { display: flex; flex-direction: column; animation: fadeUp .28s cubic-bezier(.16,1,.3,1); }
+.page { display: none; padding: 44px 52px 80px; width: 100%; }
+.page.active {
+  display: flex; flex-direction: column;
+  height: calc(100vh - var(--topbar));
+  overflow-y: auto;
+  animation: fadeUp .28s cubic-bezier(.16,1,.3,1);
+}
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
@@ -848,7 +853,7 @@ body {
   gap: 32px;
   align-items: start;
 }
-.lacunes-sidebar { position: sticky; top: calc(var(--topbar) + 24px); }
+.lacunes-sidebar { position: sticky; top: 24px; }
 .lacunes-nav-card {
   background: var(--surface); border: 1.5px solid var(--line);
   border-radius: var(--r4); padding: 20px; box-shadow: var(--e2);
@@ -1479,6 +1484,9 @@ body.player-open .page { padding-bottom: 140px; }
     padding: 20px 16px;
     padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
     max-width: 100%;
+  }
+  .page.active {
+    height: calc(100vh - var(--topbar) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
   }
 
   /* Player bar: above bottom nav + safe area */

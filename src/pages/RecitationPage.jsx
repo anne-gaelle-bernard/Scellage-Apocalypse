@@ -43,7 +43,7 @@ export default function RecitationPage() {
     const next = Math.max(0, Math.min(cards.length - 1, index + delta));
     setIndex(next);
     setRevealed(false);
-    window.scrollTo(0, 0);
+    document.getElementById('page-recitation')?.scrollTo(0, 0);
   }
 
   function handleSetLevel(n) {

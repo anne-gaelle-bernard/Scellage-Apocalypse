@@ -93,7 +93,7 @@ export default function LacunesPage() {
   function goTo(delta) {
     const next = Math.max(0, Math.min(cards.length - 1, index + delta));
     setIndex(next); setFeedback(''); setResetKey(0);
-    window.scrollTo(0, 0);
+    document.getElementById('page-lacunes')?.scrollTo(0, 0);
   }
 
   if (!started) {

@@ -26,14 +26,18 @@ export default function App() {
   const navigate = useCallback((page) => {
     setCurrentPage(page);
     setSidebarOpen(false);
-    window.scrollTo(0, 0);
+    requestAnimationFrame(() => {
+      document.getElementById(`page-${page}`)?.scrollTo(0, 0);
+    });
   }, []);
 
   const navigateToChapter = useCallback((num) => {
     setCurrentChapter(num);
     setCurrentPage('lecture');
     setSidebarOpen(false);
-    window.scrollTo(0, 0);
+    requestAnimationFrame(() => {
+      document.getElementById('page-lecture')?.scrollTo(0, 0);
+    });
   }, []);
 
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
