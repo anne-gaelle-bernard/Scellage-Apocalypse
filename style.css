@@ -220,6 +220,8 @@ body {
   overflow-y: auto;
   animation: fadeUp .28s cubic-bezier(.16,1,.3,1);
 }
+/* Prevent flex-shrink from collapsing page children in the fixed-height scroll container */
+.page > * { flex-shrink: 0; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
@@ -1603,15 +1605,25 @@ body.player-open .page { padding-bottom: 140px; }
   .page-title { font-size: 30px; margin-bottom: 8px; }
   .page-intro { font-size: 14px; margin-bottom: 20px; }
 
-  /* Hero */
-  .hero { padding: 52px 18px 44px; min-height: auto; }
-  .hero h1 { font-size: clamp(40px, 12vw, 68px); }
-  .hero-verse { font-size: 14px; line-height: 1.85; }
-  .hero-actions { gap: 10px; flex-direction: column; align-items: center; }
+  /* Hero — compact on mobile, no flex-shrink collapse */
+  .hero { padding: 32px 18px 24px; min-height: auto; }
+  .hero h1 { font-size: clamp(36px, 10vw, 56px); line-height: .92; }
+  .hero h1 span { margin-top: 6px; }
+  .hero-eyebrow { font-size: 8px; margin-bottom: 18px; }
+  .hero-ornament { margin: 14px auto; }
+  .hero-verse { font-size: 13px; line-height: 1.75; margin-bottom: 20px; }
+  .hero-actions { gap: 8px; flex-direction: column; align-items: center; }
   .hero-actions .btn-gold,
-  .hero-actions .btn-outline { width: 100%; max-width: 260px; justify-content: center; }
-  .stat-n { font-size: 32px; }
-  .hero-eyebrow { font-size: 8px; }
+  .hero-actions .btn-outline { width: 100%; max-width: 280px; justify-content: center; }
+  .hero-stats { gap: 0; }
+  .stat { padding: 10px 14px; }
+  .stat-n { font-size: 28px; }
+  .stat-l { font-size: 9px; }
+
+  /* Training header — compact on mobile */
+  .training-header { margin-bottom: 20px; padding-bottom: 20px; }
+  .training-header-title { font-size: 30px; }
+  .training-header-sub { font-size: 13px; margin-top: 6px; line-height: 1.55; }
 
   /* How-to */
   .how-to { padding: 32px 16px 48px; }
@@ -1671,8 +1683,13 @@ body.player-open .page { padding-bottom: 140px; }
   .fc-result { padding: 32px 20px; }
   .fc-result-score { font-size: 60px; }
   .fc-mode-btns { flex-direction: column; }
-  .fc-mode-btn { padding: 18px 16px; flex: none; width: 100%; justify-content: flex-start; gap: 12px; }
-  .fc-mode-icon { width: 44px; height: 44px; }
+  .fc-mode-btn {
+    flex-direction: row; align-items: center;
+    padding: 16px 16px; flex: none; width: 100%;
+    justify-content: flex-start; gap: 14px; min-height: auto;
+  }
+  .fc-mode-icon { width: 48px; height: 48px; flex-shrink: 0; }
+  .fc-mode-text { display: flex; flex-direction: column; gap: 4px; }
   .fc-mode-btn span { font-size: 15px; }
   .fc-mode-btn small { font-size: 12px; }
   .fc-start-row { flex-direction: column; }
@@ -1701,14 +1718,17 @@ body.player-open .page { padding-bottom: 140px; }
   /* Chapter nav */
   .ch-nav-btn { padding: 11px 16px; font-size: 13px; }
 
-  /* Player bar controls */
-  .player-ctrl { width: 36px; height: 36px; font-size: 11px; }
-  .player-ctrl-main { width: 46px !important; height: 46px !important; font-size: 14px !important; }
+  /* Player bar: clean 2-column layout on mobile */
+  #player-bar { height: 76px; padding: 0 16px; gap: 12px; }
+  .player-ctrl { width: 38px; height: 38px; font-size: 12px; }
+  .player-ctrl-main { width: 48px !important; height: 48px !important; font-size: 15px !important; }
   .player-preview { display: none; }
   .player-counter { display: none; }
   .player-speed { display: none; }
-  .player-ref { font-size: 15px; }
-  .player-now-playing { margin-bottom: 0; }
+  .player-ref { font-size: 18px; line-height: 1.1; }
+  .player-now-playing { margin-bottom: 2px; }
+  .player-label { letter-spacing: .2em; }
+  .player-info { gap: 2px; }
 }
 
 /* ════════════════════════════════════════════════════
