@@ -2,6 +2,7 @@ import React from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
 import { hexToRgba } from '../utils/colors';
+import { Volume2, PenLine, Mic, BookOpen } from 'lucide-react';
 
 export default function SelectionPage() {
   const { selectedVerses, highlightColors, removeVerse, clearAll, navigate, play } = useApp();
@@ -23,7 +24,10 @@ export default function SelectionPage() {
   if (keys.length === 0) {
     return (
       <>
-        <div className="page-title">Mes versets</div>
+        <div className="training-header">
+          <span className="training-header-eyebrow">Collection</span>
+          <div className="training-header-title">Mes versets</div>
+        </div>
         <p className="page-intro">
           Aucun verset sélectionné. Parcourez les chapitres et cochez des versets pour les ajouter ici.
         </p>
@@ -44,14 +48,34 @@ export default function SelectionPage() {
 
   return (
     <>
-      <div className="page-title">Mes versets</div>
-
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '28px' }}>
-        <button className="btn-light" onClick={handlePlaySelected}>&#9654; Écouter mes versets</button>
-        <button className="btn-light" onClick={() => navigate('lacunes')}>Texte à trou</button>
-        <button className="btn-light" onClick={() => navigate('recitation')}>Récitation</button>
-        <button className="btn-ghost" onClick={handleClear}>Tout effacer</button>
+      <div className="training-header">
+        <span className="training-header-eyebrow">Collection</span>
+        <div className="training-header-title">Mes versets</div>
+        <p className="training-header-sub">
+          {keys.length} verset{keys.length > 1 ? 's' : ''} sélectionné{keys.length > 1 ? 's' : ''}. Entraînez-vous ou écoutez.
+        </p>
       </div>
+
+      <div className="sel-actions">
+        <button className="sel-action-btn" onClick={handlePlaySelected}>
+          <Volume2 size={22} strokeWidth={1.75} />
+          <span>Écouter</span>
+        </button>
+        <button className="sel-action-btn" onClick={() => navigate('flashcard')}>
+          <BookOpen size={22} strokeWidth={1.75} />
+          <span>Cartes</span>
+        </button>
+        <button className="sel-action-btn" onClick={() => navigate('lacunes')}>
+          <PenLine size={22} strokeWidth={1.75} />
+          <span>Texte à trou</span>
+        </button>
+        <button className="sel-action-btn" onClick={() => navigate('recitation')}>
+          <Mic size={22} strokeWidth={1.75} />
+          <span>Récitation</span>
+        </button>
+      </div>
+
+      <button className="btn-ghost sel-clear-btn" onClick={handleClear}>Tout effacer</button>
 
       {Object.keys(byChap).sort((a, b) => +a - +b).map(chNum => {
         const ch = APOCALYPSE_LSG.chapitres[chNum - 1];

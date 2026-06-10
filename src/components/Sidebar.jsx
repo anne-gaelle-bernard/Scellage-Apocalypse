@@ -80,9 +80,10 @@ export default function Sidebar() {
           Récitation
         </div>
 
-        <div className="nav-divider" />
-        <div className="nav-section-label">Suivi</div>
+      </div>
 
+      <div id="sidebar-footer">
+        <div className="nav-section-label">Suivi</div>
         <div
           className={`nav-item ${isActive('notes') ? 'active' : ''}`}
           onClick={() => navigate('notes')}
