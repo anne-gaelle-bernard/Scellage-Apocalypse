@@ -99,7 +99,13 @@ export default function LacunesPage() {
   if (!started) {
     return (
       <>
-        <div className="page-title">Texte à trou</div>
+        <div className="training-header">
+          <span className="training-header-eyebrow">Entraînement</span>
+          <div className="training-header-title">Texte à trou</div>
+          {keys.length > 0 && (
+            <p className="training-header-sub">Choisissez la difficulté, puis complétez les mots manquants.</p>
+          )}
+        </div>
         {keys.length === 0 ? (
           <div className="empty-msg">
             Aucun verset sélectionné.{' '}
@@ -111,9 +117,6 @@ export default function LacunesPage() {
         ) : (
           <div className="lacunes-setup">
             <div className="lacunes-setup-left">
-              <div className="lacunes-setup-header">
-                <p className="page-intro">Choisissez la difficulté, puis complétez les mots manquants.</p>
-              </div>
               <div className="diff-cards">
                 {DIFFS.map(d => (
                   <button
