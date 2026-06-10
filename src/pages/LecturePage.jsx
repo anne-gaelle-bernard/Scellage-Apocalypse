@@ -8,7 +8,7 @@ export default function LecturePage() {
   const { currentChapter, navigateToChapter, play } = useApp();
   const ch = APOCALYPSE_LSG.chapitres[currentChapter - 1];
 
-  useEffect(() => { window.scrollTo(0, 0); }, [currentChapter]);
+  useEffect(() => { document.getElementById('page-lecture')?.scrollTo(0, 0); }, [currentChapter]);
 
   const goNext = useCallback(() => {
     if (currentChapter < 22) navigateToChapter(currentChapter + 1);
