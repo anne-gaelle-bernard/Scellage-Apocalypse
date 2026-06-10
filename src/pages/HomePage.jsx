@@ -16,37 +16,42 @@ export default function HomePage() {
   return (
     <>
       <div className="hero">
-        <div className="hero-eyebrow">Texte biblique — Version Louis Segond 1910</div>
-        <h1>
-          L'Apocalypse
-          <span>de Jean</span>
-        </h1>
-        <div className="hero-ornament" />
-        <p className="hero-verse">
-          « Heureux celui qui lit et ceux qui entendent les paroles de la prophétie,
-          et qui gardent les choses qui y sont écrites ! Car le temps est proche. »
-          <em>— Apocalypse 1:3</em>
-        </p>
-        <div className="hero-actions">
-          <button className="btn-gold" onClick={() => navigateToChapter(1)}>
-            Commencer la lecture
-          </button>
-          <button className="btn-outline" onClick={() => navigate('selection')}>
-            Mes versets
-          </button>
-        </div>
-        <div className="hero-stats">
-          <div className="stat">
-            <span className="stat-n">22</span>
-            <span className="stat-l">Chapitres</span>
+        <div className="hero-inner">
+          <div className="hero-body">
+            <div className="hero-eyebrow">Texte biblique — Version Louis Segond 1910</div>
+            <h1>
+              L'Apocalypse
+              <span>de Jean</span>
+            </h1>
+            <div className="hero-ornament" />
+            <p className="hero-verse">
+              « Heureux celui qui lit et ceux qui entendent les paroles de la prophétie,
+              et qui gardent les choses qui y sont écrites ! Car le temps est proche. »
+              <em>— Apocalypse 1:3</em>
+            </p>
+            <div className="hero-actions">
+              <button className="btn-gold" onClick={() => navigateToChapter(1)}>
+                Commencer la lecture
+              </button>
+              <button className="btn-outline" onClick={() => navigate('selection')}>
+                Mes versets
+              </button>
+            </div>
           </div>
-          <div className="stat">
-            <span className="stat-n">404</span>
-            <span className="stat-l">Versets</span>
-          </div>
-          <div className="stat">
-            <span className="stat-n">{selCount}</span>
-            <span className="stat-l">Sélectionnés</span>
+
+          <div className="hero-stats">
+            <div className="stat">
+              <span className="stat-n">22</span>
+              <span className="stat-l">Chapitres</span>
+            </div>
+            <div className="stat">
+              <span className="stat-n">404</span>
+              <span className="stat-l">Versets</span>
+            </div>
+            <div className="stat">
+              <span className="stat-n">{selCount}</span>
+              <span className="stat-l">Mémorisés</span>
+            </div>
           </div>
         </div>
       </div>
