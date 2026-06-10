@@ -622,17 +622,27 @@ body {
 .fc-mode-btns { display: flex; flex-direction: row; gap: 16px; flex: 1; }
 
 .fc-mode-btn {
-  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: space-between; gap: 0;
   background: var(--surface); border: 1.5px solid var(--line-dk);
   padding: 32px 28px; border-radius: var(--r4);
-  cursor: pointer; text-align: left; flex: 1; min-height: 160px;
+  cursor: pointer; text-align: left; flex: 1; min-height: 180px;
   transition: all var(--t-bounce); box-shadow: var(--e2);
 }
-.fc-mode-btn span { font-size: 16px; font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; }
-.fc-mode-btn small { font-size: 13px; color: var(--ink-3); font-family: 'Inter', sans-serif; line-height: 1.5; }
+.fc-mode-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 60px; height: 60px; border-radius: var(--r3);
+  background: var(--tint); color: var(--p-400); flex-shrink: 0;
+  transition: all var(--t-bounce);
+}
+.fc-mode-text { display: flex; flex-direction: column; gap: 8px; }
+.fc-mode-btn span { font-size: 17px; font-weight: 700; color: var(--ink); font-family: 'Inter', sans-serif; }
+.fc-mode-btn small { font-size: 13px; color: var(--ink-3); font-family: 'Inter', sans-serif; line-height: 1.6; }
 .fc-mode-btn:hover { border-color: var(--p-300); transform: translateY(-2px); box-shadow: var(--e3); }
+.fc-mode-btn:hover .fc-mode-icon { background: var(--p-100); color: var(--p-600); }
 .fc-mode-btn.active { border-color: var(--p-400); background: linear-gradient(135deg, var(--p-50), var(--k-50)); }
 .fc-mode-btn.active span { color: var(--action); }
+.fc-mode-btn.active .fc-mode-icon { background: var(--p-100); color: var(--p-600); }
 
 .fc-start-row { display: flex; gap: 12px; flex-wrap: wrap; }
 
@@ -807,6 +817,23 @@ body {
 .diff-btn:hover { border-color: var(--p-300); color: var(--action); transform: translateY(-2px); box-shadow: var(--e3); }
 .diff-btn.active { border-color: var(--p-400); background: var(--tint); color: var(--action); box-shadow: 0 0 0 4px var(--p-100); }
 
+/* Diff cards: vertical tall cards for desktop */
+.lacunes-setup-header { margin-bottom: 4px; }
+.diff-cards { display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.diff-card {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  gap: 6px; flex: 1;
+  background: var(--surface); border: 1.5px solid var(--line-dk);
+  padding: 24px 28px; border-radius: var(--r4);
+  cursor: pointer; text-align: left;
+  transition: all var(--t-bounce); box-shadow: var(--e2);
+}
+.diff-card-label { font-size: 18px; font-weight: 700; color: var(--ink); }
+.diff-card-hint { font-size: 12px; color: var(--ink-3); font-weight: 500; letter-spacing: .03em; }
+.diff-card:hover { border-color: var(--p-300); transform: translateY(-2px); box-shadow: var(--e3); }
+.diff-card.active { border-color: var(--p-400); background: linear-gradient(135deg, var(--p-50), var(--k-50)); box-shadow: 0 0 0 4px var(--p-100); }
+.diff-card.active .diff-card-label { color: var(--action); }
+
 .exercise-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .exercise-ref {
   display: inline-flex; align-items: center; gap: 6px;
@@ -827,7 +854,7 @@ body {
   flex: 1;
 }
 .lacunes-setup-left {
-  display: flex; flex-direction: column; gap: 24px; justify-content: center;
+  display: flex; flex-direction: column; gap: 16px;
 }
 .lacunes-setup-right {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -1609,7 +1636,10 @@ body.player-open .page { padding-bottom: 140px; }
   .fc-result { padding: 32px 20px; }
   .fc-result-score { font-size: 60px; }
   .fc-mode-btns { flex-direction: column; }
-  .fc-mode-btn { padding: 14px 16px; flex: none; width: 100%; }
+  .fc-mode-btn { padding: 18px 16px; flex: none; width: 100%; justify-content: flex-start; gap: 12px; }
+  .fc-mode-icon { width: 44px; height: 44px; }
+  .fc-mode-btn span { font-size: 15px; }
+  .fc-mode-btn small { font-size: 12px; }
   .fc-start-row { flex-direction: column; }
   .fc-start-row .btn-primary,
   .fc-start-row .btn-ghost { width: 100%; justify-content: center; }
@@ -1621,6 +1651,10 @@ body.player-open .page { padding-bottom: 140px; }
   .exercise-actions .btn-primary,
   .exercise-actions .btn-ghost { flex: 1; min-width: 120px; justify-content: center; }
   .diff-selector { gap: 8px; }
+  .diff-cards { flex: none; flex-direction: row; gap: 8px; }
+  .diff-card { flex: none; padding: 12px 16px; }
+  .diff-card-label { font-size: 15px; }
+  .lacunes-setup-left { gap: 12px; }
 
   /* Recitation */
   .recitation-card { padding: 24px 18px; border-radius: var(--r4); flex: none; }

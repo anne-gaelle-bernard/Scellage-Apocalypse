@@ -111,17 +111,18 @@ export default function LacunesPage() {
         ) : (
           <div className="lacunes-setup">
             <div className="lacunes-setup-left">
-              <p className="page-intro">Choisissez la difficulté, puis complétez les mots manquants.</p>
-              <div className="diff-selector">
-                <span className="diff-label">Difficulté :</span>
+              <div className="lacunes-setup-header">
+                <p className="page-intro">Choisissez la difficulté, puis complétez les mots manquants.</p>
+              </div>
+              <div className="diff-cards">
                 {DIFFS.map(d => (
                   <button
                     key={d.id}
-                    className={`diff-btn ${diff === d.id ? 'active' : ''}`}
+                    className={`diff-card ${diff === d.id ? 'active' : ''}`}
                     onClick={() => setDiff(d.id)}
                   >
-                    {d.label}
-                    <span className="diff-hint">{d.hint}</span>
+                    <span className="diff-card-label">{d.label}</span>
+                    <span className="diff-card-hint">{d.hint}</span>
                   </button>
                 ))}
               </div>
