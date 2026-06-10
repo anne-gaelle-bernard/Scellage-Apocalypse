@@ -661,7 +661,7 @@ body {
 .fc-exit-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-bg); }
 
 /* Card stage */
-.fc-stage { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.fc-stage { display: flex; flex-direction: column; align-items: center; gap: 20px; flex: 1; justify-content: center; }
 
 .fc-card {
   width: 100%; max-width: 560px;
@@ -772,6 +772,8 @@ body {
   background: var(--surface); border: 1.5px solid var(--p-200);
   border-radius: var(--r5); padding: 48px 32px; text-align: center;
   box-shadow: var(--e4); gap: 12px;
+  flex: 1; justify-content: center;
+  max-width: 680px; width: 100%; align-self: center;
 }
 .fc-result-score {
   font-family: 'Cormorant Garamond', serif; font-size: 80px; font-weight: 700; line-height: 1;
@@ -852,6 +854,8 @@ body {
   grid-template-columns: 1fr 260px;
   gap: 32px;
   align-items: start;
+  flex: 1;
+  min-height: 0;
 }
 .lacunes-sidebar { position: sticky; top: 24px; }
 .lacunes-nav-card {
@@ -953,13 +957,14 @@ body {
   background: var(--surface); border: 1.5px solid var(--line);
   border-radius: var(--r5); padding: 40px 44px; margin-bottom: 24px;
   min-height: 160px; box-shadow: var(--e3); position: relative; overflow: hidden;
+  flex: 1; display: flex; flex-direction: column;
 }
 .recitation-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg, var(--p-400), var(--k-400), var(--g-400));
 }
 
-.recitation-text { font-family: 'Lora', serif; font-size: 20px; line-height: 2.05; color: var(--ink); margin-top: 16px; }
+.recitation-text { font-family: 'Lora', serif; font-size: 20px; line-height: 2.05; color: var(--ink); margin-top: 16px; flex: 1; overflow-y: auto; min-height: 0; }
 
 /* First-letter mode */
 .fl-word { display: inline; }
@@ -1593,6 +1598,8 @@ body.player-open .page { padding-bottom: 140px; }
   .sel-ref { min-width: 52px; font-size: 10px; }
 
   /* Flashcard */
+  .fc-result { flex: none; max-width: 100%; align-self: auto; }
+  .fc-stage { flex: none; justify-content: flex-start; }
   .fc-card-wrapper { max-width: 100%; height: 260px; }
   .fc-face { padding: 20px 16px; }
   .fc-face-main { font-size: clamp(15px, 4.5vw, 22px); }
@@ -1616,8 +1623,8 @@ body.player-open .page { padding-bottom: 140px; }
   .diff-selector { gap: 8px; }
 
   /* Recitation */
-  .recitation-card { padding: 24px 18px; border-radius: var(--r4); }
-  .recitation-text { font-size: 17px; line-height: 1.95; }
+  .recitation-card { padding: 24px 18px; border-radius: var(--r4); flex: none; }
+  .recitation-text { font-size: 17px; line-height: 1.95; flex: none; overflow-y: visible; }
   .recap-intro { font-size: 14px; }
   .level-btns { gap: 5px; flex-wrap: nowrap; }
   .level-btn { flex: 1; min-width: 0; padding: 10px 4px; min-height: 58px; font-size: 8.5px; }
