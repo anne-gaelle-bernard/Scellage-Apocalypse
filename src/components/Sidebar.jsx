@@ -43,8 +43,9 @@ export default function Sidebar() {
             Ap {ch.numero}
           </div>
         ))}
+      </div>
 
-        <div className="nav-divider" />
+      <div id="sidebar-training">
         <div className="nav-section-label">Entraînement</div>
 
         <div
@@ -79,7 +80,6 @@ export default function Sidebar() {
           <span className="nav-icon"><Mic size={14} strokeWidth={2} /></span>
           Récitation
         </div>
-
       </div>
 
       <div id="sidebar-footer">

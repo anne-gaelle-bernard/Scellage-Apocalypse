@@ -136,6 +136,12 @@ body {
   scrollbar-width: thin; scrollbar-color: var(--p-200) transparent;
 }
 
+#sidebar-training {
+  flex-shrink: 0;
+  border-top: 1.5px solid var(--line);
+  padding: 6px 0 4px;
+}
+
 #sidebar-footer {
   flex-shrink: 0;
   border-top: 1.5px solid var(--line);
@@ -1583,7 +1589,10 @@ body.player-open .page { padding-bottom: 140px; }
   :root { --sidebar: 260px; }
 
   /* Sidebar: slides off-screen; bottom nav takes over */
-  #sidebar { transform: translateX(-100%); box-shadow: none; }
+  #sidebar {
+    transform: translateX(-100%); box-shadow: none;
+    height: calc(100vh - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
+  }
   #sidebar.open { transform: translateX(0); box-shadow: var(--e5); }
   #sidebar-footer { display: none; }
   #main { margin-left: 0; width: 100%; }
