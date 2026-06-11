@@ -58,19 +58,19 @@ export default function SelectionPage() {
 
       <div className="sel-actions">
         <button className="sel-action-btn" onClick={handlePlaySelected}>
-          <Volume2 size={22} strokeWidth={1.75} />
+          <Volume2 size={24} strokeWidth={1.75} />
           <span>Écouter</span>
         </button>
         <button className="sel-action-btn" onClick={() => navigate('flashcard')}>
-          <BookOpen size={22} strokeWidth={1.75} />
+          <BookOpen size={24} strokeWidth={1.75} />
           <span>Cartes</span>
         </button>
         <button className="sel-action-btn" onClick={() => navigate('lacunes')}>
-          <PenLine size={22} strokeWidth={1.75} />
+          <PenLine size={24} strokeWidth={1.75} />
           <span>Texte à trou</span>
         </button>
         <button className="sel-action-btn" onClick={() => navigate('recitation')}>
-          <Mic size={22} strokeWidth={1.75} />
+          <Mic size={24} strokeWidth={1.75} />
           <span>Récitation</span>
         </button>
       </div>
