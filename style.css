@@ -74,6 +74,7 @@ body {
   display: flex; min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
+#root { flex: 1; min-width: 0; }
 
 ::selection { background: var(--k-200); color: var(--k-600); }
 :focus-visible { outline: 2px solid var(--action); outline-offset: 2px; border-radius: var(--r1); }
@@ -1847,7 +1848,12 @@ body.player-open .page { padding-bottom: 140px; }
     bottom: calc(72px + var(--bottomnav) + env(safe-area-inset-bottom, 0px));
   }
 
-  /* Setup + résultats : padding interne */
+  /* Setup + résultats : padding interne (page has padding:0 so training-header
+     negative margins must be reset) */
+  #page-flashcard .training-header {
+    margin: 0;
+    padding: 24px 20px 20px;
+  }
   #page-flashcard .page-title { padding: 24px 20px 0; }
   #page-flashcard .page-intro { padding: 4px 20px 0; }
   #page-flashcard .empty-msg  { padding: 20px; }
