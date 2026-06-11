@@ -1299,8 +1299,9 @@ body {
   .stat:last-child { border-right: none; }
   /* Lacunes: single column */
   .lacunes-setup { grid-template-columns: 1fr; gap: 20px; }
-  .lacunes-session { grid-template-columns: 1fr; }
+  .lacunes-session { grid-template-columns: 1fr; flex: none; gap: 16px; }
   .lacunes-sidebar { position: static; }
+  .lacunes-nav-card { padding: 14px 16px; }
   .lacunes-nav-card .exercise-nav { flex-direction: row; }
   .lacunes-nav-card .ch-nav-btn { flex: 1; }
   /* Notes */
@@ -1722,8 +1723,8 @@ body.player-open .page { padding-bottom: 140px; }
   .chapter-title { font-size: 36px; }
   .chapter-eyebrow { font-size: 8px; }
   .btn-listen-chapter { font-size: 10px; padding: 8px 14px; margin-top: 12px; }
-  .legend-swipe { display: none; }
-  .verse-legend { font-size: 10px; gap: 8px; padding: 6px 10px; }
+  .verse-legend .legend-swipe { display: none; }
+  .verse-legend { font-size: 11px; gap: 10px; padding: 8px 12px; flex-wrap: nowrap; }
 
   /* Verse rows */
   .verse-row {
@@ -1737,19 +1738,18 @@ body.player-open .page { padding-bottom: 140px; }
   .verse-check:has(.vc-input:checked) .vc-box::after { font-size: 12px; }
   .chapter-nav { margin-top: 32px; padding-top: 16px; }
 
-  /* Color dots: always visible, second row below verse text */
+  /* Color dots: second row, only shown for selected verses */
   .verse-colors {
-    display: flex;
+    display: none;
     grid-column: 2 / -1;
     grid-row: 2;
-    opacity: 1;
     gap: 8px;
-    padding: 8px 0 4px;
+    padding: 6px 0 2px;
     align-items: center;
   }
-  .color-dot { width: 26px; height: 26px; border-width: 2px; }
-  .color-dot.erase { width: 26px; height: 26px; font-size: 9px; }
-  /* Hover not needed on mobile — show active state clearly */
+  .verse-row.selected .verse-colors { display: flex; }
+  .color-dot { width: 28px; height: 28px; border-width: 2px; }
+  .color-dot.erase { width: 28px; height: 28px; font-size: 9px; }
   .color-dot.active { transform: scale(1.25); box-shadow: 0 0 0 3px currentColor; }
 
   /* Selection */
@@ -1805,8 +1805,9 @@ body.player-open .page { padding-bottom: 140px; }
   .recitation-card { padding: 24px 18px; border-radius: var(--r4); flex: none; }
   .recitation-text { font-size: 17px; line-height: 1.95; flex: none; overflow-y: visible; }
   .recap-intro { font-size: 14px; }
-  .level-btns { gap: 5px; flex-wrap: nowrap; }
-  .level-btn { flex: 1; min-width: 0; padding: 10px 4px; min-height: 58px; font-size: 8.5px; }
+  .level-btns { gap: 4px; flex-wrap: nowrap; }
+  .level-btn { flex: 1; min-width: 0; padding: 10px 4px; min-height: 62px; font-size: 9px; letter-spacing: .03em; }
+  .level-icon { width: 22px; height: 22px; }
 
   /* Chapter nav */
   .ch-nav-btn { padding: 11px 16px; font-size: 13px; }
