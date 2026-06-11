@@ -913,10 +913,10 @@ body {
 .exercise-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .exercise-ref {
   display: inline-flex; align-items: center; gap: 6px;
-  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
   background: linear-gradient(135deg, var(--p-100), var(--k-100));
-  color: var(--p-700); padding: 5px 14px; border-radius: var(--rpill);
+  color: var(--p-700); padding: 7px 18px; border-radius: var(--rpill);
   border: 1.5px solid var(--p-200);
 }
 .exercise-progress-txt { font-size: 12px; color: var(--ink-3); font-weight: 600; }
@@ -1038,17 +1038,17 @@ body {
 
 .level-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
 .level-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
   background: var(--surface); border: 1.5px solid var(--line-dk);
-  color: var(--ink-2); padding: 12px 14px;
-  font-family: 'Inter', sans-serif; font-size: 9.5px; font-weight: 700;
+  color: var(--ink-2); padding: 14px 18px;
+  font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 700;
   letter-spacing: .06em; text-transform: uppercase;
   cursor: pointer; border-radius: var(--r4);
-  transition: all var(--t-bounce); min-width: 76px; box-shadow: var(--e2); min-height: 64px;
+  transition: all var(--t-bounce); min-width: 84px; box-shadow: var(--e2); min-height: 72px;
 }
 .level-icon {
   display: flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px; margin-bottom: 2px;
+  width: 26px; height: 26px; margin-bottom: 2px;
 }
 .level-btn:hover { border-color: var(--p-300); color: var(--action); box-shadow: var(--e2); }
 .level-btn.active {
@@ -1059,16 +1059,16 @@ body {
 
 .recitation-card {
   background: var(--surface); border: 1.5px solid var(--line);
-  border-radius: var(--r5); padding: 40px 44px; margin-bottom: 24px;
-  min-height: 160px; box-shadow: var(--e3); position: relative; overflow: hidden;
-  flex: 1; display: flex; flex-direction: column;
+  border-radius: var(--r5); padding: 48px 56px; margin-bottom: 28px;
+  box-shadow: var(--e3); position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
 }
 .recitation-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
   background: linear-gradient(90deg, var(--p-400), var(--k-400), var(--g-400));
 }
 
-.recitation-text { font-family: 'Lora', serif; font-size: 20px; line-height: 2.05; color: var(--ink); margin-top: 16px; flex: 1; overflow-y: auto; min-height: 0; }
+.recitation-text { font-family: 'Lora', serif; font-size: 20px; line-height: 2.05; color: var(--ink); margin-top: 20px; overflow-wrap: break-word; word-break: break-word; }
 
 /* First-letter mode */
 .fl-word { display: inline; }
@@ -1559,7 +1559,10 @@ body.player-open .page { padding-bottom: 140px; }
 @media (min-width: 1400px) {
   .page { --page-pt: 52px; --page-px: 72px; padding: var(--page-pt) var(--page-px) 100px; }
   .verse-text { font-size: 18px; }
-  .recitation-text { font-size: 22px; }
+  .recitation-text { font-size: 23px; line-height: 2.1; }
+  .recitation-card { padding: 64px 88px; }
+  .level-btn { min-height: 80px; padding: 16px 22px; font-size: 11.5px; }
+  .level-icon { width: 28px; height: 28px; }
   .how-to { padding: 72px 72px 80px; }
   .fc-card-wrapper { max-width: 820px; height: 380px; }
   .fc-actions { max-width: 820px; }
@@ -1569,7 +1572,8 @@ body.player-open .page { padding-bottom: 140px; }
 @media (min-width: 1024px) {
   .steps { grid-template-columns: repeat(5, 1fr); }
   .level-btns { justify-content: flex-start; }
-  .recitation-card { padding: 48px 56px; }
+  .recitation-card { padding: 56px 72px; }
+  .recitation-text { font-size: 21px; line-height: 2.1; }
 }
 
 /* ════════════════════════════════════════════════════

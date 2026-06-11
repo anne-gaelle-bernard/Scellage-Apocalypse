@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useApp } from '../App';
 import { maskText, firstLettersText } from '../utils/textUtils';
 import { Eye, Lightbulb, Contrast, EyeOff, Type } from 'lucide-react';
@@ -13,14 +13,24 @@ const LEVELS = [
 
 export default function RecitationPage() {
   const { selectedVerses, navigate } = useApp();
-  const [level, setLevel]       = useState(0);
-  const [index, setIndex]       = useState(0);
-  const [revealed, setRevealed] = useState(false);
+  const [level, setLevel] = useState(0);
+  const [revealed, setRevealed] = useState({});
 
-  const cards = useMemo(() => (
-    Object.values(selectedVerses)
-      .sort((a, b) => a.chap !== b.chap ? a.chap - b.chap : a.verse - b.verse)
-  ), [selectedVerses]);
+  const cards = Object.values(selectedVerses)
+    .sort((a, b) => a.chap !== b.chap ? a.chap - b.chap : a.verse - b.verse);
+
+  function handleSetLevel(n) {
+    setLevel(n);
+    setRevealed({});
+  }
+
+  function toggleReveal(i) {
+    setRevealed(r => ({ ...r, [i]: !r[i] }));
+  }
+
+  function getMaskedHtml(card) {
+    return level === 4 ? firstLettersText(card.text) : maskText(card.text, level);
+  }
 
   if (!cards.length) {
     return (
@@ -40,24 +50,6 @@ export default function RecitationPage() {
     );
   }
 
-  const card = cards[Math.min(index, cards.length - 1)];
-
-  function goTo(delta) {
-    const next = Math.max(0, Math.min(cards.length - 1, index + delta));
-    setIndex(next);
-    setRevealed(false);
-    document.getElementById('page-recitation')?.scrollTo(0, 0);
-  }
-
-  function handleSetLevel(n) {
-    setLevel(n);
-    setRevealed(false);
-  }
-
-  const maskedHtml = !revealed && level > 0
-    ? (level === 4 ? firstLettersText(card.text) : maskText(card.text, level))
-    : null;
-
   return (
     <>
       <div className="training-header">
@@ -76,43 +68,33 @@ export default function RecitationPage() {
             onClick={() => handleSetLevel(lv.n)}
             title={lv.desc}
           >
-            <span className="level-icon"><lv.Icon size={16} strokeWidth={1.75} /></span>
+            <span className="level-icon"><lv.Icon size={20} strokeWidth={1.75} /></span>
             {lv.label}
           </button>
         ))}
       </div>
 
-      <div className="recitation-card">
-        <div className="exercise-ref">Ap {card.chap}:{card.verse}</div>
+      {cards.map((card, i) => (
+        <div key={`${card.chap}:${card.verse}`} className="recitation-card">
+          <div className="exercise-ref">Ap {card.chap}:{card.verse}</div>
 
-        <div className="recitation-text">
-          {(level === 0 || revealed)
-            ? card.text
-            : <span dangerouslySetInnerHTML={{ __html: maskedHtml }} />
-          }
-        </div>
-
-        {level > 0 && (
-          <button className="reveal-btn" onClick={() => setRevealed(r => !r)}>
-            {revealed
-              ? <><EyeOff size={14} strokeWidth={2} /> Masquer à nouveau</>
-              : <><Eye size={14} strokeWidth={2} /> Révéler le texte</>
+          <div className="recitation-text">
+            {(level === 0 || revealed[i])
+              ? card.text
+              : <span dangerouslySetInnerHTML={{ __html: getMaskedHtml(card) }} />
             }
-          </button>
-        )}
-      </div>
+          </div>
 
-      <div className="exercise-nav" style={{ marginTop: '24px' }}>
-        <button className="ch-nav-btn" disabled={index === 0} onClick={() => goTo(-1)}>
-          ← Précédent
-        </button>
-        <span style={{ color: 'var(--ink-3)', fontSize: '13px', fontStyle: 'italic' }}>
-          {index + 1} / {cards.length}
-        </span>
-        <button className="ch-nav-btn" disabled={index === cards.length - 1} onClick={() => goTo(1)}>
-          Suivant →
-        </button>
-      </div>
+          {level > 0 && (
+            <button className="reveal-btn" onClick={() => toggleReveal(i)}>
+              {revealed[i]
+                ? <><EyeOff size={14} strokeWidth={2} /> Masquer à nouveau</>
+                : <><Eye size={14} strokeWidth={2} /> Révéler le texte</>
+              }
+            </button>
+          )}
+        </div>
+      ))}
     </>
   );
 }
