@@ -18,7 +18,7 @@ export default function HomePage() {
       <div className="hero">
         <div className="hero-inner">
           <div className="hero-body">
-            <div className="hero-eyebrow">Texte biblique — Version Louis Segond 1910</div>
+            <div className="hero-eyebrow">Version Louis Segond 1910</div>
             <h1>
               L'Apocalypse
               <span>de Jean</span>
