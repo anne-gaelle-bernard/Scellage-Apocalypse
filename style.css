@@ -1638,8 +1638,12 @@ body.player-open .page { padding-bottom: 140px; }
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  /* Topbar */
-  #topbar { padding: 0 12px; gap: 6px; }
+  /* Topbar: safe area for notch / dynamic island */
+  #topbar {
+    padding: env(safe-area-inset-top, 0px) 12px 0;
+    height: calc(var(--topbar) + env(safe-area-inset-top, 0px));
+    gap: 6px;
+  }
   #topbar-title { font-size: 14px; }
   #topbar-badge-wrap { display: none; }
 
@@ -1660,7 +1664,7 @@ body.player-open .page { padding-bottom: 140px; }
     max-width: 100%;
   }
   .page.active {
-    height: calc(100vh - var(--topbar) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
+    height: calc(100vh - var(--topbar) - env(safe-area-inset-top, 0px) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
   }
 
   /* Player bar: above bottom nav + safe area */
@@ -1693,19 +1697,38 @@ body.player-open .page { padding-bottom: 140px; }
   .page-title { font-size: 30px; margin-bottom: 8px; }
   .page-intro { font-size: 14px; margin-bottom: 20px; }
 
-  /* Hero — compact on mobile, no flex-shrink collapse */
-  .hero { padding: 32px 18px 24px; min-height: auto; }
-  .hero h1 { font-size: clamp(36px, 10vw, 56px); line-height: .92; }
-  .hero h1 span { margin-top: 6px; }
-  .hero-eyebrow { font-size: 8px; margin-bottom: 18px; }
-  .hero-ornament { margin: 14px auto; }
-  .hero-verse { font-size: 13px; line-height: 1.75; margin-bottom: 20px; }
-  .hero-actions { gap: 8px; flex-direction: column; align-items: center; }
+  /* ── Home: minimal & cute on mobile ── */
+  .hero {
+    min-height: calc(100vh - var(--topbar) - env(safe-area-inset-top, 0px) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
+    padding: 40px 28px 28px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+  }
+  .hero-inner {
+    display: flex; flex-direction: column; align-items: center; gap: 0; width: 100%;
+  }
+  .hero-body { text-align: center; width: 100%; }
+  .hero-eyebrow { font-size: 9px; margin-bottom: 24px; }
+  .hero h1 { font-size: clamp(52px, 14vw, 72px); line-height: .88; }
+  .hero h1 span { font-size: .52em; margin-top: 12px; }
+  .hero-ornament { margin: 22px auto; }
+  .hero-verse { font-size: 13px; line-height: 1.85; margin-bottom: 28px; max-width: 280px; }
+  .hero-actions {
+    gap: 10px; flex-direction: column; align-items: stretch;
+    width: 100%; max-width: 280px;
+  }
   .hero-actions .btn-gold,
-  .hero-actions .btn-outline { width: 100%; max-width: 280px; justify-content: center; }
-  .hero-stats { gap: 0; }
-  .stat { padding: 10px 14px; }
-  .stat-n { font-size: 28px; }
+  .hero-actions .btn-outline { width: 100%; justify-content: center; }
+  .hero-stats {
+    flex-direction: row; gap: 0; width: 100%; min-width: unset;
+    background: none; border: none; box-shadow: none; backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-top: 1.5px solid rgba(109,40,217,.1);
+    margin-top: 32px;
+  }
+  .stat { flex: 1; padding: 14px 8px; border-bottom: none; }
+  .stat + .stat { border-left: 1.5px solid rgba(109,40,217,.1); }
+  .stat-n { font-size: 30px; }
   .stat-l { font-size: 9px; }
 
   /* Training header — compact on mobile */
@@ -1713,11 +1736,8 @@ body.player-open .page { padding-bottom: 140px; }
   .training-header-title { font-size: 30px; }
   .training-header-sub { font-size: 13px; margin-top: 6px; line-height: 1.55; }
 
-  /* How-to */
-  .how-to { padding: 32px 16px 48px; }
-  .how-to-header h2 { font-size: 26px; }
-  .steps { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .step { padding: 16px 12px; border-radius: var(--r4); }
+  /* How-to: hidden on mobile (keep it minimal) */
+  .how-to { display: none; }
 
   /* Chapter header */
   .chapter-header { padding: 20px 18px; border-radius: var(--r4); margin-bottom: 16px; }
@@ -1834,7 +1854,7 @@ body.player-open .page { padding-bottom: 140px; }
   #page-flashcard.active {
     position: fixed;
     left: 0; right: 0;
-    top: var(--topbar);
+    top: calc(var(--topbar) + env(safe-area-inset-top, 0px));
     bottom: calc(var(--bottomnav) + env(safe-area-inset-bottom, 0px));
     display: flex;
     flex-direction: column;
@@ -1909,13 +1929,12 @@ body.player-open .page { padding-bottom: 140px; }
    RESPONSIVE — SMALL PHONE (≤ 390px)
 ════════════════════════════════════════════════════ */
 @media (max-width: 390px) {
-  #topbar { padding: 0 10px; gap: 4px; }
+  #topbar { padding: env(safe-area-inset-top, 0px) 10px 0; gap: 4px; }
   #topbar-title { font-size: 13px; }
 
-  .hero h1 { font-size: 36px; }
-  .hero-stats .stat { padding: 12px 8px; }
-  .stat-n { font-size: 28px; }
-  .steps { grid-template-columns: 1fr; }
+  .hero h1 { font-size: clamp(44px, 12vw, 60px); }
+  .hero-stats .stat { padding: 12px 6px; }
+  .stat-n { font-size: 26px; }
 
   .diff-selector { flex-direction: column; align-items: flex-start; }
   .diff-btn { min-height: 48px; padding: 8px 12px; }
