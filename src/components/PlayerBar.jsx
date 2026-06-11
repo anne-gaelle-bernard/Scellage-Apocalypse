@@ -52,7 +52,7 @@ export default function PlayerBar() {
         <button className="player-ctrl player-ctrl-main" onClick={toggle} title={paused ? 'Reprendre' : 'Pause'}>
           {paused ? '▶' : '❙❙'}
         </button>
-        <button className="player-ctrl" onClick={stop} title="Arrêter">
+        <button className="player-ctrl player-ctrl-stop" onClick={stop} title="Arrêter">
           &#9632;
         </button>
         <button className="player-ctrl" onClick={() => skip(1)} title="Suivant">

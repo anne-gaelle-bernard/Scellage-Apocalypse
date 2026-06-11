@@ -1527,7 +1527,11 @@ body.player-open .page { padding-bottom: 140px; }
 }
 .bottom-tab-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; }
 .bottom-tab.active { color: var(--action); }
-.bottom-tab.active .bottom-tab-icon { transform: scale(1.15) translateY(-1px); }
+.bottom-tab.active .bottom-tab-icon {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--p-50), var(--k-50));
+  border-radius: 12px; width: 44px; height: 28px;
+}
 .bottom-tab.active::before {
   content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2.5px;
   background: linear-gradient(90deg, var(--p-400), var(--k-400));
@@ -1638,16 +1642,26 @@ body.player-open .page { padding-bottom: 140px; }
   #player-bar {
     left: 0;
     bottom: calc(var(--bottomnav) + env(safe-area-inset-bottom, 0px));
-    padding: 0 12px;
+    padding: 0 14px;
     gap: 8px;
-    height: 72px;
+    height: 76px;
   }
-  /* Hide ✕ close on mobile — stop button (■) already closes the bar */
-  .player-close { display: none; }
+  /* Hide stop (■) on mobile — ✕ close button replaces it */
+  .player-ctrl-stop { display: none; }
+
+  /* Close button: big touch target, top-right of player */
+  .player-close {
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 8px; right: 10px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--n-100); border: 1.5px solid var(--line);
+    color: var(--ink-3); font-size: 13px; padding: 0;
+  }
+  .player-close:hover { color: var(--red); background: var(--red-bg); }
 
   /* Page bottom padding when player is open */
   body.player-open .page {
-    padding-bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(152px + env(safe-area-inset-bottom, 0px));
   }
 
   /* Page titles */
