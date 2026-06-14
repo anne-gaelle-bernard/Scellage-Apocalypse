@@ -1641,6 +1641,8 @@ body.player-open .page { padding-bottom: 140px; }
   #main { margin-left: 0; width: 100%; }
   #menu-toggle { display: flex; }
   #bottom-nav { display: flex; }
+  .bottom-tab-label { font-size: 8.5px; }
+  .bottom-tab-icon { width: 22px; height: 22px; }
 
   /* Bottom nav: iOS safe-area padding for home indicator */
   #bottom-nav {
@@ -1990,4 +1992,147 @@ body.player-open .page { padding-bottom: 140px; }
 
   .btn-gold, .btn-outline, .btn-primary, .btn-light { width: 100%; justify-content: center; }
   .page-title { font-size: 26px; }
+}
+
+/* ════════════════════════════════════════════════════
+   DICTÉE GUIDÉE
+════════════════════════════════════════════════════ */
+
+.dictee-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px var(--page-px); background: var(--surface);
+  border-bottom: 1.5px solid var(--line); flex-shrink: 0;
+}
+.dictee-nav-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--n-100); border: 1.5px solid var(--line);
+  color: var(--ink-2); cursor: pointer;
+  transition: all var(--t-fast);
+}
+.dictee-nav-btn:disabled { opacity: .3; cursor: default; }
+.dictee-nav-btn:not(:disabled):hover { border-color: var(--p-300); color: var(--action); }
+.dictee-nav-ref {
+  font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: .01em;
+}
+
+.dictee-card {
+  margin: 20px var(--page-px) 32px;
+  background: var(--surface); border: 1.5px solid var(--line);
+  border-radius: var(--r4); padding: 22px 20px;
+  display: flex; flex-direction: column; gap: 16px;
+  box-shadow: var(--e1);
+}
+
+.dictee-listen-btn {
+  display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+  padding: 10px 18px; border-radius: var(--rpill);
+  background: linear-gradient(135deg, var(--p-600), var(--p-500));
+  color: white; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
+  box-shadow: 0 2px 10px rgba(109,40,217,.28);
+  transition: all var(--t-bounce);
+}
+.dictee-listen-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(109,40,217,.38); }
+
+.dictee-orig {
+  font-family: 'Lora', serif; font-size: 14px; line-height: 1.9;
+  color: var(--ink-2); margin: 0;
+  padding: 14px 16px;
+  background: var(--tint); border-radius: var(--r2);
+  border-left: 3px solid var(--p-400);
+}
+
+.dictee-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+
+.dictee-ta {
+  width: 100%; min-height: 110px;
+  font-family: 'Lora', serif; font-size: 16px; line-height: 1.85;
+  color: var(--ink); background: var(--n-50);
+  border: 2px solid var(--line-dk);
+  border-radius: var(--r2); padding: 14px 16px;
+  resize: vertical; outline: none; box-sizing: border-box;
+  transition: border-color var(--t-fast);
+}
+.dictee-ta:focus { border-color: var(--p-400); background: #faf8ff; }
+.dictee-ta::placeholder { color: var(--n-400); }
+
+.dictee-actions {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.dictee-peek-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+/* Score */
+.dictee-score {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px;
+  background: var(--tint); border-radius: var(--r2);
+  border: 1.5px solid var(--line);
+}
+.dictee-score-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px; font-weight: 700; line-height: 1;
+}
+.dictee-score-label {
+  font-size: 14px; font-weight: 700; color: var(--ink-2);
+}
+
+/* Word-by-word result */
+.dictee-result-words {
+  line-height: 2.4; padding: 16px;
+  background: var(--n-50); border-radius: var(--r2);
+  border: 1.5px solid var(--line);
+  font-family: 'Lora', serif; font-size: 15px;
+}
+.dictee-word {
+  display: inline-block; padding: 2px 6px; border-radius: 5px; margin: 2px 1px;
+  cursor: default; transition: opacity var(--t-fast);
+}
+.dictee-word:hover { opacity: .8; }
+.dictee-missing-word { font-style: italic; opacity: .7; }
+
+/* Error category chips */
+.dictee-cats {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.dictee-cat {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: var(--rpill);
+  font-family: 'Inter', sans-serif;
+}
+.dictee-cat-n { font-size: 15px; font-weight: 800; }
+.dictee-cat-label { font-size: 11px; font-weight: 600; }
+
+/* Legend */
+.dictee-legend {
+  font-size: 12px; color: var(--ink-3);
+}
+.dictee-legend summary {
+  cursor: pointer; font-weight: 600; padding: 4px 0;
+  list-style: none; user-select: none;
+}
+.dictee-legend summary::-webkit-details-marker { display: none; }
+.dictee-legend-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px;
+}
+.dictee-legend-row {
+  display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-2);
+}
+.dictee-legend-swatch {
+  font-size: 10px; font-weight: 700; padding: 2px 6px;
+  border-radius: 4px; flex-shrink: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .dictee-card { margin: 14px 12px 24px; padding: 18px 14px; }
+  .dictee-ta { font-size: 15px; }
+  .dictee-result-words { font-size: 14px; line-height: 2.3; padding: 12px; }
+  .dictee-legend-grid { grid-template-columns: 1fr; }
+  .dictee-score-n { font-size: 34px; }
 }

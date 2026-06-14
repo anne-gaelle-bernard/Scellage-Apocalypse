@@ -1,12 +1,13 @@
 import React from 'react';
 import { useApp } from '../App';
-import { Home, BookOpen, BookMarked, Layers, NotebookPen } from 'lucide-react';
+import { Home, BookOpen, BookMarked, Layers, NotebookPen, Pencil } from 'lucide-react';
 
 const TABS = [
   { id: 'home',      Icon: Home,        label: 'Accueil'  },
   { id: 'lecture',   Icon: BookOpen,    label: 'Lire'     },
   { id: 'selection', Icon: BookMarked,  label: 'Versets'  },
   { id: 'flashcard', Icon: Layers,      label: 'Cartes'   },
+  { id: 'dictee',    Icon: Pencil,      label: 'Dictée'   },
   { id: 'notes',     Icon: NotebookPen, label: 'Notes'    },
 ];
 
