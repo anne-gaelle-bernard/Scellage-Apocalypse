@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen } from 'lucide-react';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, selectedVerses } = useApp();
@@ -79,6 +79,14 @@ export default function Sidebar() {
         >
           <span className="nav-icon"><Mic size={14} strokeWidth={2} /></span>
           Récitation
+        </div>
+
+        <div
+          className={`nav-item ${isActive('dictee') ? 'active' : ''}`}
+          onClick={() => navigate('dictee')}
+        >
+          <span className="nav-icon"><Pencil size={14} strokeWidth={2} /></span>
+          Dictée guidée
         </div>
       </div>
 

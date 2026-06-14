@@ -11,6 +11,7 @@ const PAGE_TITLES = {
   lacunes:    'Texte à trou',
   recitation: 'Récitation',
   notes:      'Notes & Plan',
+  dictee:     'Dictée guidée',
 };
 
 export default function Topbar() {
