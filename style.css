@@ -1661,9 +1661,7 @@ body.player-open .page { padding-bottom: 140px; }
   .install-btn { padding: 6px 10px; }
   .install-btn-label { display: none; }
 
-  /* Voice selector: icon-only */
-  .voice-btn-label { display: none; }
-  .voice-btn { padding: 6px 9px; }
+  /* Voice selector: same as desktop */
   .voice-dropdown { right: 0; }
 
   /* Pages: account for bottom nav + safe area */
