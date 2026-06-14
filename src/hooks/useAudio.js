@@ -54,7 +54,18 @@ export function useAudio() {
 
     loadVoices();
     synth.onvoiceschanged = loadVoices;
-    return () => { synth.onvoiceschanged = null; };
+
+    // Mobile browsers (esp. iOS Safari) rarely fire voiceschanged — poll as fallback
+    let tries = 0;
+    const poll = setInterval(() => {
+      if (++tries > 20) { clearInterval(poll); return; }
+      loadVoices();
+    }, 250);
+
+    return () => {
+      synth.onvoiceschanged = null;
+      clearInterval(poll);
+    };
   }, []);
 
   const speakCurrent = useCallback(() => {
