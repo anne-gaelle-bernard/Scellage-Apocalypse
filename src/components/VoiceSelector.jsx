@@ -9,11 +9,15 @@ export default function VoiceSelector() {
 
   useEffect(() => {
     if (!open) return;
-    function handleClick(e) {
+    function handleClose(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    document.addEventListener('mousedown', handleClose);
+    document.addEventListener('touchstart', handleClose, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handleClose);
+      document.removeEventListener('touchstart', handleClose);
+    };
   }, [open]);
 
   if (!voices.length) return null;

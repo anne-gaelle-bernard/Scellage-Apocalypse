@@ -1393,7 +1393,8 @@ body {
   position: absolute; top: calc(100% + 8px); right: 0;
   background: var(--surface); border: 1.5px solid var(--p-200);
   border-radius: var(--r4); box-shadow: var(--e5);
-  min-width: 220px; max-width: 280px; overflow: hidden;
+  min-width: 220px; max-width: 280px;
+  max-height: 320px; overflow-x: hidden; overflow-y: auto;
   animation: dropIn .2s cubic-bezier(.16,1,.3,1); z-index: 400;
 }
 @keyframes dropIn {
@@ -1744,10 +1745,10 @@ body.player-open .page { padding-bottom: 140px; }
     color: rgba(109,40,217,.38);
   }
   .hero-ornament::after { display: none; }
-  .hero-verse { font-size: 13.5px; line-height: 1.9; margin-bottom: 30px; max-width: 270px; }
+  .hero-verse { font-size: 13.5px; line-height: 1.9; margin-bottom: 30px; max-width: 270px; margin-left: auto; margin-right: auto; }
   .hero-actions {
     gap: 10px; flex-direction: column; align-items: stretch;
-    width: 100%; max-width: 280px;
+    width: 100%; max-width: 280px; margin-left: auto; margin-right: auto;
   }
   .hero-actions .btn-gold,
   .hero-actions .btn-outline { width: 100%; justify-content: center; }
