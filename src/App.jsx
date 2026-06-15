@@ -13,6 +13,7 @@ import RecitationPage from './pages/RecitationPage';
 import FlashcardPage from './pages/FlashcardPage';
 import NotesPage from './pages/NotesPage';
 import DicteePage from './pages/DicteePage';
+import CoursPage from './pages/CoursPage';
 
 export const AppContext = createContext(null);
 export const useApp = () => useContext(AppContext);
@@ -84,6 +85,9 @@ export default function App() {
         </div>
         <div className={`page ${currentPage === 'dictee'     ? 'active' : ''}`} id="page-dictee">
           <DicteePage />
+        </div>
+        <div className={`page ${currentPage === 'cours'      ? 'active' : ''}`} id="page-cours">
+          <CoursPage />
         </div>
       </div>
 
