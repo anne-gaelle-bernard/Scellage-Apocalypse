@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap } from 'lucide-react';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, selectedVerses } = useApp();
@@ -95,6 +95,14 @@ export default function Sidebar() {
         >
           <span className="nav-icon"><GraduationCap size={14} strokeWidth={2} /></span>
           Cours de français
+        </div>
+
+        <div
+          className={`nav-item ${isActive('qr') ? 'active' : ''}`}
+          onClick={() => navigate('qr')}
+        >
+          <span className="nav-icon"><HelpCircle size={14} strokeWidth={2} /></span>
+          Questions à mémoriser
         </div>
       </div>
 
