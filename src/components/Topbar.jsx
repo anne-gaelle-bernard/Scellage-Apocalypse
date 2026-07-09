@@ -4,7 +4,7 @@ import VoiceSelector from './VoiceSelector';
 import InstallPrompt from './InstallPrompt';
 
 const PAGE_TITLES = {
-  home:       'Scellage en cours',
+  home:       'Scellage',
   lecture:    'Lecture',
   selection:  'Mes versets',
   flashcard:  'Cartes mémoire',
@@ -21,7 +21,7 @@ export default function Topbar() {
   return (
     <div id="topbar">
       <button id="menu-toggle" onClick={toggleSidebar}>&#9776;</button>
-      <div id="topbar-title">{PAGE_TITLES[currentPage] ?? 'Scellage en cours'}</div>
+      <div id="topbar-title">{PAGE_TITLES[currentPage] ?? 'Scellage'}</div>
       <VoiceSelector />
       <InstallPrompt />
       <div id="topbar-badge-wrap">
