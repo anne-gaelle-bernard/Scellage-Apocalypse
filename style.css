@@ -1271,27 +1271,10 @@ body {
 .notes-textarea:focus { border-color: var(--p-300); box-shadow: 0 0 0 3px var(--p-100); background: #fff; }
 .notes-textarea::placeholder { color: var(--n-400); font-style: italic; }
 
-/* Notes page: all cards grow to fill viewport height */
-#page-notes .notes-grid {
-  flex: 1;
-  min-height: 0;
-  grid-template-rows: 1fr;
-  align-items: stretch;
-}
-#page-notes .notes-grid .notes-card {
-  display: flex;
-  flex-direction: column;
-}
-#page-notes .notes-card:last-child {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
+/* Notes page: cards expand to show all content */
 #page-notes .notes-card:last-child .notes-textarea {
-  flex: 1;
-  resize: none;
-  min-height: 0;
+  resize: vertical;
+  min-height: 200px;
 }
 
 @media (max-width: 768px) {
@@ -1316,10 +1299,7 @@ body {
   .notes-grid { grid-template-columns: 1fr; gap: 0; margin-bottom: 0; }
   .notes-grid .notes-card { margin-bottom: 20px; }
   .notes-card { padding: 20px 18px; }
-  #page-notes .notes-grid { flex: none; grid-template-rows: auto; }
-  #page-notes .notes-grid .notes-card { display: block; }
-  #page-notes .notes-card:last-child { flex: none; }
-  #page-notes .notes-card:last-child .notes-textarea { flex: none; resize: vertical; min-height: 180px; }
+  #page-notes .notes-card:last-child .notes-textarea { min-height: 160px; }
   .notes-stats-grid { gap: 8px; }
   .notes-stat { padding: 14px 10px; }
   .notes-stat-n { font-size: 30px; }
