@@ -2306,23 +2306,15 @@ body.player-open .page { padding-bottom: 140px; }
 }
 .cours-tok-hi:hover { opacity: .8; }
 
-/* Tabs */
-.cours-tabs {
-  display: flex; overflow-x: auto; gap: 0;
-  border-bottom: 1.5px solid var(--line);
-  padding: 0 var(--page-px); margin-top: 16px;
-  scrollbar-width: none;
+/* Sections (all categories shown at once) */
+.cours-section { margin-top: 20px; }
+.cours-section:first-of-type { margin-top: 8px; }
+.cours-section-head {
+  display: flex; align-items: center; gap: 7px;
+  padding: 0 var(--page-px); margin-top: 10px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 800;
+  letter-spacing: .02em; text-transform: uppercase;
 }
-.cours-tabs::-webkit-scrollbar { display: none; }
-.cours-tab {
-  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
-  padding: 10px 16px; background: none; border: none;
-  border-bottom: 2.5px solid transparent; margin-bottom: -1.5px;
-  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
-  letter-spacing: .02em; color: var(--ink-3); cursor: pointer;
-  transition: color var(--t-fast); white-space: nowrap;
-}
-.cours-tab:hover { color: var(--ink-2); }
 
 /* Panel */
 .cours-panel {
@@ -2474,7 +2466,7 @@ body.player-open .page { padding-bottom: 140px; }
 @media (max-width: 768px) {
   .cours-verse-wrap { margin: 12px 12px 0; padding: 14px 14px 16px; }
   .cours-verse-text { font-size: 15px; line-height: 2.0; }
-  .cours-tab { padding: 9px 12px; font-size: 11px; }
+  .cours-section-head { padding: 0 12px; font-size: 12px; }
   .cours-panel { padding: 14px 12px 32px; }
   .cours-struct-overview { gap: 8px; }
 }

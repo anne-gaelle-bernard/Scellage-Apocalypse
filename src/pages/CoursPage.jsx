@@ -224,7 +224,6 @@ function StructPanel({ structure, text }) {
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function CoursPage() {
   const { selectedVerses, navigate } = useApp();
-  const [tab, setTab]   = useState('conjugaison');
   const [idx, setIdx]   = useState(0);
 
   const cards = useMemo(() =>
@@ -244,9 +243,12 @@ export default function CoursPage() {
     };
   }, [card]);
 
-  const tokens = useMemo(() =>
-    card && analysis ? buildHighlightedTokens(card.text, tab, analysis) : [],
-    [card, analysis, tab]);
+  const tokensByTab = useMemo(() => {
+    if (!card || !analysis) return {};
+    const out = {};
+    TABS.forEach(t => { out[t.id] = buildHighlightedTokens(card.text, t.id, analysis); });
+    return out;
+  }, [card, analysis]);
 
   const total = cards.length;
 
@@ -270,7 +272,12 @@ export default function CoursPage() {
     </>
   );
 
-  const activeTab = TABS.find(t => t.id === tab);
+  const PANELS = {
+    conjugaison: <ConjPanel  verbs={analysis.verbs} />,
+    grammaire:   <GramPanel  grammar={analysis.grammar} />,
+    ponctuation: <PunctPanel punct={analysis.punct} />,
+    structure:   <StructPanel structure={analysis.structure} text={card.text} />,
+  };
 
   return (
     <>
@@ -293,37 +300,27 @@ export default function CoursPage() {
         </button>
       </div>
 
-      {/* Annotated verse */}
-      <div className="cours-verse-wrap">
-        <div className="cours-verse-label">
-          <span className="cours-legend-dot" style={{ background: activeTab.color }} />
-          {activeTab.label} — mots surlignés
-        </div>
-        <AnnotatedText tokens={tokens} />
-      </div>
+      {/* One section per category, all visible at once */}
+      {TABS.map(t => (
+        <section key={t.id} className="cours-section">
+          <div className="cours-verse-wrap">
+            <div className="cours-verse-label">
+              <span className="cours-legend-dot" style={{ background: t.color }} />
+              {t.label} — mots surlignés
+            </div>
+            <AnnotatedText tokens={tokensByTab[t.id] || []} />
+          </div>
 
-      {/* Tabs */}
-      <div className="cours-tabs">
-        {TABS.map(t => (
-          <button
-            key={t.id}
-            className={`cours-tab ${tab === t.id ? 'active' : ''}`}
-            style={tab === t.id ? { color: t.color, borderBottom: `2.5px solid ${t.color}` } : {}}
-            onClick={() => setTab(t.id)}
-          >
-            <t.Icon size={15} strokeWidth={1.75} />
+          <div className="cours-section-head" style={{ color: t.color }}>
+            <t.Icon size={16} strokeWidth={1.75} />
             {t.label}
-          </button>
-        ))}
-      </div>
+          </div>
 
-      {/* Panel */}
-      <div className="cours-panel">
-        {tab === 'conjugaison' && <ConjPanel  verbs={analysis.verbs} />}
-        {tab === 'grammaire'   && <GramPanel  grammar={analysis.grammar} />}
-        {tab === 'ponctuation' && <PunctPanel punct={analysis.punct} />}
-        {tab === 'structure'   && <StructPanel structure={analysis.structure} text={card.text} />}
-      </div>
+          <div className="cours-panel">
+            {PANELS[t.id]}
+          </div>
+        </section>
+      ))}
     </>
   );
 }
