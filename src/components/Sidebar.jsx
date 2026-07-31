@@ -33,16 +33,18 @@ export default function Sidebar() {
         <div className="nav-divider" />
         <div className="nav-section-label">Chapitres</div>
 
-        {APOCALYPSE_LSG.chapitres.map(ch => (
-          <div
-            key={ch.numero}
-            className={`nav-item ${isChapActive(ch.numero) ? 'active' : ''}`}
-            onClick={() => navigateToChapter(ch.numero)}
-            title={ch.titre}
-          >
-            Ap {ch.numero}
-          </div>
-        ))}
+        <div className="chapters-grid">
+          {APOCALYPSE_LSG.chapitres.map(ch => (
+            <div
+              key={ch.numero}
+              className={`chapter-cell ${isChapActive(ch.numero) ? 'active' : ''}`}
+              onClick={() => navigateToChapter(ch.numero)}
+              title={ch.titre}
+            >
+              {ch.numero}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div id="sidebar-training">

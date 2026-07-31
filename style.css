@@ -177,6 +177,23 @@ body {
 }
 .nav-divider { height: 1px; background: var(--line); margin: 6px 16px; }
 
+.chapters-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 6px; padding: 4px 12px 8px;
+}
+.chapter-cell {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 1; border-radius: var(--r2);
+  cursor: pointer; color: var(--ink-2); font-size: 13px; font-weight: 600;
+  transition: background var(--t-fast), color var(--t-fast), transform var(--t-spring);
+  -webkit-user-select: none; user-select: none;
+}
+.chapter-cell:hover { background: var(--tint); color: var(--action); transform: scale(1.06); }
+.chapter-cell.active {
+  background: linear-gradient(135deg, var(--p-500), var(--k-500));
+  color: #fff; box-shadow: 0 2px 8px rgba(236,72,153,.28);
+}
+
 .badge {
   font-size: 10px; font-weight: 700;
   padding: 2px 8px; border-radius: var(--rpill);
