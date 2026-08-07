@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { Mic, ChevronUp, ChevronDown, Check } from 'lucide-react';
 
 export default function VoiceSelector() {
-  const { voices, selectedVoiceURI, setVoice, cleanVoiceName } = useApp();
+  const { voices, selectedVoiceURI, setVoice, cleanVoiceName, isNaturalVoice } = useApp();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -52,7 +52,9 @@ export default function VoiceSelector() {
                 <span className="voice-option-name">{cleanVoiceName(v)}</span>
                 <span className="voice-option-meta">
                   {v.lang}
-                  {v.localService && <span className="voice-local-badge">local</span>}
+                  {isNaturalVoice(v)
+                    ? <span className="voice-local-badge voice-natural-badge">naturelle</span>
+                    : <span className="voice-local-badge">standard</span>}
                 </span>
                 {isSelected && <span className="voice-check-icon"><Check size={12} strokeWidth={2.5} /></span>}
               </button>

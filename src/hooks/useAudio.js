@@ -6,9 +6,18 @@ function cleanVoiceName(voice) {
   if (/^microsoft/i.test(name)) {
     name = name.replace(/^microsoft\s+/i, '').split(/\s+desktop|\s+mobile|\s+-/i)[0].trim();
   }
+  // "Microsoft Denise Online (Natural) - French (France)" → "Denise"
+  name = name.replace(/\s*online\s*\(natural\)/i, '').trim();
   // "Google français" → keep as-is but strip redundant lang suffix
   name = name.replace(/\s*[-–]\s*(french|français|fr[-_]fr).*/i, '').trim();
   return name;
+}
+
+// Edge/Chrome expose higher-quality "Online (Natural)" neural voices alongside
+// the old robotic offline ones. They're not flagged explicitly by the API,
+// so detect them by name and by localService === false.
+function isNaturalVoice(voice) {
+  return /natural|online/i.test(voice.name) || voice.localService === false;
 }
 
 export function useAudio() {
@@ -34,17 +43,21 @@ export function useAudio() {
       const all = synth.getVoices();
       if (!all.length) return;
 
-      // French voices first; fall back to all if none found
+      // French voices first; fall back to all if none found.
+      // Natural/online voices are sorted ahead of old robotic offline ones.
       const fr = all.filter(v => v.lang.startsWith('fr'));
-      const list = fr.length > 0 ? fr : all;
+      const list = (fr.length > 0 ? fr : all)
+        .slice()
+        .sort((a, b) => (isNaturalVoice(b) ? 1 : 0) - (isNaturalVoice(a) ? 1 : 0));
       setVoices(list);
 
-      // Restore or auto-select
+      // Restore or auto-select — prefer a natural voice by default
       const storedURI = localStorage.getItem('apoc_voice');
       const match   = storedURI ? list.find(v => v.voiceURI === storedURI) : null;
-      const local   = list.find(v => v.lang === 'fr-FR' && v.localService);
+      const natural = list.find(v => v.lang === 'fr-FR' && isNaturalVoice(v));
+      const local   = list.find(v => v.lang === 'fr-FR');
       const anyFr   = list.find(v => v.lang.startsWith('fr'));
-      voiceRef.current = match || local || anyFr || list[0] || null;
+      voiceRef.current = match || natural || local || anyFr || list[0] || null;
 
       if (voiceRef.current && !storedURI) {
         setSelectedVoiceURI(voiceRef.current.voiceURI);
@@ -182,6 +195,6 @@ export function useAudio() {
     play, toggle, stop, skip,
     setRate, rate,
     loop, toggleLoop,
-    voices, selectedVoiceURI, setVoice, cleanVoiceName,
+    voices, selectedVoiceURI, setVoice, cleanVoiceName, isNaturalVoice,
   };
 }
