@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useQRStore } from '../hooks/useQRStore';
 import {
   Plus, Trash2, ClipboardPaste, Image, CheckCircle, XCircle,
-  RotateCcw, ChevronLeft, ChevronRight, Eye, Sparkles, AlertCircle,
+  RotateCcw, Sparkles, AlertCircle,
 } from 'lucide-react';
 
 // ─── Text parser ──────────────────────────────────────────────────────────────
@@ -46,7 +46,32 @@ function parseQA(raw) {
     if (pairs.filter(p => p.q && p.a).length) return pairs.filter(p => p.q && p.a);
   }
 
-  // 3) Blank-line separated blocks: first line = Q, rest = A
+  // 3) Unlabeled: a line ending in "?" (or a numbered item) marks the end of a
+  //    question — any lines before it with no answer yet are folded into the
+  //    question (handles multi-line questions), and every line after it, until
+  //    the next question, becomes part of the answer.
+  const isQMark = l => l.endsWith('?') || /^\d+[.)]\s*\S/.test(l);
+  if (lines.some(isQMark)) {
+    const qPairs = [];
+    let cur = null;
+    let qBuffer = [];
+    for (const l of lines) {
+      if (isQMark(l)) {
+        if (cur && cur.q && cur.a) qPairs.push(cur);
+        const qText = [...qBuffer, l].join(' ').replace(/^\d+[.)]\s*/, '');
+        cur = { q: qText, a: '' };
+        qBuffer = [];
+      } else if (cur) {
+        cur.a += (cur.a ? ' ' : '') + l;
+      } else {
+        qBuffer.push(l);
+      }
+    }
+    if (cur && cur.q && cur.a) qPairs.push(cur);
+    if (qPairs.length) return qPairs;
+  }
+
+  // 4) Blank-line separated blocks: first line = Q, rest = A
   const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
   if (blocks.length > 1) {
     const pairs = blocks.map(b => {
@@ -55,16 +80,6 @@ function parseQA(raw) {
     }).filter(p => p.q && p.a);
     if (pairs.length) return pairs;
   }
-
-  // 4) Lines where odd = question (ends with ?) + even = answer
-  const qPairs = [];
-  for (let i = 0; i < lines.length - 1; i++) {
-    if (lines[i].endsWith('?') || /^(\d+[.)]\s*)/.test(lines[i])) {
-      qPairs.push({ q: lines[i].replace(/^\d+[.)]\s*/, ''), a: lines[i + 1] });
-      i++;
-    }
-  }
-  if (qPairs.length) return qPairs;
 
   // 5) Fallback: pairs of consecutive lines
   const fallback = [];
@@ -374,22 +389,23 @@ function StudyTab({ questions }) {
   const card   = queue[pos];
   const total  = queue.length;
   const pct    = Math.round(pos / total * 100);
+  const missedIds = new Set(missed.map(m => m.id));
 
   function markKnown() {
     setKnown(s => new Set([...s, card.id]));
-    advance();
+    advance(true);
   }
 
   function markReview() {
     setMissed(m => [...m, card]);
-    advance();
+    advance(false);
   }
 
-  function advance() {
+  function advance(wasKnown) {
     setRev(false);
     if (pos + 1 >= total) {
       if (phase === 'review') { setPhase('done'); return; }
-      const nextMissed = [...missed, ...(revealed && !knownIds.has(card.id) ? [card] : [])];
+      const nextMissed = wasKnown ? [...missed] : [...missed, card];
       if (nextMissed.length > 0) {
         setMissed([]);
         setQueue(nextMissed);
@@ -417,36 +433,51 @@ function StudyTab({ questions }) {
         <span className="qr-progress-known">{knownIds.size} ✓</span>
       </div>
 
-      {/* Card */}
-      <div className={`qr-card ${revealed ? 'flipped' : ''}`} onClick={() => !revealed && setRev(true)}>
-        <div className="qr-card-face qr-card-front">
-          <div className="qr-card-label">Question</div>
-          <p className="qr-card-text">{card.q}</p>
-          {!revealed && <div className="qr-card-hint">Appuyer pour révéler la réponse</div>}
-        </div>
-        {revealed && (
-          <div className="qr-card-face qr-card-back">
-            <div className="qr-card-label" style={{ color: '#2563eb' }}>Réponse</div>
-            <p className="qr-card-text">{card.a}</p>
-          </div>
-        )}
-      </div>
+      {/* Expandable list: answered items collapsed with a status icon,
+          the current item open for review, upcoming items dimmed */}
+      <div className="qr-study-list">
+        {queue.map((q, i) => {
+          const isDone   = i < pos;
+          const isActive = i === pos;
+          const isKnown  = knownIds.has(q.id);
+          const isMissed = missedIds.has(q.id);
 
-      {/* Actions */}
-      {revealed ? (
-        <div className="qr-verdict-row">
-          <button className="qr-verdict-btn qr-miss" onClick={markReview}>
-            <XCircle size={18} /> À revoir
-          </button>
-          <button className="qr-verdict-btn qr-hit" onClick={markKnown}>
-            <CheckCircle size={18} /> Je savais !
-          </button>
-        </div>
-      ) : (
-        <button className="qr-reveal-btn" onClick={() => setRev(true)}>
-          <Eye size={16} /> Révéler la réponse
-        </button>
-      )}
+          return (
+            <div
+              key={q.id}
+              className={`qr-study-item ${isActive ? 'active' : ''} ${isDone ? 'done' : ''} ${!isDone && !isActive ? 'pending' : ''}`}
+            >
+              <div
+                className="qr-study-item-head"
+                onClick={() => { if (isActive) setRev(r => !r); }}
+              >
+                <span className="qr-study-num">
+                  {isDone
+                    ? (isKnown ? <CheckCircle size={15} className="qr-study-ic-hit" /> : <XCircle size={15} className="qr-study-ic-miss" />)
+                    : i + 1}
+                </span>
+                <span className="qr-study-qtext">{q.q}</span>
+                {isActive && <span className="qr-study-chevron">{revealed ? '▲' : '▼'}</span>}
+              </div>
+
+              {isActive && revealed && (
+                <div className="qr-study-answer">
+                  <span className="qr-study-alabel">Réponse</span>
+                  <p className="qr-study-atext">{q.a}</p>
+                  <div className="qr-verdict-row">
+                    <button className="qr-verdict-btn qr-miss" onClick={markReview}>
+                      <XCircle size={18} /> À revoir
+                    </button>
+                    <button className="qr-verdict-btn qr-hit" onClick={markKnown}>
+                      <CheckCircle size={18} /> Je savais !
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

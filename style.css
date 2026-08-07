@@ -2698,29 +2698,46 @@ body.player-open .page { padding-bottom: 140px; }
 }
 .qr-progress-known { font-size: 12px; font-weight: 800; color: #16a34a; flex-shrink: 0; }
 
-.qr-card {
-  background: var(--surface); border: 1.5px solid var(--line);
-  border-radius: var(--r4); padding: 28px 24px; min-height: 180px;
+/* Expandable Q/R list (replaces the old flip-card review) */
+.qr-study-list { display: flex; flex-direction: column; gap: 6px; }
+.qr-study-item {
+  border: 1.5px solid var(--line); border-radius: var(--r3);
+  background: var(--surface); transition: opacity var(--t-fast), border-color var(--t-fast);
+  overflow: hidden;
+}
+.qr-study-item.pending { opacity: .55; }
+.qr-study-item.done { opacity: .8; }
+.qr-study-item.active { border-color: var(--p-300); box-shadow: var(--e2); }
+.qr-study-item-head {
+  display: flex; align-items: center; gap: 10px; padding: 13px 14px;
+  -webkit-user-select: none; user-select: none;
+}
+.qr-study-item.active .qr-study-item-head { cursor: pointer; }
+.qr-study-num {
+  display: flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; flex-shrink: 0;
+  font-size: 11px; font-weight: 800; color: var(--ink-3);
+}
+.qr-study-ic-hit { color: #16a34a; }
+.qr-study-ic-miss { color: #dc2626; }
+.qr-study-qtext {
+  flex: 1; font-family: 'Lora', serif; font-size: 15px; line-height: 1.5;
+  color: var(--ink);
+}
+.qr-study-chevron { font-size: 10px; color: var(--ink-3); flex-shrink: 0; }
+.qr-study-answer {
+  padding: 4px 16px 16px 46px;
   display: flex; flex-direction: column; gap: 10px;
-  box-shadow: var(--e3); cursor: pointer;
-  transition: transform var(--t-bounce), box-shadow var(--t-base);
+  animation: fadeSlide .2s ease;
 }
-.qr-card:hover { transform: translateY(-2px); box-shadow: var(--e5); }
-.qr-card.flipped { cursor: default; }
-.qr-card-face { display: flex; flex-direction: column; gap: 10px; }
-.qr-card-label {
-  font-size: 10px; font-weight: 800; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--ink-3);
+.qr-study-alabel {
+  font-size: 10px; font-weight: 800; letter-spacing: .08em;
+  text-transform: uppercase; color: #2563eb;
 }
-.qr-card-text {
-  font-family: 'Lora', serif; font-size: 19px; line-height: 1.75;
-  color: var(--ink); margin: 0; flex: 1;
+.qr-study-atext {
+  font-family: 'Lora', serif; font-size: 15px; line-height: 1.65;
+  color: var(--ink); margin: 0;
 }
-.qr-card-hint {
-  font-size: 12px; color: var(--ink-3); font-style: italic; margin-top: auto;
-  padding-top: 12px; border-top: 1px solid var(--line);
-}
-.qr-card-back { animation: fadeSlide .25s ease; }
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -2743,16 +2760,6 @@ body.player-open .page { padding-bottom: 140px; }
   background: rgba(22,163,74,.1); color: #15803d; border: 2px solid rgba(22,163,74,.25);
 }
 .qr-hit:hover { background: rgba(22,163,74,.18); transform: translateY(-1px); }
-.qr-reveal-btn {
-  display: inline-flex; align-items: center; gap: 8px; justify-content: center;
-  padding: 13px 24px; background: var(--n-100);
-  border: 1.5px solid var(--line-dk); border-radius: var(--r2);
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
-  color: var(--ink-2); cursor: pointer; transition: all var(--t-bounce);
-  width: 100%;
-}
-.qr-reveal-btn:hover { border-color: var(--p-400); color: var(--action); transform: translateY(-1px); }
-
 /* Done screen */
 .qr-done {
   display: flex; flex-direction: column; align-items: center; gap: 14px;
@@ -2780,8 +2787,7 @@ body.player-open .page { padding-bottom: 140px; }
   .qr-tab { padding: 10px 14px; font-size: 12px; }
   .qr-panel { padding: 16px 12px 40px; }
   .qr-add-methods { grid-template-columns: 1fr; }
-  .qr-card { padding: 22px 18px; min-height: 150px; }
-  .qr-card-text { font-size: 17px; }
+  .qr-study-qtext { font-size: 14px; }
   .qr-done-score { font-size: 56px; }
   .qr-verdict-btn { font-size: 13px; padding: 12px; }
 }
