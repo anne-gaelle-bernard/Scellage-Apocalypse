@@ -1633,9 +1633,9 @@ body.player-open .page { padding-bottom: 140px; }
    RESPONSIVE — MOBILE
 ════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  :root { --sidebar: 260px; }
+  :root { --sidebar: 260px; --bottomnav: 0px; }
 
-  /* Sidebar: slides off-screen; bottom nav takes over */
+  /* Sidebar: slides off-screen; menu-toggle opens it */
   #sidebar {
     transform: translateX(-100%); box-shadow: none;
     height: calc(100vh - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
@@ -1644,15 +1644,6 @@ body.player-open .page { padding-bottom: 140px; }
   #sidebar-footer { display: none; }
   #main { margin-left: 0; width: 100%; }
   #menu-toggle { display: flex; }
-  #bottom-nav { display: flex; }
-  .bottom-tab-label { font-size: 8.5px; }
-  .bottom-tab-icon { width: 22px; height: 22px; }
-
-  /* Bottom nav: iOS safe-area padding for home indicator */
-  #bottom-nav {
-    height: calc(var(--bottomnav) + env(safe-area-inset-bottom, 0px));
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
 
   /* Topbar: safe area for notch / dynamic island */
   #topbar {
@@ -1670,11 +1661,11 @@ body.player-open .page { padding-bottom: 140px; }
   /* Voice selector: same as desktop */
   .voice-dropdown { right: 0; }
 
-  /* Pages: account for bottom nav + safe area */
+  /* Pages: account for safe area */
   .page {
     --page-pt: 20px; --page-px: 16px;
     padding: var(--page-pt) var(--page-px);
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
     max-width: 100%;
   }
   .page.active {
@@ -1704,7 +1695,7 @@ body.player-open .page { padding-bottom: 140px; }
 
   /* Page bottom padding when player is open */
   body.player-open .page {
-    padding-bottom: calc(152px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
   }
 
   /* Page titles */

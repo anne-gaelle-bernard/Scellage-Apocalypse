@@ -4,7 +4,6 @@ import { useAudio } from './hooks/useAudio';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import PlayerBar from './components/PlayerBar';
-import BottomNav from './components/BottomNav';
 import HomePage from './pages/HomePage';
 import LecturePage from './pages/LecturePage';
 import SelectionPage from './pages/SelectionPage';
@@ -96,7 +95,6 @@ export default function App() {
       </div>
 
       <PlayerBar />
-      <BottomNav />
     </AppContext.Provider>
   );
 }
