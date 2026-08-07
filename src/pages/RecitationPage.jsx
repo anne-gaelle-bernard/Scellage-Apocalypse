@@ -58,6 +58,8 @@ export default function RecitationPage() {
   const [speechRes, setSpeechRes]     = useState({});
   const [interimTx, setInterimTx]     = useState({});
   const recognitions                  = useRef({});
+  const manualStop                    = useRef({});
+  const finalAccum                    = useRef({});
 
   const cards = Object.values(selectedVerses)
     .sort((a, b) => a.chap !== b.chap ? a.chap - b.chap : a.verse - b.verse);
@@ -66,8 +68,10 @@ export default function RecitationPage() {
     setLevel(n);
     setRevealed({});
     // stop any active recognition
+    Object.keys(recognitions.current).forEach(k => { manualStop.current[k] = true; });
     Object.values(recognitions.current).forEach(r => { try { r.stop(); } catch (_) {} });
     recognitions.current = {};
+    finalAccum.current = {};
     setListening({});
     setSpeechRes({});
     setInterimTx({});
@@ -83,37 +87,52 @@ export default function RecitationPage() {
 
   const startListening = useCallback((cardIdx, cardText) => {
     if (!SR) return;
-    const recog = new SR();
-    recog.lang = 'fr-FR';
-    recog.continuous = true;
-    recog.interimResults = true;
-    recog.maxAlternatives = 1;
 
-    let finalAccum = '';
+    manualStop.current[cardIdx] = false;
+    finalAccum.current[cardIdx] = '';
 
-    recog.onresult = (e) => {
-      let interim = '';
-      finalAccum = '';
-      for (let i = 0; i < e.results.length; i++) {
-        if (e.results[i].isFinal) finalAccum += e.results[i][0].transcript + ' ';
-        else interim += e.results[i][0].transcript;
-      }
-      setInterimTx(t => ({ ...t, [cardIdx]: interim }));
-    };
+    function makeRecog() {
+      const recog = new SR();
+      recog.lang = 'fr-FR';
+      recog.continuous = true;
+      recog.interimResults = true;
+      recog.maxAlternatives = 1;
 
-    recog.onend = () => {
-      setListening(l => ({ ...l, [cardIdx]: false }));
-      setInterimTx(t => ({ ...t, [cardIdx]: '' }));
-      if (finalAccum.trim()) {
-        setSpeechRes(r => ({ ...r, [cardIdx]: analyzeInput(finalAccum.trim(), cardText) }));
-      }
-    };
+      recog.onresult = (e) => {
+        let interim = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) finalAccum.current[cardIdx] += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript;
+        }
+        setInterimTx(t => ({ ...t, [cardIdx]: interim }));
+      };
 
-    recog.onerror = (e) => {
-      if (e.error !== 'no-speech') console.warn('Speech error', e.error);
-      setListening(l => ({ ...l, [cardIdx]: false }));
-    };
+      recog.onend = () => {
+        // Browsers auto-stop speech recognition after a few seconds of silence
+        // even in "continuous" mode. Restart transparently unless the user
+        // pressed "Terminer" themselves.
+        if (!manualStop.current[cardIdx]) {
+          const restarted = makeRecog();
+          recognitions.current[cardIdx] = restarted;
+          try { restarted.start(); } catch (_) {}
+          return;
+        }
+        setListening(l => ({ ...l, [cardIdx]: false }));
+        setInterimTx(t => ({ ...t, [cardIdx]: '' }));
+        const text = (finalAccum.current[cardIdx] || '').trim();
+        if (text) {
+          setSpeechRes(r => ({ ...r, [cardIdx]: analyzeInput(text, cardText) }));
+        }
+      };
 
+      recog.onerror = (e) => {
+        if (e.error !== 'no-speech') console.warn('Speech error', e.error);
+      };
+
+      return recog;
+    }
+
+    const recog = makeRecog();
     recognitions.current[cardIdx] = recog;
     setSpeechRes(r => ({ ...r, [cardIdx]: null }));
     setListening(l => ({ ...l, [cardIdx]: true }));
@@ -121,8 +140,8 @@ export default function RecitationPage() {
   }, []);
 
   function stopListening(cardIdx) {
+    manualStop.current[cardIdx] = true;
     try { recognitions.current[cardIdx]?.stop(); } catch (_) {}
-    setListening(l => ({ ...l, [cardIdx]: false }));
   }
 
   function resetSpeech(cardIdx) {
