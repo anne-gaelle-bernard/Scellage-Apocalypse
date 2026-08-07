@@ -150,7 +150,7 @@ function AddTab({ onAdded }) {
       <button className="qr-method-card" onClick={() => { setMode('image'); setTimeout(() => fileRef.current?.click(), 50); }}>
         <Image size={28} strokeWidth={1.5} />
         <span className="qrm-title">Importer une image</span>
-        <span className="qrm-sub">Photo d'une fiche, capture d'écran — l'IA extrait le texte</span>
+        <span className="qrm-sub">Photo d'une fiche, capture d'écran : l'IA extrait le texte</span>
       </button>
       <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }}
         onChange={e => handleImageFile(e.target.files?.[0])} />
@@ -183,7 +183,7 @@ function AddTab({ onAdded }) {
           {ocrErr && (
             <div className="qr-ocr-err">
               <AlertCircle size={16} />
-              {ocrErr} — Vérifiez votre connexion internet.
+              {ocrErr} Vérifiez votre connexion internet.
             </div>
           )}
         </div>
@@ -352,7 +352,7 @@ function StudyTab({ questions }) {
           {pct === 100 ? '🎉 Parfait ! Toutes les questions sont maîtrisées !'
             : pct >= 80 ? 'Excellent ! Encore quelques révisions et ce sera parfait.'
             : pct >= 50 ? 'Bon travail ! Continue à réviser les questions manquées.'
-            : 'Continue à pratiquer — la répétition est la clé !'}
+            : 'Continue à pratiquer, la répétition est la clé !'}
         </div>
         {missed.length > 0 && (
           <div className="qr-done-actions">

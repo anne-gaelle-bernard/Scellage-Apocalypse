@@ -184,9 +184,9 @@ function StructPanel({ structure, text }) {
           <div className="cours-sent-label">Phrase {i + 1}</div>
           <p className="cours-sent-text">«&nbsp;{s}&nbsp;»</p>
           <p className="cours-expl">
-            {s.endsWith('!') ? 'Phrase exclamative — exprime une louange, une injonction ou une émotion forte.' :
-             s.endsWith('?') ? 'Phrase interrogative — pose une question.' :
-             'Phrase déclarative — énonce un fait, une vérité ou une révélation.'}
+            {s.endsWith('!') ? 'Phrase exclamative : exprime une louange, une injonction ou une émotion forte.' :
+             s.endsWith('?') ? 'Phrase interrogative : pose une question.' :
+             'Phrase déclarative : énonce un fait, une vérité ou une révélation.'}
           </p>
         </div>
       ))}
@@ -306,7 +306,7 @@ export default function CoursPage() {
           <div className="cours-verse-wrap">
             <div className="cours-verse-label">
               <span className="cours-legend-dot" style={{ background: t.color }} />
-              {t.label} — mots surlignés
+              {t.label} · mots surlignés
             </div>
             <AnnotatedText tokens={tokensByTab[t.id] || []} />
           </div>

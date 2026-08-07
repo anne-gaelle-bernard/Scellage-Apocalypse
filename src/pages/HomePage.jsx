@@ -26,7 +26,7 @@ export default function HomePage() {
             <p className="hero-verse">
               « Heureux celui qui lit et ceux qui entendent les paroles de la prophétie,
               et qui gardent les choses qui y sont écrites ! Car le temps est proche. »
-              <em>— Apocalypse 1:3</em>
+              <em>Apocalypse 1:3</em>
             </p>
             <div className="hero-actions">
               <button className="btn-gold" onClick={() => navigateToChapter(1)}>

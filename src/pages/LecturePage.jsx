@@ -32,7 +32,7 @@ export default function LecturePage() {
   return (
     <div {...swipe}>
       <div className="chapter-header">
-        <div className="chapter-eyebrow">Apocalypse — Louis Segond 1910</div>
+        <div className="chapter-eyebrow">Apocalypse · Louis Segond 1910</div>
         <div className="chapter-title">Ap {ch.numero}</div>
         <button className="btn-listen-chapter" onClick={handlePlayChapter}>
           ▶ Écouter le chapitre

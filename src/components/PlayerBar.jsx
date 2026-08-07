@@ -36,7 +36,7 @@ export default function PlayerBar() {
           <span className="player-label">En lecture</span>
           {loop && <span className="player-loop-badge">Boucle</span>}
         </div>
-        <div className="player-ref">{current?.ref || '—'}</div>
+        <div className="player-ref">{current?.ref || ''}</div>
         {current && (
           <div className="player-preview">
             {current.text.length > 72 ? current.text.slice(0, 72) + '…' : current.text}
