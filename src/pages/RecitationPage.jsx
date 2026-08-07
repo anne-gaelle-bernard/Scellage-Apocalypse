@@ -16,11 +16,19 @@ const SR = typeof window !== 'undefined'
   ? (window.SpeechRecognition || window.webkitSpeechRecognition || null)
   : null;
 
+// Speech recognition never transcribes punctuation, and often drops accents/case.
+// Treat those two diffs as correct for oral recitation — a written dictée still
+// flags them (see DicteePage), but they're not real recitation mistakes here.
+function isOralOk(r) {
+  return r.error.kind === 'correct' || r.error.kind === 'ponctuation' || r.error.kind === 'accent';
+}
+
 function SpeechWordChip({ r }) {
   const css = KIND_CSS[r.error.kind] || KIND_CSS.correct;
-  if (r.error.kind === 'correct') {
+  if (isOralOk(r)) {
+    const okCss = KIND_CSS.correct;
     return (
-      <span className="dictee-word" style={{ background: css.bg, border: `1.5px solid ${css.border}`, color: css.color }}>
+      <span className="dictee-word" style={{ background: okCss.bg, border: `1.5px solid ${okCss.border}`, color: okCss.color }}>
         {r.orig}
       </span>
     );
@@ -207,9 +215,9 @@ export default function RecitationPage() {
         const result      = speechRes[i];
         const interim     = interimTx[i] || '';
         const hasResult   = result && result.length > 0;
-        const errors      = hasResult ? result.filter(r => r.error.kind !== 'correct') : [];
+        const errors      = hasResult ? result.filter(r => !isOralOk(r)) : [];
         const score       = hasResult
-          ? Math.round(result.filter(r => r.error.kind === 'correct').length / result.length * 100)
+          ? Math.round(result.filter(isOralOk).length / result.length * 100)
           : null;
 
         return (
