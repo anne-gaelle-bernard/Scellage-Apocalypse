@@ -27,15 +27,18 @@ function parseQA(raw) {
   if (lines.some(isQLine)) {
     const pairs = [];
     let cur = null;
+    let field = null; // 'q' | 'a' — tracks which field continuation lines belong to
     for (const l of lines) {
       if (isQLine(l)) {
-        if (cur) pairs.push(cur);
+        if (cur && cur.q) pairs.push(cur);
         cur = { q: l.replace(/^[^:.)\-]+[:.)\-]\s*/i, ''), a: '' };
+        field = 'q';
       } else if (isALine(l) && cur) {
         cur.a = l.replace(/^[^:.)\-]+[:.)\-]\s*/i, '');
-        pairs.push(cur);
-        cur = null;
-      } else if (cur && !cur.a) {
+        field = 'a';
+      } else if (cur && field === 'q') {
+        cur.q += ' ' + l;
+      } else if (cur && field === 'a') {
         cur.a += (cur.a ? ' ' : '') + l;
       }
     }
