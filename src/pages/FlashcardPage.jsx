@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useApp } from '../App';
-import { Shuffle, BookMarked, BookOpen } from 'lucide-react';
+import { useSrsStore } from '../hooks/useSrsStore';
+import { Shuffle, BookMarked, BookOpen, Clock } from 'lucide-react';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -14,6 +15,7 @@ function shuffle(arr) {
 export default function FlashcardPage() {
   const { selectedVerses, navigate } = useApp();
   const keys = Object.keys(selectedVerses);
+  const { markReview, isDue } = useSrsStore('apoc_srs_verses');
 
   const [mode, setMode] = useState('ref→text'); // 'ref→text' | 'text→ref'
   const [deck, setDeck] = useState(null);
@@ -34,8 +36,13 @@ export default function FlashcardPage() {
       .sort((a, b) => a.chap !== b.chap ? a.chap - b.chap : a.verse - b.verse)
   ), [selectedVerses]);
 
-  function startDeck(withShuffle) {
-    const cards = withShuffle ? shuffle(allCards) : [...allCards];
+  const dueCards = useMemo(() => (
+    allCards.filter(c => isDue(`${c.chap}:${c.verse}`))
+  ), [allCards, isDue]);
+
+  function startDeck(withShuffle, cardsOverride) {
+    const source = cardsOverride || allCards;
+    const cards = withShuffle ? shuffle(source) : [...source];
     setDeck(cards);
     setIndex(0);
     setFlipped(false);
@@ -46,6 +53,7 @@ export default function FlashcardPage() {
   function handleScore(result) {
     const card = deck[index];
     const key = `${card.chap}:${card.verse}`;
+    markReview(key, result === 'good');
     setScores(prev => ({ ...prev, [key]: result }));
     const next = index + 1;
     if (next >= deck.length) {
@@ -123,6 +131,13 @@ export default function FlashcardPage() {
               </button>
             </div>
           </div>
+
+          {dueCards.length > 0 && (
+            <button className="fc-due-btn" onClick={() => startDeck(true, dueCards)}>
+              <Clock size={15} strokeWidth={2} />
+              {dueCards.length} verset{dueCards.length > 1 ? 's' : ''} à réviser aujourd'hui
+            </button>
+          )}
 
           <div className="fc-start-row">
             <button className="btn-primary" onClick={() => startDeck(false)}>

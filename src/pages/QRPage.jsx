@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useQRStore } from '../hooks/useQRStore';
+import { useSrsStore } from '../hooks/useSrsStore';
 import {
   Plus, Trash2, ClipboardPaste, Image, CheckCircle, XCircle,
-  RotateCcw, Sparkles, AlertCircle,
+  RotateCcw, Sparkles, AlertCircle, Clock,
 } from 'lucide-react';
 
 // ─── Text parser ──────────────────────────────────────────────────────────────
@@ -324,6 +325,7 @@ function ListTab({ questions, onRemove, onClear }) {
 
 // ─── Study tab ────────────────────────────────────────────────────────────────
 function StudyTab({ questions }) {
+  const { markReview: markSrs, isDue } = useSrsStore('apoc_srs_qr');
   const [queue, setQueue]     = useState(() => [...questions]);
   const [pos, setPos]         = useState(0);
   const [revealed, setRev]    = useState(false);
@@ -331,6 +333,8 @@ function StudyTab({ questions }) {
   const [missed, setMissed]   = useState([]);
   const [phase, setPhase]     = useState('study'); // 'study'|'review'|'done'
   const [shuffle, setShuffle] = useState(false);
+
+  const dueCount = useMemo(() => questions.filter(q => isDue(q.id)).length, [questions, isDue]);
 
   function restart(qs) {
     const list = shuffle ? [...qs].sort(() => Math.random() - 0.5) : [...qs];
@@ -392,11 +396,13 @@ function StudyTab({ questions }) {
   const missedIds = new Set(missed.map(m => m.id));
 
   function markKnown() {
+    markSrs(card.id, true);
     setKnown(s => new Set([...s, card.id]));
     advance(true);
   }
 
   function markReview() {
+    markSrs(card.id, false);
     setMissed(m => [...m, card]);
     advance(false);
   }
@@ -432,6 +438,13 @@ function StudyTab({ questions }) {
         </div>
         <span className="qr-progress-known">{knownIds.size} ✓</span>
       </div>
+
+      {dueCount > 0 && (
+        <div className="qr-due-banner">
+          <Clock size={13} strokeWidth={2} />
+          {dueCount} question{dueCount > 1 ? 's' : ''} à réviser aujourd'hui (répétition espacée)
+        </div>
+      )}
 
       {/* Expandable list: answered items collapsed with a status icon,
           the current item open for review, upcoming items dimmed */}

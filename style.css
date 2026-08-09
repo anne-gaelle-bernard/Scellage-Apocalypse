@@ -755,6 +755,14 @@ body {
 .fc-mode-btn.active span { color: var(--action); }
 .fc-mode-btn.active .fc-mode-icon { background: linear-gradient(135deg, var(--p-100), var(--k-100)); color: var(--p-600); }
 
+.fc-due-btn {
+  display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+  padding: 10px 18px; border-radius: var(--rpill); border: 1.5px solid var(--p-300);
+  background: var(--tint); color: var(--action); font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all var(--t-fast);
+}
+.fc-due-btn:hover { background: var(--p-100); transform: translateY(-1px); }
+
 .fc-start-row { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* Progress header */
@@ -2697,6 +2705,13 @@ body.player-open .page { padding-bottom: 140px; }
   transition: width .35s ease;
 }
 .qr-progress-known { font-size: 12px; font-weight: 800; color: #16a34a; flex-shrink: 0; }
+
+.qr-due-banner {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 14px; border-radius: var(--r2);
+  background: var(--tint); color: var(--action);
+  font-size: 12px; font-weight: 700;
+}
 
 /* Expandable Q/R list (replaces the old flip-card review) */
 .qr-study-list { display: flex; flex-direction: column; gap: 6px; }
