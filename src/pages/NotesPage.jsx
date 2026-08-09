@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../App';
-import { Target, BarChart2, PenLine } from 'lucide-react';
+import MindMap from '../components/MindMap';
+import { Target, BarChart2, PenLine, GitBranch } from 'lucide-react';
 
 function daysUntil(dateStr) {
   if (!dateStr) return null;
@@ -139,6 +140,15 @@ export default function NotesPage() {
             <span className="notes-pip-dot done" /> Chapitres avec versets sélectionnés
           </p>
         </div>
+      </div>
+
+      {/* Carte mentale — full width */}
+      <div className="notes-card">
+        <div className="notes-card-header">
+          <span className="notes-card-icon"><GitBranch size={16} strokeWidth={2} /></span>
+          <h3>Carte mentale</h3>
+        </div>
+        <MindMap />
       </div>
 
       {/* Notes libres — full width */}
