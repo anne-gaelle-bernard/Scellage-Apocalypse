@@ -231,9 +231,9 @@ export default function FlashcardPage() {
               <span className="fc-face-label">{back.top}</span>
               <div className="fc-face-main">{back.main}</div>
               {back.sub && <div className="fc-face-sub">{back.sub}</div>}
-              {mnemo && (
+              {mnemo?.text && (
                 <div className="fc-face-mnemo">
-                  <Lightbulb size={12} strokeWidth={2} /> {mnemo}
+                  {mnemo.emoji ? <span>{mnemo.emoji}</span> : <Lightbulb size={12} strokeWidth={2} />} {mnemo.text}
                 </div>
               )}
             </div>

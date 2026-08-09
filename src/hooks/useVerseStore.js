@@ -32,11 +32,12 @@ export function useVerseStore() {
     });
   }, []);
 
-  const setMnemonic = useCallback((key, text) => {
+  // value is { type: 'acronyme'|'association'|'histoire'|'visualisation', text, emoji? }
+  const setMnemonic = useCallback((key, value) => {
     setMnemonics(prev => {
       const next = { ...prev };
-      if (!text) delete next[key];
-      else next[key] = text;
+      if (!value || !value.text) delete next[key];
+      else next[key] = value;
       localStorage.setItem('apoc_mnemonics', JSON.stringify(next));
       return next;
     });
