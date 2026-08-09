@@ -652,7 +652,7 @@ body {
 }
 
 .sel-verse-row {
-  display: flex; align-items: flex-start; gap: 14px;
+  display: flex; flex-direction: column; gap: 8px;
   background: var(--surface); border: 1.5px solid var(--line);
   border-left: 3.5px solid var(--k-300); border-radius: var(--r4);
   padding: 14px 16px;
@@ -660,6 +660,8 @@ body {
   box-shadow: var(--e2);
 }
 .sel-verse-row:hover { box-shadow: var(--e3); transform: translateX(4px) translateY(-1px); border-left-color: var(--k-500); }
+
+.sel-verse-main { display: flex; align-items: flex-start; gap: 14px; }
 
 .sel-ref {
   font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
@@ -673,6 +675,25 @@ body {
   transition: all var(--t-fast); border-radius: var(--r1); flex-shrink: 0; min-height: 36px;
 }
 .sel-remove:hover { color: var(--red); background: var(--red-bg); }
+
+.sel-mnemo-toggle {
+  display: inline-flex; align-items: center; gap: 5px; align-self: flex-start;
+  background: none; border: none; cursor: pointer;
+  font-size: 11px; font-weight: 600; color: var(--ink-3);
+  padding: 2px 4px; transition: color var(--t-fast);
+}
+.sel-mnemo-toggle:hover { color: var(--action); }
+.sel-mnemo-field {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--tint); border-radius: var(--r2); padding: 7px 10px;
+  margin-left: 74px;
+}
+.sel-mnemo-icon { color: #d97706; flex-shrink: 0; }
+.sel-mnemo-input {
+  flex: 1; border: none; background: none; outline: none;
+  font-size: 12.5px; font-style: italic; color: var(--ink-2); min-width: 0;
+}
+.sel-mnemo-input::placeholder { color: var(--ink-3); }
 
 /* Selection page: compact action buttons */
 .sel-actions {
@@ -862,6 +883,14 @@ body {
   margin-top: 12px; font-family: 'Cormorant Garamond', serif;
   font-size: 18px; font-weight: 700; color: var(--p-600);
 }
+.fc-face-mnemo {
+  display: flex; align-items: flex-start; gap: 6px;
+  margin-top: 14px; padding: 8px 12px; border-radius: var(--r2);
+  background: rgba(217,119,6,.1); color: #92400e;
+  font-family: 'Inter', sans-serif; font-size: 12.5px; font-style: italic; font-weight: 600;
+  max-width: 90%;
+}
+.fc-face-mnemo svg { flex-shrink: 0; margin-top: 2px; }
 .fc-tap-hint {
   margin-top: 20px; font-size: 10.5px; font-weight: 600; letter-spacing: .08em;
   color: var(--p-300); text-transform: uppercase;
@@ -1820,9 +1849,10 @@ body.player-open .page { padding-bottom: 140px; }
   .color-dot.active { transform: scale(1.25); box-shadow: 0 0 0 3px currentColor; }
 
   /* Selection */
-  .sel-verse-row { padding: 12px 12px; gap: 10px; }
+  .sel-verse-row { padding: 12px 12px; gap: 8px; }
   .sel-text { font-size: 14px; }
   .sel-ref { min-width: 52px; font-size: 10px; }
+  .sel-mnemo-field { margin-left: 0; }
   .sel-actions { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
   /* Collapse flex: 1 containers that cause dead whitespace on mobile */

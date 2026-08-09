@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useApp } from '../App';
 import { useSrsStore } from '../hooks/useSrsStore';
-import { Shuffle, BookMarked, BookOpen, Clock } from 'lucide-react';
+import { Shuffle, BookMarked, BookOpen, Clock, Lightbulb } from 'lucide-react';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -13,7 +13,7 @@ function shuffle(arr) {
 }
 
 export default function FlashcardPage() {
-  const { selectedVerses, navigate } = useApp();
+  const { selectedVerses, navigate, mnemonics } = useApp();
   const keys = Object.keys(selectedVerses);
   const { markReview, isDue } = useSrsStore('apoc_srs_verses');
 
@@ -191,6 +191,7 @@ export default function FlashcardPage() {
   const card = deck[index];
   const ref  = `Ap ${card.chap}:${card.verse}`;
   const preview = card.text.slice(0, 60) + (card.text.length > 60 ? '…' : '');
+  const mnemo = mnemonics[`${card.chap}:${card.verse}`];
 
   const front = mode === 'ref→text'
     ? { top: 'Référence', main: ref, sub: null }
@@ -230,6 +231,11 @@ export default function FlashcardPage() {
               <span className="fc-face-label">{back.top}</span>
               <div className="fc-face-main">{back.main}</div>
               {back.sub && <div className="fc-face-sub">{back.sub}</div>}
+              {mnemo && (
+                <div className="fc-face-mnemo">
+                  <Lightbulb size={12} strokeWidth={2} /> {mnemo}
+                </div>
+              )}
             </div>
           </div>
         </div>

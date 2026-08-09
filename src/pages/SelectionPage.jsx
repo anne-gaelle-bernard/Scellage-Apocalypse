@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
 import { hexToRgba } from '../utils/colors';
-import { Volume2, PenLine, Mic, BookOpen } from 'lucide-react';
+import { Volume2, PenLine, Mic, BookOpen, Lightbulb } from 'lucide-react';
+
+function MnemoField({ initial, onSave }) {
+  const [text, setText]   = useState(initial || '');
+  const [open, setOpen]   = useState(!!initial);
+
+  function commit(v) {
+    setText(v);
+    onSave(v.trim());
+  }
+
+  if (!open) {
+    return (
+      <button className="sel-mnemo-toggle" onClick={() => setOpen(true)}>
+        <Lightbulb size={12} strokeWidth={2} /> Ajouter un moyen mnémotechnique
+      </button>
+    );
+  }
+
+  return (
+    <div className="sel-mnemo-field">
+      <Lightbulb size={13} strokeWidth={2} className="sel-mnemo-icon" />
+      <input
+        className="sel-mnemo-input"
+        placeholder="Acronyme, association d'idée, mini-histoire, image mentale…"
+        value={text}
+        onChange={e => setText(e.target.value)}
+        onBlur={e => commit(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && e.currentTarget.blur()}
+      />
+    </div>
+  );
+}
 
 export default function SelectionPage() {
-  const { selectedVerses, highlightColors, removeVerse, clearAll, navigate, play } = useApp();
+  const { selectedVerses, highlightColors, mnemonics, setMnemonic, removeVerse, clearAll, navigate, play } = useApp();
   const keys = Object.keys(selectedVerses);
 
   function handlePlaySelected() {
@@ -94,13 +126,19 @@ export default function SelectionPage() {
                     backgroundColor: hexToRgba(hlColor, 0.1),
                   } : {}}
                 >
-                  <span className="sel-ref" style={hlColor ? { color: hlColor } : {}}>
-                    Ap {chNum}:{item.verse}
-                  </span>
-                  <span className="sel-text">{item.text}</span>
-                  <button className="sel-remove" title="Retirer" onClick={() => removeVerse(item.key)}>
-                    ×
-                  </button>
+                  <div className="sel-verse-main">
+                    <span className="sel-ref" style={hlColor ? { color: hlColor } : {}}>
+                      Ap {chNum}:{item.verse}
+                    </span>
+                    <span className="sel-text">{item.text}</span>
+                    <button className="sel-remove" title="Retirer" onClick={() => removeVerse(item.key)}>
+                      ×
+                    </button>
+                  </div>
+                  <MnemoField
+                    initial={mnemonics[item.key]}
+                    onSave={(text) => setMnemonic(item.key, text)}
+                  />
                 </div>
               );
             })}

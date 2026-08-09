@@ -9,6 +9,7 @@ function load(key, fallback) {
 export function useVerseStore() {
   const [selectedVerses, setSelectedVerses] = useState(() => load('apoc_selected', '{}'));
   const [highlightColors, setHighlightColors] = useState(() => load('apoc_highlights', '{}'));
+  const [mnemonics, setMnemonics] = useState(() => load('apoc_mnemonics', '{}'));
 
   const toggleVerse = useCallback((chap, verse, text) => {
     const key = `${chap}:${verse}`;
@@ -31,6 +32,16 @@ export function useVerseStore() {
     });
   }, []);
 
+  const setMnemonic = useCallback((key, text) => {
+    setMnemonics(prev => {
+      const next = { ...prev };
+      if (!text) delete next[key];
+      else next[key] = text;
+      localStorage.setItem('apoc_mnemonics', JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
   const removeVerse = useCallback((key) => {
     setSelectedVerses(prev => {
       const next = { ...prev };
@@ -45,5 +56,5 @@ export function useVerseStore() {
     localStorage.setItem('apoc_selected', '{}');
   }, []);
 
-  return { selectedVerses, highlightColors, toggleVerse, setHighlight, removeVerse, clearAll, hexToRgba };
+  return { selectedVerses, highlightColors, mnemonics, toggleVerse, setHighlight, setMnemonic, removeVerse, clearAll, hexToRgba };
 }
