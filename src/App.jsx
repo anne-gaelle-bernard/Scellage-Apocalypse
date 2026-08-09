@@ -16,6 +16,7 @@ import DicteePage from './pages/DicteePage';
 import CoursPage from './pages/CoursPage';
 import QRPage from './pages/QRPage';
 import MindMapPage from './pages/MindMapPage';
+import MnemoPage from './pages/MnemoPage';
 
 export const AppContext = createContext(null);
 export const useApp = () => useContext(AppContext);
@@ -96,6 +97,9 @@ export default function App() {
         </div>
         <div className={`page ${currentPage === 'mindmap'    ? 'active' : ''}`} id="page-mindmap">
           <MindMapPage />
+        </div>
+        <div className={`page ${currentPage === 'mnemo'      ? 'active' : ''}`} id="page-mnemo">
+          <MnemoPage />
         </div>
       </div>
 

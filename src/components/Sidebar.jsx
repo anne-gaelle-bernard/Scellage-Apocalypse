@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch } from 'lucide-react';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, selectedVerses } = useApp();
@@ -113,6 +113,14 @@ export default function Sidebar() {
         >
           <span className="nav-icon"><GitBranch size={14} strokeWidth={2} /></span>
           Carte mentale
+        </div>
+
+        <div
+          className={`nav-item ${isActive('mnemo') ? 'active' : ''}`}
+          onClick={() => navigate('mnemo')}
+        >
+          <span className="nav-icon"><Lightbulb size={14} strokeWidth={2} /></span>
+          Mnémotechniques
         </div>
       </div>
 

@@ -15,6 +15,7 @@ const PAGE_TITLES = {
   cours:      'Cours de français',
   qr:         'Questions & Réponses',
   mindmap:    'Carte mentale',
+  mnemo:      'Mnémotechniques',
 };
 
 export default function Topbar() {
