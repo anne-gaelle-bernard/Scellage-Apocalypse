@@ -2837,7 +2837,7 @@ body.player-open .pomodoro-wrap { bottom: 132px; }
 
 .pomodoro-panel {
   position: absolute; right: 0; bottom: 58px;
-  width: 220px; background: var(--surface); border: 1.5px solid var(--line);
+  width: 250px; background: var(--surface); border: 1.5px solid var(--line);
   border-radius: var(--r4); box-shadow: var(--e5); padding: 16px;
   display: flex; flex-direction: column; align-items: center; gap: 12px;
   animation: dropIn .2s cubic-bezier(.16,1,.3,1);
@@ -2873,6 +2873,27 @@ body.player-open .pomodoro-wrap { bottom: 132px; }
 }
 .pomodoro-preset-btn.active {
   background: var(--tint); border-color: var(--p-400); color: var(--action);
+}
+
+.pomodoro-custom-row {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  animation: dropIn .15s ease;
+}
+.pomodoro-custom-row label {
+  display: flex; align-items: center; gap: 4px; flex: 1;
+  font-size: 10px; font-weight: 700; color: var(--ink-3);
+}
+.pomodoro-custom-row input {
+  width: 36px; padding: 4px 2px; text-align: center;
+  border: 1.5px solid var(--line-dk); border-radius: 6px;
+  font-size: 12px; font-weight: 700; color: var(--ink); background: var(--n-50);
+  -moz-appearance: textfield; appearance: textfield;
+}
+.pomodoro-custom-row input:focus { border-color: var(--p-400); outline: none; }
+.pomodoro-custom-apply {
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%; border: none; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--p-500), var(--k-500)); color: #fff; cursor: pointer;
 }
 
 .pomodoro-controls { display: flex; gap: 8px; width: 100%; }

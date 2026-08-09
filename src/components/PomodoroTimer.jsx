@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Timer, Play, Pause, RotateCcw, X } from 'lucide-react';
+import { Timer, Play, Pause, RotateCcw, X, Check } from 'lucide-react';
 
 const PRESETS = {
   '25-5':  { label: '25 / 5',  work: 25 * 60, brk: 5 * 60 },
@@ -27,11 +27,27 @@ function formatTime(s) {
   return `${m}:${sec}`;
 }
 
+function clampMin(v, fallback) {
+  const n = parseInt(v, 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(1, Math.min(180, n));
+}
+
 export default function PomodoroTimer() {
   const [open, setOpen]         = useState(false);
   const [presetKey, setPreset]  = useState(() => localStorage.getItem('apoc_pomo_preset') || '25-5');
+  const [customWork, setCustomWork] = useState(() => clampMin(localStorage.getItem('apoc_pomo_custom_work'), 25));
+  const [customBrk, setCustomBrk]   = useState(() => clampMin(localStorage.getItem('apoc_pomo_custom_brk'), 5));
+  const [customOpen, setCustomOpen] = useState(false);
+
+  const getPreset = useCallback((key) => (
+    key === 'custom'
+      ? { label: 'Perso', work: customWork * 60, brk: customBrk * 60 }
+      : PRESETS[key]
+  ), [customWork, customBrk]);
+
   const [phase, setPhase]       = useState('work'); // 'work' | 'break'
-  const [secondsLeft, setSecondsLeft] = useState(PRESETS[presetKey].work);
+  const [secondsLeft, setSecondsLeft] = useState(() => getPreset(presetKey).work);
   const [running, setRunning]   = useState(false);
   const [cycles, setCycles]     = useState(0);
   const ref = useRef(null);
@@ -61,7 +77,7 @@ export default function PomodoroTimer() {
     if (secondsLeft > 0) return;
     if (!running) return;
     beep();
-    const preset = PRESETS[presetKey];
+    const preset = getPreset(presetKey);
     if (phase === 'work') {
       setCycles(c => c + 1);
       setPhase('break');
@@ -70,7 +86,7 @@ export default function PomodoroTimer() {
       setPhase('work');
       setSecondsLeft(preset.work);
     }
-  }, [secondsLeft, running, phase, presetKey]);
+  }, [secondsLeft, running, phase, presetKey, getPreset]);
 
   useEffect(() => {
     const suffix = running ? ` — ${formatTime(secondsLeft)} ${phase === 'work' ? '🍅' : '☕'}` : '';
@@ -81,19 +97,26 @@ export default function PomodoroTimer() {
   const changePreset = useCallback((key) => {
     setPreset(key);
     localStorage.setItem('apoc_pomo_preset', key);
+    setCustomOpen(false);
     setRunning(false);
     setPhase('work');
-    setSecondsLeft(PRESETS[key].work);
-  }, []);
+    setSecondsLeft(getPreset(key).work);
+  }, [getPreset]);
+
+  const applyCustom = useCallback(() => {
+    localStorage.setItem('apoc_pomo_custom_work', String(customWork));
+    localStorage.setItem('apoc_pomo_custom_brk', String(customBrk));
+    changePreset('custom');
+  }, [customWork, customBrk, changePreset]);
 
   const reset = useCallback(() => {
     setRunning(false);
     setPhase('work');
     setCycles(0);
-    setSecondsLeft(PRESETS[presetKey].work);
-  }, [presetKey]);
+    setSecondsLeft(getPreset(presetKey).work);
+  }, [presetKey, getPreset]);
 
-  const preset = PRESETS[presetKey];
+  const preset = getPreset(presetKey);
   const total = phase === 'work' ? preset.work : preset.brk;
   const pct = Math.round((1 - secondsLeft / total) * 100);
 
@@ -122,7 +145,37 @@ export default function PomodoroTimer() {
                 {p.label}
               </button>
             ))}
+            <button
+              className={`pomodoro-preset-btn ${presetKey === 'custom' ? 'active' : ''}`}
+              onClick={() => setCustomOpen(o => !o)}
+            >
+              {presetKey === 'custom' ? `${customWork} / ${customBrk}` : 'Perso'}
+            </button>
           </div>
+
+          {customOpen && (
+            <div className="pomodoro-custom-row">
+              <label>
+                <span>Travail</span>
+                <input
+                  type="number" min="1" max="180" value={customWork}
+                  onChange={e => setCustomWork(clampMin(e.target.value, customWork))}
+                />
+                <span>min</span>
+              </label>
+              <label>
+                <span>Pause</span>
+                <input
+                  type="number" min="1" max="180" value={customBrk}
+                  onChange={e => setCustomBrk(clampMin(e.target.value, customBrk))}
+                />
+                <span>min</span>
+              </label>
+              <button className="pomodoro-custom-apply" onClick={applyCustom} title="Appliquer">
+                <Check size={14} />
+              </button>
+            </div>
+          )}
 
           <div className="pomodoro-controls">
             <button className="pomodoro-ctrl-btn" onClick={reset} title="Réinitialiser">
