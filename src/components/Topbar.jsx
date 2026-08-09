@@ -12,6 +12,9 @@ const PAGE_TITLES = {
   recitation: 'Récitation',
   notes:      'Notes & Plan',
   dictee:     'Dictée guidée',
+  cours:      'Cours de français',
+  qr:         'Questions & Réponses',
+  mindmap:    'Carte mentale',
 };
 
 export default function Topbar() {
