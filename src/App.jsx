@@ -4,6 +4,7 @@ import { useAudio } from './hooks/useAudio';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import PlayerBar from './components/PlayerBar';
+import PomodoroTimer from './components/PomodoroTimer';
 import HomePage from './pages/HomePage';
 import LecturePage from './pages/LecturePage';
 import SelectionPage from './pages/SelectionPage';
@@ -95,6 +96,7 @@ export default function App() {
       </div>
 
       <PlayerBar />
+      <PomodoroTimer />
     </AppContext.Provider>
   );
 }
