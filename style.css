@@ -3058,3 +3058,20 @@ body.player-open .pomodoro-wrap { bottom: 132px; }
   .mindmap-node { width: 104px; font-size: 11px; }
   .mindmap-form-row { flex-wrap: wrap; }
 }
+
+/* ════════════════════════════════════════════════════
+   CRASH SCREEN (ErrorBoundary fallback)
+════════════════════════════════════════════════════ */
+.crash-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg); padding: 24px;
+}
+.crash-box {
+  max-width: 380px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.crash-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--ink);
+}
+.crash-msg { font-size: 14px; color: var(--ink-2); line-height: 1.6; }

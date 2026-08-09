@@ -134,7 +134,11 @@ export default function MindMap() {
 
   function onMove(e) {
     if (!dragRef.current) return;
-    if (e.cancelable) e.preventDefault();
+    // The canvas already has `touch-action: none` to stop the page from
+    // scrolling during a drag — calling preventDefault() here as well can
+    // throw ("Unable to preventDefault inside passive event listener") on
+    // some WebViews since React attaches touch handlers as passive by
+    // default, which crashes the whole page with nothing rendered.
     const rect = canvasRef.current.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
