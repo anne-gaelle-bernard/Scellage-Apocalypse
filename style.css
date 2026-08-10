@@ -1426,6 +1426,13 @@ body {
   letter-spacing: .22em; text-transform: uppercase; color: var(--p-400);
   border-bottom: 1px solid var(--line);
 }
+.voice-install-banner {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 10px 14px; border: none; border-bottom: 1px solid var(--line);
+  background: var(--red-bg); color: var(--red);
+  font-size: 12px; font-weight: 700; cursor: pointer; text-align: left;
+}
+.voice-install-banner:hover { opacity: .85; }
 .voice-option {
   display: flex; align-items: center; gap: 8px;
   width: 100%; text-align: left; padding: 11px 14px;

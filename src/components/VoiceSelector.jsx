@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../App';
-import { Mic, ChevronUp, ChevronDown, Check } from 'lucide-react';
+import { Mic, ChevronUp, ChevronDown, Check, Download } from 'lucide-react';
 
 export default function VoiceSelector() {
-  const { voices, selectedVoiceURI, setVoice, cleanVoiceName, isNaturalVoice } = useApp();
+  const { voices, selectedVoiceURI, setVoice, cleanVoiceName, isNaturalVoice, needsVoiceInstall, installVoiceData } = useApp();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -40,6 +40,12 @@ export default function VoiceSelector() {
 
       {open && (
         <div className="voice-dropdown">
+          {needsVoiceInstall && (
+            <button className="voice-install-banner" onClick={installVoiceData}>
+              <Download size={13} strokeWidth={2} />
+              Aucune voix française installée — installer
+            </button>
+          )}
           <div className="voice-dropdown-header">Voix disponibles</div>
           {voices.map(v => {
             const isSelected = v.voiceURI === selectedVoiceURI;

@@ -201,6 +201,7 @@ function useWebAudio() {
     setRate, rate,
     loop, toggleLoop,
     voices, selectedVoiceURI, setVoice, cleanVoiceName, isNaturalVoice,
+    needsVoiceInstall: false, installVoiceData: () => {},
   };
 }
 
@@ -229,6 +230,11 @@ function useNativeAudio() {
   const [speakingKey, setSpeakingKey] = useState(null);
   const [rate, setRateState] = useState(0.9);
   const [loop, setLoopState] = useState(false);
+  // True when the device has no French voice at all — many Android phones
+  // ship without French TTS data installed, silently falling back to
+  // English or a robotic default. Surfaced so the UI can offer a one-tap
+  // fix via installVoiceData() instead of just sounding wrong.
+  const [needsVoiceInstall, setNeedsVoiceInstall] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -237,6 +243,7 @@ function useNativeAudio() {
       rawVoicesRef.current = all;
 
       const fr = all.filter(v => v.lang.startsWith('fr'));
+      setNeedsVoiceInstall(fr.length === 0);
       const list = (fr.length > 0 ? fr : all)
         .slice()
         .sort((a, b) => (isNaturalVoice(b) ? 1 : 0) - (isNaturalVoice(a) ? 1 : 0));
@@ -255,6 +262,10 @@ function useNativeAudio() {
       }
     }).catch(() => {});
     return () => { cancelled = true; };
+  }, []);
+
+  const installVoiceData = useCallback(() => {
+    TextToSpeech.openInstall().catch(() => {});
   }, []);
 
   const speakCurrent = useCallback(async () => {
@@ -389,6 +400,7 @@ function useNativeAudio() {
     setRate, rate,
     loop, toggleLoop,
     voices, selectedVoiceURI, setVoice, cleanVoiceName, isNaturalVoice,
+    needsVoiceInstall, installVoiceData,
   };
 }
 
