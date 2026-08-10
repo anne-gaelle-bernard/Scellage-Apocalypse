@@ -1654,13 +1654,17 @@ body.player-open .page { padding-bottom: 140px; }
 @media (max-width: 768px) {
   :root { --sidebar: 260px; --bottomnav: 0px; }
 
-  /* Sidebar: slides off-screen; menu-toggle opens it */
+  /* Sidebar: slides off-screen; menu-toggle opens it.
+     On short screens, "Navigation" (flex:1) would otherwise get crushed
+     by the non-shrinking "Entraînement"/"Suivi" sections below it — make
+     the whole menu scroll together as one column instead. */
   #sidebar {
     transform: translateX(-100%); box-shadow: none;
     height: calc(100vh - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
   }
   #sidebar.open { transform: translateX(0); box-shadow: var(--e5); }
-  #sidebar-footer { display: none; }
+  #sidebar-nav { flex: none; overflow-y: visible; }
   #main { margin-left: 0; width: 100%; }
   #menu-toggle { display: flex; }
 
