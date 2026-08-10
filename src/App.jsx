@@ -1,6 +1,7 @@
 import React, { useState, useCallback, createContext, useContext } from 'react';
 import { useVerseStore } from './hooks/useVerseStore';
 import { useAudio } from './hooks/useAudio';
+import { usePomodoro } from './hooks/usePomodoro';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import PlayerBar from './components/PlayerBar';
@@ -27,6 +28,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const verseStore = useVerseStore();
   const audio = useAudio();
+  const { pomodoro } = usePomodoro();
 
   const navigate = useCallback((page) => {
     setCurrentPage(page);
@@ -54,6 +56,7 @@ export default function App() {
     sidebarOpen, toggleSidebar, closeSidebar,
     ...verseStore,
     ...audio,
+    pomodoro,
   };
 
   return (

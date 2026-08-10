@@ -1,10 +1,11 @@
 import React from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb } from 'lucide-react';
+import { formatPomoTime } from '../hooks/usePomodoro';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer } from 'lucide-react';
 
 export default function Sidebar() {
-  const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, selectedVerses } = useApp();
+  const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, selectedVerses, pomodoro } = useApp();
   const selCount = Object.keys(selectedVerses).length;
 
   const isActive = (page) => currentPage === page;
@@ -20,6 +21,17 @@ export default function Sidebar() {
       </div>
 
       <div id="sidebar-nav">
+        <div
+          className={`nav-item nav-item-pomodoro ${pomodoro.running ? 'running' : ''}`}
+          onClick={pomodoro.toggleOpen}
+        >
+          <span className="nav-icon"><Timer size={14} strokeWidth={2} /></span>
+          <span style={{ flex: 1 }}>Pomodoro</span>
+          {pomodoro.running && (
+            <span className="pomodoro-nav-time">{formatPomoTime(pomodoro.secondsLeft)}</span>
+          )}
+        </div>
+
         <div className="nav-section-label">Navigation</div>
 
         <div
