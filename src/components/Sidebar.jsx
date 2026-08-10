@@ -5,8 +5,13 @@ import { formatPomoTime } from '../hooks/usePomodoro';
 import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer } from 'lucide-react';
 
 export default function Sidebar() {
-  const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, selectedVerses, pomodoro } = useApp();
+  const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, closeSidebar, selectedVerses, pomodoro } = useApp();
   const selCount = Object.keys(selectedVerses).length;
+
+  function openPomodoro() {
+    closeSidebar();
+    pomodoro.toggleOpen();
+  }
 
   const isActive = (page) => currentPage === page;
   const isChapActive = (num) => currentPage === 'lecture' && currentChapter === num;
@@ -23,7 +28,7 @@ export default function Sidebar() {
       <div id="sidebar-nav">
         <div
           className={`nav-item nav-item-pomodoro ${pomodoro.running ? 'running' : ''}`}
-          onClick={pomodoro.toggleOpen}
+          onClick={openPomodoro}
         >
           <span className="nav-icon"><Timer size={14} strokeWidth={2} /></span>
           <span style={{ flex: 1 }}>Pomodoro</span>
