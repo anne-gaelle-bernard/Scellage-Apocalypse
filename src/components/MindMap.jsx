@@ -145,7 +145,11 @@ export default function MindMap() {
     const nodeW = rect.width < 400 ? 100 : 130;
     const x = Math.max(0, Math.min(rect.width - nodeW, clientX - rect.left - dragRef.current.offsetX));
     const y = Math.max(0, Math.min(rect.height - 60, clientY - rect.top - dragRef.current.offsetY));
-    setData(d => ({ ...d, nodes: d.nodes.map(n => n.id === dragRef.current.id ? { ...n, x, y } : n) }));
+    // Snapshot the id now — dragRef.current can be nulled by endDrag() before
+    // this updater actually runs (touchend firing right after a fast touchmove
+    // on mobile), which would otherwise crash on `dragRef.current.id`.
+    const draggedId = dragRef.current.id;
+    setData(d => ({ ...d, nodes: d.nodes.map(n => n.id === draggedId ? { ...n, x, y } : n) }));
   }
 
   function endDrag() { dragRef.current = null; }
