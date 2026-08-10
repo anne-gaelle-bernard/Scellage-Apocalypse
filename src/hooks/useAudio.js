@@ -23,6 +23,14 @@ function isNaturalVoice(voice) {
   return /natural|online|network/i.test(voice.name) || voice.localService === false;
 }
 
+// On Android, "Google français" (Google's own TTS engine voice) is usually
+// noticeably better than the phone manufacturer's default voice — prefer it
+// explicitly when picking a default, and let people still choose any other
+// installed voice manually from the picker.
+function isGoogleVoice(voice) {
+  return /google/i.test(voice.name);
+}
+
 // ─── Web: browser Web Speech API (window.speechSynthesis) ─────────────────────
 // True pause/resume, used outside the packaged app (desktop + mobile browsers).
 function useWebAudio() {
@@ -56,13 +64,14 @@ function useWebAudio() {
         .sort((a, b) => (isNaturalVoice(b) ? 1 : 0) - (isNaturalVoice(a) ? 1 : 0));
       setVoices(list);
 
-      // Restore or auto-select — prefer a natural voice by default
+      // Restore or auto-select — prefer Google's French voice, then any natural voice
       const storedURI = localStorage.getItem('apoc_voice');
       const match   = storedURI ? list.find(v => v.voiceURI === storedURI) : null;
+      const google  = list.find(v => v.lang === 'fr-FR' && isGoogleVoice(v));
       const natural = list.find(v => v.lang === 'fr-FR' && isNaturalVoice(v));
       const local   = list.find(v => v.lang === 'fr-FR');
       const anyFr   = list.find(v => v.lang.startsWith('fr'));
-      voiceRef.current = match || natural || local || anyFr || list[0] || null;
+      voiceRef.current = match || google || natural || local || anyFr || list[0] || null;
 
       if (voiceRef.current && !storedURI) {
         setSelectedVoiceURI(voiceRef.current.voiceURI);
@@ -244,17 +253,19 @@ function useNativeAudio() {
 
       const fr = all.filter(v => v.lang.startsWith('fr'));
       setNeedsVoiceInstall(fr.length === 0);
+      const rank = (v) => (isGoogleVoice(v) ? 2 : isNaturalVoice(v) ? 1 : 0);
       const list = (fr.length > 0 ? fr : all)
         .slice()
-        .sort((a, b) => (isNaturalVoice(b) ? 1 : 0) - (isNaturalVoice(a) ? 1 : 0));
+        .sort((a, b) => rank(b) - rank(a));
       setVoices(list);
 
       const storedURI = localStorage.getItem('apoc_voice');
       const match   = storedURI ? list.find(v => v.voiceURI === storedURI) : null;
+      const google  = list.find(v => v.lang === 'fr-FR' && isGoogleVoice(v));
       const natural = list.find(v => v.lang === 'fr-FR' && isNaturalVoice(v));
       const local   = list.find(v => v.lang === 'fr-FR');
       const anyFr   = list.find(v => v.lang.startsWith('fr'));
-      voiceRef.current = match || natural || local || anyFr || list[0] || null;
+      voiceRef.current = match || google || natural || local || anyFr || list[0] || null;
 
       if (voiceRef.current && !storedURI) {
         setSelectedVoiceURI(voiceRef.current.voiceURI);

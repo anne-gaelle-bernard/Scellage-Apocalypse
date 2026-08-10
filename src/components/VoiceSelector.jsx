@@ -58,7 +58,7 @@ export default function VoiceSelector() {
                 <span className="voice-option-name">{cleanVoiceName(v)}</span>
                 <span className="voice-option-meta">
                   {v.lang}
-                  {isNaturalVoice(v)
+                  {(isNaturalVoice(v) || /google/i.test(v.name))
                     ? <span className="voice-local-badge voice-natural-badge">naturelle</span>
                     : <span className="voice-local-badge">standard</span>}
                 </span>
