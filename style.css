@@ -2861,9 +2861,11 @@ body.player-open .page { padding-bottom: 140px; }
    POMODORO TIMER
 ════════════════════════════════════════════════════ */
 .pomodoro-wrap {
-  position: fixed; right: 20px; bottom: 20px; z-index: 320;
+  position: fixed; right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 320;
 }
-body.player-open .pomodoro-wrap { bottom: 132px; }
+body.player-open .pomodoro-wrap { bottom: calc(132px + env(safe-area-inset-bottom, 0px)); }
 
 .pomodoro-fab {
   display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -2963,8 +2965,11 @@ body.player-open .pomodoro-wrap { bottom: 132px; }
 .pomodoro-cycles { font-size: 11px; color: var(--ink-3); font-weight: 600; }
 
 @media (max-width: 768px) {
-  .pomodoro-wrap { right: 14px; bottom: 14px; }
-  body.player-open .pomodoro-wrap { bottom: 92px; }
+  /* Extra clearance above the phone's system nav/gesture bar, which
+     env(safe-area-inset-bottom) alone doesn't always fully account for
+     on Android — the button was getting cut off/blocked by it. */
+  .pomodoro-wrap { right: 14px; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+  body.player-open .pomodoro-wrap { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ════════════════════════════════════════════════════
