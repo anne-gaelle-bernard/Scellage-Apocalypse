@@ -1,9 +1,9 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQRStore } from '../hooks/useQRStore';
 import { useSrsStore } from '../hooks/useSrsStore';
 import {
-  Plus, Trash2, ClipboardPaste, Image, CheckCircle, XCircle,
-  RotateCcw, Sparkles, AlertCircle, Clock,
+  Trash2, CheckCircle, XCircle,
+  RotateCcw, Sparkles, Clock,
 } from 'lucide-react';
 
 // ─── Text parser ──────────────────────────────────────────────────────────────
@@ -90,54 +90,14 @@ function parseQA(raw) {
   return fallback;
 }
 
-// ─── OCR via OCR.space free API ───────────────────────────────────────────────
-async function ocrImage(file) {
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('apikey', 'helloworld');
-  fd.append('language', 'fre');
-  fd.append('isOverlayRequired', 'false');
-  fd.append('detectOrientation', 'true');
-  fd.append('scale', 'true');
-  const res = await fetch('https://api.ocr.space/parse/image', { method: 'POST', body: fd });
-  if (!res.ok) throw new Error('Erreur réseau OCR');
-  const json = await res.json();
-  if (json.IsErroredOnProcessing) throw new Error(json.ErrorMessage?.[0] || 'Erreur OCR');
-  return json.ParsedResults?.[0]?.ParsedText || '';
-}
-
 // ─── Add tab ──────────────────────────────────────────────────────────────────
 function AddTab({ onAdded }) {
-  const [mode, setMode]         = useState(null); // 'text' | 'image'
   const [rawText, setRawText]   = useState('');
   const [preview, setPreview]   = useState(null); // [{q,a}]
-  const [imgSrc, setImgSrc]     = useState(null);
-  const [ocring, setOcring]     = useState(false);
-  const [ocrErr, setOcrErr]     = useState(null);
-  const fileRef                 = useRef(null);
 
   function handleParse() {
     const pairs = parseQA(rawText);
     setPreview(pairs);
-  }
-
-  async function handleImageFile(file) {
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    setImgSrc(url);
-    setOcring(true);
-    setOcrErr(null);
-    setRawText('');
-    setPreview(null);
-    try {
-      const text = await ocrImage(file);
-      setRawText(text);
-      setPreview(parseQA(text));
-    } catch (e) {
-      setOcrErr(e.message);
-    } finally {
-      setOcring(false);
-    }
   }
 
   function updatePair(i, field, val) {
@@ -156,76 +116,27 @@ function AddTab({ onAdded }) {
     const valid = (preview || []).filter(p => p.q.trim() && p.a.trim());
     if (!valid.length) return;
     onAdded(valid);
-    setMode(null); setRawText(''); setPreview(null); setImgSrc(null);
+    setRawText(''); setPreview(null);
   }
-
-  if (!mode) return (
-    <div className="qr-add-methods">
-      <button className="qr-method-card" onClick={() => setMode('text')}>
-        <ClipboardPaste size={28} strokeWidth={1.5} />
-        <span className="qrm-title">Coller du texte</span>
-        <span className="qrm-sub">Copiez vos questions depuis n'importe quelle source</span>
-      </button>
-      <button className="qr-method-card" onClick={() => { setMode('image'); setTimeout(() => fileRef.current?.click(), 50); }}>
-        <Image size={28} strokeWidth={1.5} />
-        <span className="qrm-title">Importer une image</span>
-        <span className="qrm-sub">Photo d'une fiche, capture d'écran : l'IA extrait le texte</span>
-      </button>
-      <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }}
-        onChange={e => handleImageFile(e.target.files?.[0])} />
-    </div>
-  );
 
   return (
     <div className="qr-add-flow">
-      <button className="qr-back-btn" onClick={() => { setMode(null); setPreview(null); setRawText(''); setImgSrc(null); setOcrErr(null); }}>
-        ← Retour
-      </button>
-
-      {mode === 'image' && (
-        <div className="qr-img-section">
-          {imgSrc && <img src={imgSrc} alt="Importée" className="qr-img-preview" />}
-          <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }}
-            onChange={e => handleImageFile(e.target.files?.[0])} />
-          {!imgSrc && (
-            <button className="qr-img-pick" onClick={() => fileRef.current?.click()}>
-              <Image size={20} /> Choisir une image
-            </button>
-          )}
-          {imgSrc && <button className="qr-img-change btn-outline" onClick={() => fileRef.current?.click()}>Changer d'image</button>}
-          {ocring && (
-            <div className="qr-ocr-status">
-              <span className="qr-ocr-spinner" />
-              Lecture du texte en cours…
-            </div>
-          )}
-          {ocrErr && (
-            <div className="qr-ocr-err">
-              <AlertCircle size={16} />
-              {ocrErr} Vérifiez votre connexion internet.
-            </div>
-          )}
-        </div>
-      )}
-
-      {mode === 'text' && (
-        <div className="qr-text-section">
-          <label className="qr-label">
-            Collez vos questions ici&thinsp;:
-            <span className="qr-format-hint">Formats reconnus : Q: / R:, lignes alternées, blocs séparés par une ligne vide, onglets…</span>
-          </label>
-          <textarea
-            className="qr-ta"
-            value={rawText}
-            onChange={e => { setRawText(e.target.value); setPreview(null); }}
-            placeholder={"Q: Qu'est-ce que la grâce ?\nR: Le don gratuit de Dieu.\n\nQ: ...\nR: ..."}
-            rows={8}
-          />
-          <button className="btn-gold qr-parse-btn" onClick={handleParse} disabled={!rawText.trim()}>
-            <Sparkles size={15} /> Analyser le texte
-          </button>
-        </div>
-      )}
+      <div className="qr-text-section">
+        <label className="qr-label">
+          Collez vos questions ici&thinsp;:
+          <span className="qr-format-hint">Formats reconnus : Q: / R:, lignes alternées, blocs séparés par une ligne vide, onglets…</span>
+        </label>
+        <textarea
+          className="qr-ta"
+          value={rawText}
+          onChange={e => { setRawText(e.target.value); setPreview(null); }}
+          placeholder={"Q: Qu'est-ce que la grâce ?\nR: Le don gratuit de Dieu.\n\nQ: ...\nR: ..."}
+          rows={8}
+        />
+        <button className="btn-gold qr-parse-btn" onClick={handleParse} disabled={!rawText.trim()}>
+          <Sparkles size={15} /> Analyser le texte
+        </button>
+      </div>
 
       {/* Preview / edit */}
       {preview !== null && (
@@ -511,7 +422,7 @@ export default function QRPage() {
         <span className="training-header-eyebrow">Mémorisation</span>
         <div className="training-header-title">Questions &amp; Réponses</div>
         <p className="training-header-sub">
-          Importez vos questions par texte ou photo et révisez-les comme des cartes mémoire.
+          Collez vos questions et révisez-les comme des cartes mémoire.
         </p>
       </div>
 
