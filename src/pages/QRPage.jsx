@@ -3,204 +3,77 @@ import { useQRStore } from '../hooks/useQRStore';
 import { useSrsStore } from '../hooks/useSrsStore';
 import {
   Trash2, CheckCircle, XCircle,
-  RotateCcw, Sparkles, Clock,
+  RotateCcw, Clock,
 } from 'lucide-react';
-
-// ─── Text parser ──────────────────────────────────────────────────────────────
-function parseQA(raw) {
-  const text = raw.trim();
-  if (!text) return [];
-
-  // 1) Two groups: a block of N questions, a blank line, then a block of
-  //    their N answers in the same order (rather than alternating Q/R).
-  const rawBlocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
-  if (rawBlocks.length === 2) {
-    const qLines = rawBlocks[0].split('\n').map(l => l.trim()).filter(Boolean);
-    const aLines = rawBlocks[1].split('\n').map(l => l.trim()).filter(Boolean);
-    const hasLabels = [...qLines, ...aLines].some(l => /^(q|question|r|a|réponse|reponse|answer)\s*[:.)\-]/i.test(l));
-    if (!hasLabels && qLines.length > 1 && qLines.length === aLines.length) {
-      return qLines.map((q, i) => ({ q: q.replace(/^\d+[.)]\s*/, ''), a: aLines[i] }));
-    }
-  }
-
-  // 2) Tab-separated pairs (one per line): "question\tréponse"
-  if (text.includes('\t')) {
-    const pairs = text.split('\n')
-      .map(l => l.split('\t'))
-      .filter(p => p.length >= 2 && p[0].trim())
-      .map(p => ({ q: p[0].trim(), a: p.slice(1).join('\t').trim() }));
-    if (pairs.length) return pairs;
-  }
-
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-
-  // 3) Labeled lines: Q: / R: or Question: / Réponse:
-  const isQLine = l => /^(q|question)\s*[:.)\-]/i.test(l);
-  const isALine = l => /^(r|a|réponse|reponse|answer)\s*[:.)\-]/i.test(l);
-  if (lines.some(isQLine)) {
-    const pairs = [];
-    let cur = null;
-    let field = null; // 'q' | 'a' — tracks which field continuation lines belong to
-    for (const l of lines) {
-      if (isQLine(l)) {
-        if (cur && cur.q) pairs.push(cur);
-        cur = { q: l.replace(/^[^:.)\-]+[:.)\-]\s*/i, ''), a: '' };
-        field = 'q';
-      } else if (isALine(l) && cur) {
-        cur.a = l.replace(/^[^:.)\-]+[:.)\-]\s*/i, '');
-        field = 'a';
-      } else if (cur && field === 'q') {
-        cur.q += ' ' + l;
-      } else if (cur && field === 'a') {
-        cur.a += (cur.a ? ' ' : '') + l;
-      }
-    }
-    if (cur && cur.q) pairs.push(cur);
-    if (pairs.filter(p => p.q && p.a).length) return pairs.filter(p => p.q && p.a);
-  }
-
-  // 4) Unlabeled: a line ending in "?" (or a numbered item) marks the end of a
-  //    question — any lines before it with no answer yet are folded into the
-  //    question (handles multi-line questions), and every line after it, until
-  //    the next question, becomes part of the answer.
-  const isQMark = l => l.endsWith('?') || /^\d+[.)]\s*\S/.test(l);
-  if (lines.some(isQMark)) {
-    const qPairs = [];
-    let cur = null;
-    let qBuffer = [];
-    for (const l of lines) {
-      if (isQMark(l)) {
-        if (cur && cur.q && cur.a) qPairs.push(cur);
-        const qText = [...qBuffer, l].join(' ').replace(/^\d+[.)]\s*/, '');
-        cur = { q: qText, a: '' };
-        qBuffer = [];
-      } else if (cur) {
-        cur.a += (cur.a ? ' ' : '') + l;
-      } else {
-        qBuffer.push(l);
-      }
-    }
-    if (cur && cur.q && cur.a) qPairs.push(cur);
-    if (qPairs.length) return qPairs;
-  }
-
-  // 5) Blank-line separated blocks: first line = Q, rest = A
-  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
-  if (blocks.length > 1) {
-    const pairs = blocks.map(b => {
-      const bLines = b.split('\n').map(l => l.trim()).filter(Boolean);
-      return { q: bLines[0], a: bLines.slice(1).join(' ') };
-    }).filter(p => p.q && p.a);
-    if (pairs.length) return pairs;
-  }
-
-  // 6) Fallback: pairs of consecutive lines
-  const fallback = [];
-  for (let i = 0; i < lines.length - 1; i += 2) {
-    fallback.push({ q: lines[i], a: lines[i + 1] });
-  }
-  return fallback;
-}
 
 // ─── Add tab ──────────────────────────────────────────────────────────────────
 function AddTab({ onAdded }) {
-  const [rawText, setRawText]   = useState('');
-  const [preview, setPreview]   = useState(null); // [{q,a}]
-
-  function handleParse() {
-    const pairs = parseQA(rawText);
-    setPreview(pairs);
-  }
+  const [pairs, setPairs] = useState([{ q: '', a: '' }]);
 
   function updatePair(i, field, val) {
-    setPreview(prev => prev.map((p, j) => j === i ? { ...p, [field]: val } : p));
+    setPairs(prev => prev.map((p, j) => j === i ? { ...p, [field]: val } : p));
   }
 
   function removePair(i) {
-    setPreview(prev => prev.filter((_, j) => j !== i));
+    setPairs(prev => prev.filter((_, j) => j !== i));
   }
 
   function addBlank() {
-    setPreview(prev => [...(prev || []), { q: '', a: '' }]);
+    setPairs(prev => [...prev, { q: '', a: '' }]);
   }
 
   function confirmAdd() {
-    const valid = (preview || []).filter(p => p.q.trim() && p.a.trim());
+    const valid = pairs.filter(p => p.q.trim() && p.a.trim());
     if (!valid.length) return;
     onAdded(valid);
-    setRawText(''); setPreview(null);
+    setPairs([{ q: '', a: '' }]);
   }
+
+  const validCount = pairs.filter(p => p.q.trim() && p.a.trim()).length;
 
   return (
     <div className="qr-add-flow">
-      <div className="qr-text-section">
-        <label className="qr-label">
-          Collez vos questions ici&thinsp;:
-          <span className="qr-format-hint">Formats reconnus : Q: / R:, lignes alternées, blocs séparés par une ligne vide, onglets…</span>
-        </label>
-        <textarea
-          className="qr-ta"
-          value={rawText}
-          onChange={e => { setRawText(e.target.value); setPreview(null); }}
-          placeholder={"Q: Qu'est-ce que la grâce ?\nR: Le don gratuit de Dieu.\n\nQ: ...\nR: ..."}
-          rows={8}
-        />
-        <button className="btn-gold qr-parse-btn" onClick={handleParse} disabled={!rawText.trim()}>
-          <Sparkles size={15} /> Analyser le texte
-        </button>
-      </div>
-
-      {/* Preview / edit */}
-      {preview !== null && (
-        <div className="qr-preview">
-          <div className="qr-preview-header">
-            <span className="qr-preview-count">
-              {preview.filter(p => p.q && p.a).length} paire{preview.filter(p=>p.q&&p.a).length!==1?'s':''} détectée{preview.filter(p=>p.q&&p.a).length!==1?'s':''}
-            </span>
-            <button className="qr-add-pair-btn" onClick={addBlank}>+ Ajouter une paire</button>
-          </div>
-
-          {preview.length === 0 && (
-            <p className="qr-no-pairs">Aucune paire Q/R détectée. Ajoutez-en manuellement ou modifiez le texte.</p>
-          )}
-
-          {preview.map((pair, i) => (
-            <div key={i} className="qr-pair-row">
-              <div className="qr-pair-fields">
-                <div className="qr-pair-field">
-                  <span className="qr-pair-badge qr-q">Q</span>
-                  <input
-                    className="qr-pair-input"
-                    value={pair.q}
-                    onChange={e => updatePair(i, 'q', e.target.value)}
-                    placeholder="Question…"
-                  />
-                </div>
-                <div className="qr-pair-field">
-                  <span className="qr-pair-badge qr-a">R</span>
-                  <textarea
-                    className="qr-pair-input qr-pair-ta"
-                    value={pair.a}
-                    onChange={e => updatePair(i, 'a', e.target.value)}
-                    placeholder="Réponse…"
-                    rows={2}
-                  />
-                </div>
+      <div className="qr-preview">
+        {pairs.map((pair, i) => (
+          <div key={i} className="qr-pair-row">
+            <div className="qr-pair-fields">
+              <div className="qr-pair-field">
+                <span className="qr-pair-badge qr-q">Q</span>
+                <input
+                  className="qr-pair-input"
+                  value={pair.q}
+                  onChange={e => updatePair(i, 'q', e.target.value)}
+                  placeholder="Question…"
+                />
               </div>
+              <div className="qr-pair-field">
+                <span className="qr-pair-badge qr-a">R</span>
+                <textarea
+                  className="qr-pair-input qr-pair-ta"
+                  value={pair.a}
+                  onChange={e => updatePair(i, 'a', e.target.value)}
+                  placeholder="Réponse…"
+                  rows={2}
+                />
+              </div>
+            </div>
+            {pairs.length > 1 && (
               <button className="qr-rm-btn" onClick={() => removePair(i)} title="Supprimer">
                 <Trash2 size={14} />
               </button>
-            </div>
-          ))}
+            )}
+          </div>
+        ))}
 
-          {preview.filter(p => p.q.trim() && p.a.trim()).length > 0 && (
-            <button className="btn-gold qr-confirm-btn" onClick={confirmAdd}>
-              <CheckCircle size={16} />
-              Ajouter {preview.filter(p => p.q.trim() && p.a.trim()).length} question{preview.filter(p=>p.q.trim()&&p.a.trim()).length!==1?'s':''}
-            </button>
-          )}
-        </div>
-      )}
+        <button className="qr-add-pair-btn" onClick={addBlank}>+ Ajouter une question</button>
+
+        {validCount > 0 && (
+          <button className="btn-gold qr-confirm-btn" onClick={confirmAdd}>
+            <CheckCircle size={16} />
+            Ajouter {validCount} question{validCount !== 1 ? 's' : ''}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
