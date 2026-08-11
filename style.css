@@ -71,8 +71,13 @@ body {
   color: var(--ink);
   font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.6;
-  display: flex; min-height: 100vh;
+  display: flex; min-height: 100vh; min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
+  /* iOS Safari: stop the pull-to-refresh/rubber-band bounce from flashing
+     the native page background behind the app, especially in standalone
+     (installed PWA) mode where it looks broken rather than like a browser. */
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
 #root { flex: 1; min-width: 0; }
 
@@ -88,7 +93,7 @@ body {
 ════════════════════════════════════════════════════ */
 #sidebar {
   width: var(--sidebar); min-width: var(--sidebar);
-  height: 100vh; position: fixed; top: 0; left: 0;
+  height: 100vh; height: 100dvh; position: fixed; top: 0; left: 0;
   background: var(--surface); border-right: 1.5px solid var(--line);
   display: flex; flex-direction: column; overflow: hidden;
   z-index: 200;
@@ -1691,6 +1696,7 @@ body.player-open .page { padding-bottom: 140px; }
   #sidebar {
     transform: translateX(-100%); box-shadow: none;
     height: calc(100vh - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
+    height: calc(100dvh - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
     overflow-y: auto;
   }
   #sidebar.open { transform: translateX(0); box-shadow: var(--e5); }
@@ -1723,6 +1729,7 @@ body.player-open .page { padding-bottom: 140px; }
   }
   .page.active {
     height: calc(100vh - var(--topbar) - env(safe-area-inset-top, 0px) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
+    height: calc(100dvh - var(--topbar) - env(safe-area-inset-top, 0px) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
   }
 
   /* Player bar: above bottom nav + safe area */
@@ -1758,6 +1765,7 @@ body.player-open .page { padding-bottom: 140px; }
   /* ── Home: beautiful mobile hero ── */
   .hero {
     min-height: calc(100vh - var(--topbar) - env(safe-area-inset-top, 0px) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
+    min-height: calc(100dvh - var(--topbar) - env(safe-area-inset-top, 0px) - var(--bottomnav) - env(safe-area-inset-bottom, 0px));
     padding: 44px 28px 32px;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
@@ -3165,4 +3173,18 @@ body.player-open .pomodoro-wrap { bottom: 132px; }
   .mnemo-card-text { font-size: 14px; }
   .mnemo-options { gap: 6px; }
   .mnemo-option-btn { padding: 7px 11px; font-size: 11.5px; }
+}
+
+/* ════════════════════════════════════════════════════
+   iOS SAFARI FIXES
+════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* iOS Safari auto-zooms the whole page when a focused form control has a
+     computed font-size under 16px — every text input, textarea and select
+     across the app needs to clear that floor on phones, or every tap into
+     a field on iPhone jerks the viewport in and the user has to manually
+     pinch back out. */
+  input, textarea, select {
+    font-size: max(16px, 1em) !important;
+  }
 }
