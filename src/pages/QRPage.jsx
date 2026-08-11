@@ -11,7 +11,19 @@ function parseQA(raw) {
   const text = raw.trim();
   if (!text) return [];
 
-  // 1) Tab-separated pairs (one per line): "question\tréponse"
+  // 1) Two groups: a block of N questions, a blank line, then a block of
+  //    their N answers in the same order (rather than alternating Q/R).
+  const rawBlocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  if (rawBlocks.length === 2) {
+    const qLines = rawBlocks[0].split('\n').map(l => l.trim()).filter(Boolean);
+    const aLines = rawBlocks[1].split('\n').map(l => l.trim()).filter(Boolean);
+    const hasLabels = [...qLines, ...aLines].some(l => /^(q|question|r|a|réponse|reponse|answer)\s*[:.)\-]/i.test(l));
+    if (!hasLabels && qLines.length > 1 && qLines.length === aLines.length) {
+      return qLines.map((q, i) => ({ q: q.replace(/^\d+[.)]\s*/, ''), a: aLines[i] }));
+    }
+  }
+
+  // 2) Tab-separated pairs (one per line): "question\tréponse"
   if (text.includes('\t')) {
     const pairs = text.split('\n')
       .map(l => l.split('\t'))
@@ -22,7 +34,7 @@ function parseQA(raw) {
 
   const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
 
-  // 2) Labeled lines: Q: / R: or Question: / Réponse:
+  // 3) Labeled lines: Q: / R: or Question: / Réponse:
   const isQLine = l => /^(q|question)\s*[:.)\-]/i.test(l);
   const isALine = l => /^(r|a|réponse|reponse|answer)\s*[:.)\-]/i.test(l);
   if (lines.some(isQLine)) {
@@ -47,7 +59,7 @@ function parseQA(raw) {
     if (pairs.filter(p => p.q && p.a).length) return pairs.filter(p => p.q && p.a);
   }
 
-  // 3) Unlabeled: a line ending in "?" (or a numbered item) marks the end of a
+  // 4) Unlabeled: a line ending in "?" (or a numbered item) marks the end of a
   //    question — any lines before it with no answer yet are folded into the
   //    question (handles multi-line questions), and every line after it, until
   //    the next question, becomes part of the answer.
@@ -72,7 +84,7 @@ function parseQA(raw) {
     if (qPairs.length) return qPairs;
   }
 
-  // 4) Blank-line separated blocks: first line = Q, rest = A
+  // 5) Blank-line separated blocks: first line = Q, rest = A
   const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
   if (blocks.length > 1) {
     const pairs = blocks.map(b => {
@@ -82,7 +94,7 @@ function parseQA(raw) {
     if (pairs.length) return pairs;
   }
 
-  // 5) Fallback: pairs of consecutive lines
+  // 6) Fallback: pairs of consecutive lines
   const fallback = [];
   for (let i = 0; i < lines.length - 1; i += 2) {
     fallback.push({ q: lines[i], a: lines[i + 1] });
