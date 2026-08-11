@@ -1,13 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useApp } from '../App';
 import { PRESETS, formatPomoTime } from '../hooks/usePomodoro';
-import { Timer, Play, Pause, RotateCcw, X, Check } from 'lucide-react';
-
-function clampMin(v, fallback) {
-  const n = parseInt(v, 10);
-  if (!Number.isFinite(n)) return fallback;
-  return Math.max(1, Math.min(180, n));
-}
+import { Timer, Play, Pause, RotateCcw, X } from 'lucide-react';
 
 export default function PomodoroTimer() {
   const { pomodoro: p } = useApp();
@@ -57,7 +51,7 @@ export default function PomodoroTimer() {
             ))}
             <button
               className={`pomodoro-preset-btn ${p.presetKey === 'custom' ? 'active' : ''}`}
-              onClick={() => p.setCustomOpen(o => !o)}
+              onClick={p.selectCustom}
             >
               {p.presetKey === 'custom' ? `${p.customWork} / ${p.customBrk}` : 'Perso'}
             </button>
@@ -68,22 +62,19 @@ export default function PomodoroTimer() {
               <label>
                 <span>Travail</span>
                 <input
-                  type="number" min="1" max="180" value={p.customWork}
-                  onChange={e => p.setCustomWork(clampMin(e.target.value, p.customWork))}
+                  type="number" inputMode="numeric" min="1" max="180" value={p.customWork}
+                  onChange={e => p.updateCustomWork(e.target.value)}
                 />
                 <span>min</span>
               </label>
               <label>
                 <span>Pause</span>
                 <input
-                  type="number" min="1" max="180" value={p.customBrk}
-                  onChange={e => p.setCustomBrk(clampMin(e.target.value, p.customBrk))}
+                  type="number" inputMode="numeric" min="1" max="180" value={p.customBrk}
+                  onChange={e => p.updateCustomBrk(e.target.value)}
                 />
                 <span>min</span>
               </label>
-              <button className="pomodoro-custom-apply" onClick={p.applyCustom} title="Appliquer">
-                <Check size={14} />
-              </button>
             </div>
           )}
 

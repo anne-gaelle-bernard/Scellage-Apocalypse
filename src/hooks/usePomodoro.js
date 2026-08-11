@@ -35,8 +35,8 @@ function clampMin(v, fallback) {
 export function usePomodoro() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [presetKey, setPreset]    = useState(() => localStorage.getItem('apoc_pomo_preset') || '25-5');
-  const [customWork, setCustomWork] = useState(() => clampMin(localStorage.getItem('apoc_pomo_custom_work'), 25));
-  const [customBrk, setCustomBrk]   = useState(() => clampMin(localStorage.getItem('apoc_pomo_custom_brk'), 5));
+  const [customWork, setCustomWorkState] = useState(() => clampMin(localStorage.getItem('apoc_pomo_custom_work'), 25));
+  const [customBrk, setCustomBrkState]   = useState(() => clampMin(localStorage.getItem('apoc_pomo_custom_brk'), 5));
   const [customOpen, setCustomOpen] = useState(false);
 
   const getPreset = useCallback((key) => (
@@ -85,17 +85,39 @@ export function usePomodoro() {
   const changePreset = useCallback((key) => {
     setPreset(key);
     localStorage.setItem('apoc_pomo_preset', key);
-    setCustomOpen(false);
     setRunning(false);
     setPhase('work');
     setSecondsLeft(getPreset(key).work);
   }, [getPreset]);
 
-  const applyCustom = useCallback(() => {
-    localStorage.setItem('apoc_pomo_custom_work', String(customWork));
-    localStorage.setItem('apoc_pomo_custom_brk', String(customBrk));
-    changePreset('custom');
-  }, [customWork, customBrk, changePreset]);
+  // Selecting "Perso" applies the custom duration immediately (using
+  // whatever was last saved) instead of requiring a separate "Appliquer"
+  // step — that extra tap was easy to miss, especially on mobile, leaving
+  // Démarrer silently running the previous preset instead of the custom one.
+  const selectCustom = useCallback(() => {
+    setCustomOpen(o => !o);
+    if (presetKey !== 'custom') changePreset('custom');
+  }, [presetKey, changePreset]);
+
+  // Typing new values updates the running duration live (only while the
+  // timer isn't already counting down, so an active session isn't disrupted).
+  const updateCustomWork = useCallback((v) => {
+    setCustomWorkState(prev => {
+      const mins = clampMin(v, prev);
+      localStorage.setItem('apoc_pomo_custom_work', String(mins));
+      if (presetKey === 'custom' && !running && phase === 'work') setSecondsLeft(mins * 60);
+      return mins;
+    });
+  }, [presetKey, running, phase]);
+
+  const updateCustomBrk = useCallback((v) => {
+    setCustomBrkState(prev => {
+      const mins = clampMin(v, prev);
+      localStorage.setItem('apoc_pomo_custom_brk', String(mins));
+      if (presetKey === 'custom' && !running && phase === 'break') setSecondsLeft(mins * 60);
+      return mins;
+    });
+  }, [presetKey, running, phase]);
 
   const reset = useCallback(() => {
     setRunning(false);
@@ -109,8 +131,8 @@ export function usePomodoro() {
   return {
     pomodoro: {
       panelOpen, toggleOpen, closeOpen,
-      presetKey, changePreset,
-      customWork, setCustomWork, customBrk, setCustomBrk, customOpen, setCustomOpen, applyCustom,
+      presetKey, changePreset, selectCustom,
+      customWork, customBrk, updateCustomWork, updateCustomBrk, customOpen,
       phase, secondsLeft, running, toggleRunning, cycles, reset,
       getPreset,
     },
