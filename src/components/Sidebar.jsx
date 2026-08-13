@@ -49,16 +49,16 @@ export default function Sidebar() {
         </div>
 
         <div className="nav-divider" />
-        <button
-          className={`nav-section-label nav-section-toggle ${chaptersOpen ? 'open' : ''}`}
-          onClick={() => setChaptersOpen(o => !o)}
-        >
-          Chapitres
-          <ChevronDown size={12} strokeWidth={2.5} className="nav-section-chevron" />
-        </button>
+        <div className="chapters-section">
+          <button
+            className={`nav-section-label nav-section-toggle ${chaptersOpen ? 'open' : ''}`}
+            onClick={() => setChaptersOpen(o => !o)}
+          >
+            Chapitres
+            <ChevronDown size={12} strokeWidth={2.5} className="nav-section-chevron" />
+          </button>
 
-        {chaptersOpen && (
-          <div className="chapters-grid">
+          <div className={`chapters-grid ${chaptersOpen ? 'open' : ''}`}>
             {APOCALYPSE_LSG.chapitres.map(ch => (
               <div
                 key={ch.numero}
@@ -70,7 +70,7 @@ export default function Sidebar() {
               </div>
             ))}
           </div>
-        )}
+        </div>
       </div>
 
       <div id="sidebar-training">

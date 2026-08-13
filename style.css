@@ -218,8 +218,16 @@ body {
 }
 
 .chapters-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: none; grid-template-columns: repeat(5, 1fr);
   gap: 6px; padding: 4px 12px 8px;
+}
+.chapters-grid.open { display: grid; }
+
+/* Desktop/mouse: reveal on hover, no click needed. Touch devices have no
+   hover, so they keep relying on the click-toggled .open class above. */
+@media (hover: hover) and (pointer: fine) {
+  .chapters-section:hover .chapters-grid { display: grid; }
+  .chapters-section:hover .nav-section-chevron { transform: rotate(180deg); }
 }
 .chapter-cell {
   display: flex; align-items: center; justify-content: center;
