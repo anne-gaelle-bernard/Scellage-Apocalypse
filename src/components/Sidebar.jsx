@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
 import { formatPomoTime } from '../hooks/usePomodoro';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer } from 'lucide-react';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer, BookOpen } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, closeSidebar, selectedVerses, pomodoro } = useApp();
@@ -75,6 +75,7 @@ export default function Sidebar() {
             className="nav-section-toggle nav-section-toggle-btn"
             onClick={toggleChapters}
           >
+            <span className="nav-icon"><BookOpen size={14} strokeWidth={2} /></span>
             Chapitres
           </button>
 
