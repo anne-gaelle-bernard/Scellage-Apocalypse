@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
 import { formatPomoTime } from '../hooks/usePomodoro';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer, ChevronDown } from 'lucide-react';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, closeSidebar, selectedVerses, pomodoro } = useApp();
   const selCount = Object.keys(selectedVerses).length;
   const [chaptersOpen, setChaptersOpen] = useState(false);
+  const [flyoutPos, setFlyoutPos] = useState(null);
+  const chaptersRef = useRef(null);
+  const chaptersBtnRef = useRef(null);
+
+  useEffect(() => {
+    if (!chaptersOpen) return;
+    function handleClose(e) {
+      if (chaptersRef.current && !chaptersRef.current.contains(e.target)) setChaptersOpen(false);
+    }
+    document.addEventListener('mousedown', handleClose);
+    document.addEventListener('touchstart', handleClose, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handleClose);
+      document.removeEventListener('touchstart', handleClose);
+    };
+  }, [chaptersOpen]);
 
   function openPomodoro() {
     closeSidebar();
     pomodoro.toggleOpen();
+  }
+
+  function pickChapter(num) {
+    navigateToChapter(num);
+    setChaptersOpen(false);
+  }
+
+  function toggleChapters() {
+    if (!chaptersOpen && chaptersBtnRef.current) {
+      const r = chaptersBtnRef.current.getBoundingClientRect();
+      // On mobile the flyout drops down inline (position: static via CSS),
+      // so the fixed-position coordinates below only matter on desktop.
+      setFlyoutPos({ top: r.top, left: r.right + 8 });
+    }
+    setChaptersOpen(o => !o);
   }
 
   const isActive = (page) => currentPage === page;
@@ -49,27 +80,32 @@ export default function Sidebar() {
         </div>
 
         <div className="nav-divider" />
-        <div className="chapters-section">
+        <div className="chapters-section" ref={chaptersRef}>
           <button
-            className={`nav-section-label nav-section-toggle ${chaptersOpen ? 'open' : ''}`}
-            onClick={() => setChaptersOpen(o => !o)}
+            ref={chaptersBtnRef}
+            className="nav-section-toggle nav-section-toggle-btn"
+            onClick={toggleChapters}
           >
             Chapitres
-            <ChevronDown size={12} strokeWidth={2.5} className="nav-section-chevron" />
           </button>
 
-          <div className={`chapters-grid ${chaptersOpen ? 'open' : ''}`}>
-            {APOCALYPSE_LSG.chapitres.map(ch => (
-              <div
-                key={ch.numero}
-                className={`chapter-cell ${isChapActive(ch.numero) ? 'active' : ''}`}
-                onClick={() => navigateToChapter(ch.numero)}
-                title={ch.titre}
-              >
-                {ch.numero}
-              </div>
-            ))}
-          </div>
+          {chaptersOpen && (
+            <div
+              className="chapters-flyout"
+              style={flyoutPos ? { top: flyoutPos.top, left: flyoutPos.left } : undefined}
+            >
+              {APOCALYPSE_LSG.chapitres.map(ch => (
+                <div
+                  key={ch.numero}
+                  className={`chapter-cell ${isChapActive(ch.numero) ? 'active' : ''}`}
+                  onClick={() => pickChapter(ch.numero)}
+                  title={ch.titre}
+                >
+                  {ch.numero}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
