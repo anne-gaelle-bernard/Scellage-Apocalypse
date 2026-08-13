@@ -2,15 +2,36 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
 import { formatPomoTime } from '../hooks/usePomodoro';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer, BookOpen } from 'lucide-react';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer, BookOpen, ChevronDown } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, closeSidebar, selectedVerses, pomodoro } = useApp();
   const selCount = Object.keys(selectedVerses).length;
   const [chaptersOpen, setChaptersOpen] = useState(false);
   const [flyoutPos, setFlyoutPos] = useState(null);
+  const [hasMoreBelow, setHasMoreBelow] = useState(false);
   const chaptersRef = useRef(null);
   const chaptersBtnRef = useRef(null);
+  const sidebarRef = useRef(null);
+
+  // Mobile: the whole #sidebar scrolls as one column, so show a "there's
+  // more below" cue whenever it isn't scrolled all the way to the bottom.
+  useEffect(() => {
+    const el = sidebarRef.current;
+    if (!el) return;
+    function check() {
+      setHasMoreBelow(el.scrollHeight - el.scrollTop - el.clientHeight > 8);
+    }
+    check();
+    el.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    const t = setTimeout(check, 300); // after open transition / content settles
+    return () => {
+      el.removeEventListener('scroll', check);
+      window.removeEventListener('resize', check);
+      clearTimeout(t);
+    };
+  }, [sidebarOpen]);
 
   useEffect(() => {
     if (!chaptersOpen) return;
@@ -49,7 +70,7 @@ export default function Sidebar() {
   const isChapActive = (num) => currentPage === 'lecture' && currentChapter === num;
 
   return (
-    <nav id="sidebar" className={sidebarOpen ? 'open' : ''}>
+    <nav id="sidebar" ref={sidebarRef} className={sidebarOpen ? 'open' : ''}>
       <div id="sidebar-header">
         <div id="sidebar-logo">L'Apocalypse · LSG 1910</div>
         <div id="sidebar-title">
@@ -197,6 +218,12 @@ export default function Sidebar() {
           Notes &amp; Plan
         </div>
       </div>
+
+      {hasMoreBelow && (
+        <div className="sidebar-more-indicator" aria-hidden="true">
+          <ChevronDown size={14} strokeWidth={2.5} />
+        </div>
+      )}
     </nav>
   );
 }

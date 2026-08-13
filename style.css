@@ -208,6 +208,8 @@ body {
   font-variant-numeric: tabular-nums; flex-shrink: 0;
 }
 
+.sidebar-more-indicator { display: none; }
+
 .chapters-section { position: relative; }
 
 /* position: fixed (coordinates set inline from JS) so the panel escapes
@@ -1722,6 +1724,22 @@ body.player-open .page { padding-bottom: 140px; }
   }
   #main { margin-left: 0; width: 100%; }
   #menu-toggle { display: flex; }
+
+  /* "More below" cue: sticks to the bottom of the scrolling sidebar
+     while there's unscrolled content, telling you to keep scrolling. */
+  .sidebar-more-indicator {
+    position: sticky; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: center;
+    height: 30px; margin-top: -30px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, var(--surface) 65%);
+    color: var(--p-400);
+    animation: moreBelowBounce 1.4s ease-in-out infinite;
+  }
+  @keyframes moreBelowBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
 
   /* Topbar: safe area for notch / dynamic island */
   #topbar {
