@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../App';
 import { APOCALYPSE_LSG } from '../../data.js';
 import { formatPomoTime } from '../hooks/usePomodoro';
-import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer } from 'lucide-react';
+import { Home, BookMarked, Layers, PenLine, Mic, NotebookPen, Pencil, GraduationCap, HelpCircle, GitBranch, Lightbulb, Timer, ChevronDown } from 'lucide-react';
 
 export default function Sidebar() {
   const { currentPage, currentChapter, navigate, navigateToChapter, sidebarOpen, closeSidebar, selectedVerses, pomodoro } = useApp();
   const selCount = Object.keys(selectedVerses).length;
+  const [chaptersOpen, setChaptersOpen] = useState(false);
 
   function openPomodoro() {
     closeSidebar();
@@ -48,20 +49,28 @@ export default function Sidebar() {
         </div>
 
         <div className="nav-divider" />
-        <div className="nav-section-label">Chapitres</div>
+        <button
+          className={`nav-section-label nav-section-toggle ${chaptersOpen ? 'open' : ''}`}
+          onClick={() => setChaptersOpen(o => !o)}
+        >
+          Chapitres
+          <ChevronDown size={12} strokeWidth={2.5} className="nav-section-chevron" />
+        </button>
 
-        <div className="chapters-grid">
-          {APOCALYPSE_LSG.chapitres.map(ch => (
-            <div
-              key={ch.numero}
-              className={`chapter-cell ${isChapActive(ch.numero) ? 'active' : ''}`}
-              onClick={() => navigateToChapter(ch.numero)}
-              title={ch.titre}
-            >
-              {ch.numero}
-            </div>
-          ))}
-        </div>
+        {chaptersOpen && (
+          <div className="chapters-grid">
+            {APOCALYPSE_LSG.chapitres.map(ch => (
+              <div
+                key={ch.numero}
+                className={`chapter-cell ${isChapActive(ch.numero) ? 'active' : ''}`}
+                onClick={() => navigateToChapter(ch.numero)}
+                title={ch.titre}
+              >
+                {ch.numero}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div id="sidebar-training">

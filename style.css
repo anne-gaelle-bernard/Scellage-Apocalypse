@@ -159,6 +159,13 @@ body {
   text-transform: uppercase; color: var(--p-300);
   padding: 18px 18px 5px;
 }
+.nav-section-toggle {
+  display: flex; align-items: center; gap: 4px; width: 100%;
+  background: none; border: none; cursor: pointer;
+  font-family: inherit;
+}
+.nav-section-chevron { transition: transform var(--t-fast); }
+.nav-section-toggle.open .nav-section-chevron { transform: rotate(180deg); }
 
 .nav-item {
   display: flex; align-items: center; gap: 8px;
