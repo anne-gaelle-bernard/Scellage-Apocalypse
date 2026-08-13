@@ -96,6 +96,17 @@ export default function Sidebar() {
             </div>
           )}
         </div>
+
+        <div
+          className={`nav-item nav-item-pomodoro ${pomodoro.running ? 'running' : ''}`}
+          onClick={openPomodoro}
+        >
+          <span className="nav-icon"><Timer size={14} strokeWidth={2} /></span>
+          <span style={{ flex: 1 }}>Pomodoro</span>
+          {pomodoro.running && (
+            <span className="pomodoro-nav-time">{formatPomoTime(pomodoro.secondsLeft)}</span>
+          )}
+        </div>
       </div>
 
       <div id="sidebar-training">
@@ -183,17 +194,6 @@ export default function Sidebar() {
         >
           <span className="nav-icon"><NotebookPen size={14} strokeWidth={2} /></span>
           Notes &amp; Plan
-        </div>
-
-        <div
-          className={`nav-item nav-item-pomodoro ${pomodoro.running ? 'running' : ''}`}
-          onClick={openPomodoro}
-        >
-          <span className="nav-icon"><Timer size={14} strokeWidth={2} /></span>
-          <span style={{ flex: 1 }}>Pomodoro</span>
-          {pomodoro.running && (
-            <span className="pomodoro-nav-time">{formatPomoTime(pomodoro.secondsLeft)}</span>
-          )}
         </div>
       </div>
     </nav>
